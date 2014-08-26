@@ -9,8 +9,8 @@ This project works as a sample for OData V4. It contains the implementation of t
 
 We have a [read-write TripPin service online](http://services.odata.org/V4/TripPinServiceRW) which is implemented directly using ODataLib. You can refer to [Basic Tutorials](http://www.odata.org/getting-started/basic-tutorial/) and [Advanced Tutorial](http://www.odata.org/getting-started/advanced-tutorial/) to know OData V4 and this service.
 
-##Web API Implementation
+###Web API Implementation
+[Web API Implementation](https://github.com/OData/SampleService/tree/master/src/service)
 
-
-##Client 
-Coming
+###Client 
+Coming soon.
