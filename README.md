@@ -14,3 +14,11 @@ We have a [read-write TripPin service online](http://services.odata.org/V4/TripP
 
 ###Client 
 Coming soon.
+
+##Community
+
+###Issue tracker
+To report bugs and require features, please use our [issue tracker](https://github.com/OData/SampleService/issues).
+
+###Mailing list
+For more questions about TripPin and OData, please use the [OData Mailling List](http://www.odata.org/join-the-odata-discussion/)
