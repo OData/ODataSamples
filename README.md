@@ -6,7 +6,7 @@ OData Samples
 This project is for OData V4 samples, including sample services, sample clients and others.
 
 ###Sample services Web API Implementation
-Plesae check at 
+Plesae check at /SampleService/src/webapi
 
 ##Community
 
