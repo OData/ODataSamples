@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="TestNS" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="Person">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="Addr" Type="TestNS.Address" Nullable="false" />
+        <NavigationProperty Name="Pets" Type="TestNS.Pet" Nullable="false" />
+      </EntityType>
+      <ComplexType Name="Address">
+        <Property Name="ZipCode" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="Pet">
+        <Key>
+          <PropertyRef Name="Id" />
+          <PropertyRef Name="Color" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Color" Type="TestNS.Color" Nullable="false" />
+      </EntityType>
+      <EntityType Name="Fish" BaseType="TestNS.Pet">
+        <Property Name="Name" Type="Edm.String" />
+      </EntityType>
+      <EnumType Name="Color">
+        <Member Name="Red" Value="1" />
+        <Member Name="Blue" Value="2" />
+      </EnumType>
+      <Function Name="GetColorCmyk">
+        <Parameter Name="col" Type="TestNS.Color" Nullable="false" />
+        <ReturnType Type="Edm.String" Nullable="false" />
+      </Function>
+      <Function Name="HasColor" IsBound="true">
+        <Parameter Name="pet" Type="TestNS.Pet" Nullable="false" />
+        <Parameter Name="col" Type="TestNS.Color" Nullable="false" />
+        <ReturnType Type="Edm.Boolean" Nullable="false" />
+      </Function>
+      <Action Name="ChangeZip" IsBound="true">
+        <Parameter Name="address" Type="TestNS.Address" Nullable="false" />
+        <Parameter Name="newZip" Type="Edm.String" Nullable="false" />
+      </Action>
+      <Function Name="GetZip" IsBound="true" IsComposable="true">
+        <Parameter Name="address" Type="TestNS.Address" Nullable="false" />
+        <ReturnType Type="Edm.String" Nullable="false" />
+      </Function>
+    </Schema>
+    <Schema Namespace="Default" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="Con1">
+        <EntitySet Name="People" EntityType="TestNS.Person">
+          <NavigationPropertyBinding Path="Pets" Target="PetSet" />
+        </EntitySet>
+        <EntitySet Name="PetSet" EntityType="TestNS.Pet" />
+        <Singleton Name="Boss" Type="TestNS.Person" />
+        <FunctionImport Name="GetColorCmykImport" Function="TestNS.GetColorCmyk" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

@@ -1,0 +1,1 @@
+A sample project to demo the usage of OData uri parser.
