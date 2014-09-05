@@ -80,7 +80,7 @@
     </Reference>
     <Reference Include="System.Web.OData, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.OData.5.3.0-rc-140824\lib\net45\System.Web.OData.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.OData.5.3.0-rc\lib\net45\System.Web.OData.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services" />
   </ItemGroup>

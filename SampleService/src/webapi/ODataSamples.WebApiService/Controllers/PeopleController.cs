@@ -63,13 +63,28 @@
         [HttpGet]
         [EnableQuery(PageSize = Utility.DefaultPageSize)]
         [ODataRoute("People({key})/AddressInfo")]
-        [ODataRoute("People({key})/Gender")]
         [ODataRoute("People({key})/Emails")]
-        [ODataRoute("People({key})/UserName")]
         [ODataRoute("People({key})/Trips")]
+        [ODataRoute("People({key})/Friends")]
+        public IHttpActionResult GetPersonCollectionProperty([FromODataUri] string key)
+        {
+            var person = TripPinSvcDataSource.Instance.People.SingleOrDefault(item => item.UserName == key);
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            var propertyName = this.Url.Request.RequestUri.Segments.Last();
+            var propertyValue = ControllerHelper.GetPropertyValueFromModel(person, propertyName);
+            return ControllerHelper.GetOKHttpActionResult(this, propertyValue);
+        }
+
+        // GET odata/People('key')/Property
+        [HttpGet]
+        [ODataRoute("People({key})/Gender")]
+        [ODataRoute("People({key})/UserName")]
         [ODataRoute("People({key})/LastName")]
         [ODataRoute("People({key})/FirstName")]
-        [ODataRoute("People({key})/Friends")]
         public IHttpActionResult GetPersonProperty([FromODataUri] string key)
         {
             var person = TripPinSvcDataSource.Instance.People.SingleOrDefault(item => item.UserName == key);
@@ -351,14 +366,35 @@
         // GET odata/People('key')/Trips(tripId)/Property
         [HttpGet]
         [EnableQuery(PageSize = Utility.DefaultPageSize)]
+        [ODataRoute("People({key})/Trips({tripId})/Tags")]
+        [ODataRoute("People({key})/Trips({tripId})/PlanItems")]
+        public IHttpActionResult GetPersonTripCollectionProperty([FromODataUri] string key, [FromODataUri] int tripId)
+        {
+            var person = TripPinSvcDataSource.Instance.People.SingleOrDefault(item => item.UserName == key);
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            var trip = person.Trips.SingleOrDefault(item => item.TripId == tripId);
+            if (trip == null)
+            {
+                return NotFound();
+            }
+
+            var propertyName = this.Url.Request.RequestUri.Segments.Last();
+            var propertyValue = ControllerHelper.GetPropertyValueFromModel(trip, propertyName);
+            return ControllerHelper.GetOKHttpActionResult(this, propertyValue);
+        }
+
+        // GET odata/People('key')/Trips(tripId)/Property
+        [HttpGet]
         [ODataRoute("People({key})/Trips({tripId})/TripId")]
         [ODataRoute("People({key})/Trips({tripId})/ShareId")]
         [ODataRoute("People({key})/Trips({tripId})/Name")]
         [ODataRoute("People({key})/Trips({tripId})/Description")]
-        [ODataRoute("People({key})/Trips({tripId})/Tags")]
         [ODataRoute("People({key})/Trips({tripId})/StartsAt")]
         [ODataRoute("People({key})/Trips({tripId})/EndsAt")]
-        [ODataRoute("People({key})/Trips({tripId})/PlanItems")]
         public IHttpActionResult GetPersonTripProperty([FromODataUri] string key, [FromODataUri] int tripId)
         {
             var person = TripPinSvcDataSource.Instance.People.SingleOrDefault(item => item.UserName == key);
@@ -532,13 +568,34 @@
         [HttpGet]
         [EnableQuery(PageSize = Utility.DefaultPageSize)]
         [ODataRoute("People({key})/Friends({friendUserName})/AddressInfo")]
-        [ODataRoute("People({key})/Friends({friendUserName})/Gender")]
         [ODataRoute("People({key})/Friends({friendUserName})/Emails")]
-        [ODataRoute("People({key})/Friends({friendUserName})/UserName")]
         [ODataRoute("People({key})/Friends({friendUserName})/Trips")]
+        [ODataRoute("People({key})/Friends({friendUserName})/Friends")]
+        public IHttpActionResult GetPersonFriendCollectionProperty([FromODataUri] string key, [FromODataUri] string friendUserName)
+        {
+            var person = TripPinSvcDataSource.Instance.People.SingleOrDefault(item => item.UserName == key);
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            var friend = person.Friends.SingleOrDefault(item => item.UserName == friendUserName);
+            if (friend == null)
+            {
+                return NotFound();
+            }
+
+            var propertyName = this.Url.Request.RequestUri.Segments.Last();
+            var propertyValue = ControllerHelper.GetPropertyValueFromModel(friend, propertyName);
+            return ControllerHelper.GetOKHttpActionResult(this, propertyValue);
+        }
+
+        // GET odata/People('key')/Friends('friendUserName')/Property
+        [HttpGet]
+        [ODataRoute("People({key})/Friends({friendUserName})/Gender")]
+        [ODataRoute("People({key})/Friends({friendUserName})/UserName")]
         [ODataRoute("People({key})/Friends({friendUserName})/LastName")]
         [ODataRoute("People({key})/Friends({friendUserName})/FirstName")]
-        [ODataRoute("People({key})/Friends({friendUserName})/Friends")]
         public IHttpActionResult GetPersonFriendProperty([FromODataUri] string key, [FromODataUri] string friendUserName)
         {
             var person = TripPinSvcDataSource.Instance.People.SingleOrDefault(item => item.UserName == key);

@@ -23,13 +23,22 @@
         [HttpGet]
         [EnableQuery(PageSize = Utility.DefaultPageSize)]
         [ODataRoute("Me/AddressInfo")]
-        [ODataRoute("Me/Gender")]
         [ODataRoute("Me/Emails")]
-        [ODataRoute("Me/UserName")]
         [ODataRoute("Me/Trips")]
+        [ODataRoute("Me/Friends")]
+        public IHttpActionResult GetMeCollectionProperty()
+        {
+            var propertyName = this.Url.Request.RequestUri.Segments.Last();
+            var propertyValue = ControllerHelper.GetPropertyValueFromModel(TripPinSvcDataSource.Instance.Me, propertyName);
+            return ControllerHelper.GetOKHttpActionResult(this, propertyValue);
+        }
+
+        // GET odata/Me/Property
+        [HttpGet]
+        [ODataRoute("Me/Gender")]
+        [ODataRoute("Me/UserName")]
         [ODataRoute("Me/LastName")]
         [ODataRoute("Me/FirstName")]
-        [ODataRoute("Me/Friends")]
         public IHttpActionResult GetMeProperty()
         {
             var propertyName = this.Url.Request.RequestUri.Segments.Last();
