@@ -44,7 +44,7 @@ namespace ParserExt
                     valid = model.Validate(out errors);
                     if (!valid)
                     {
-                        //    ShowErrors(errors);
+                        // ShowErrors(errors);
                     }
 
                     //Debug.Assert(valid, "should not have semantic errors");

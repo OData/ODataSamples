@@ -7,6 +7,17 @@ using Microsoft.OData.Edm;
 
 namespace ParserExt
 {
+    /// <summary>
+    /// Composition of two built in resolvers.
+    /// </summary>
+    /// <remarks>
+    /// Usage:
+    /// new ODataUriParser(model, uri) { Resolver = new AllInOneResolver() {EnableCaseInsensitive = true}; };
+    /// 
+    /// The EnableCaseInsensitive of ODataUriResolver is a non-virtual property now, so we need to set it every time for
+    /// the resolvers we took, next time should consider make it a virtual property, thus we could override the set/get
+    /// behavior, and conduct the EnableCaseInsensitive propagating behaviour there.
+    /// </remarks>
     class AllInOneResolver : ODataUriResolver
     {
         private StringAsEnumResolver stringAsEnum = new StringAsEnumResolver();
@@ -54,6 +65,31 @@ namespace ParserExt
         {
             stringAsEnum.EnableCaseInsensitive = this.EnableCaseInsensitive;
             return stringAsEnum.ResolveOperationParameters(operation, input);
+        }
+    }
+
+    class StringRepResolver : ODataUriResolver
+    {
+        public override void PromoteBinaryOperandTypes(
+            BinaryOperatorKind binaryOperatorKind,
+            ref SingleValueNode leftNode,
+            ref SingleValueNode rightNode,
+            out IEdmTypeReference typeReference)
+        {
+            if (binaryOperatorKind == BinaryOperatorKind.Multiply
+                && leftNode.TypeReference != null
+                && leftNode.TypeReference.IsString()
+                && rightNode.TypeReference != null
+                && rightNode.TypeReference.IsInt32())
+            {
+                // The result type should be Edm.String, as it could be nullable or not, we just took the left
+                // node's type reference.
+                typeReference = leftNode.TypeReference;
+                return;
+            }
+
+            // fallback
+            base.PromoteBinaryOperandTypes(binaryOperatorKind, ref leftNode, ref rightNode, out typeReference);
         }
     }
 }
