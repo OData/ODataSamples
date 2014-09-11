@@ -3,7 +3,7 @@ using Microsoft.OData.Core.UriParser.Semantic;
 using Microsoft.OData.Core.UriParser.Visitors;
 using Microsoft.OData.Edm;
 
-namespace ParserExt
+namespace ODataSamples.UriParser.ParserExt
 {
     class PathToStringTranslator : PathSegmentTranslator<string>
     {

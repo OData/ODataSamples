@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Xml;
 using Microsoft.OData.Edm;
 using Microsoft.OData.Edm.Csdl;
 using Microsoft.OData.Edm.Validation;
 
-namespace ParserExt
+namespace ODataSamples.Common.Model
 {
-    abstract class ModelWrapper
+    public abstract class ModelWrapper
     {
         private IEdmModel _model;
 
@@ -29,6 +30,18 @@ namespace ParserExt
             try
             {
                 edmxStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+                if (edmxStream == null)
+                {
+                    StringBuilder builder = new StringBuilder();
+                    builder.AppendFormat("Failed to get stream with name '{0}', available resource names:", resourceName);
+                    foreach (var name in Assembly.GetExecutingAssembly().GetManifestResourceNames())
+                    {
+                        builder.AppendLine(name);
+                    }
+                    
+                    throw new ApplicationException(builder.ToString());
+                }
+
                 Debug.Assert(edmxStream != null, "stream must exist.");
 
                 using (var xmlReader = XmlReader.Create(edmxStream))
@@ -39,7 +52,7 @@ namespace ParserExt
                     {
                         ShowErrors(errors);
                     }
-                    //Debug.Assert(valid, "model should be parsed");
+                    Debug.Assert(valid, "model should be parsed");
 
                     valid = model.Validate(out errors);
                     if (!valid)

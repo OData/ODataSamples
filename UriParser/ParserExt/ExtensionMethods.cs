@@ -3,7 +3,7 @@ using Microsoft.OData.Core.UriBuilder;
 using Microsoft.OData.Core.UriParser;
 using Microsoft.OData.Core.UriParser.Semantic;
 
-namespace ParserExt
+namespace ODataSamples.UriParser.ParserExt
 {
     static class ExtensionMethods
     {

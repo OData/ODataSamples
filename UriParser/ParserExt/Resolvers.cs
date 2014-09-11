@@ -5,7 +5,7 @@ using Microsoft.OData.Core.UriParser.Semantic;
 using Microsoft.OData.Core.UriParser.TreeNodeKinds;
 using Microsoft.OData.Edm;
 
-namespace ParserExt
+namespace ODataSamples.UriParser.ParserExt
 {
     /// <summary>
     /// Composition of two built in resolvers.

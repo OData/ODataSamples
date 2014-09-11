@@ -1,9 +1,9 @@
 ﻿using Microsoft.OData.Edm;
 using Microsoft.OData.Edm.Library;
 
-namespace ParserExt
+namespace ODataSamples.Common.Model
 {
-    class ParserExtModel : ModelWrapper
+    public class ParserExtModel : ModelWrapper
     {
         public IEdmType Person;
         public IEdmType Pet;
@@ -22,7 +22,7 @@ namespace ParserExt
 
         protected override IEdmModel GetModel()
         {
-            return LoadMetadataFromResource("ParserExt.ParserExtModel.xml");
+            return LoadMetadataFromResource("ODataSamples.Common.Model.ParserExtModel.xml");
         }
     }
 

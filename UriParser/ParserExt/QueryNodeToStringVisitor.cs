@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.OData.Core.UriParser.Semantic;
 using Microsoft.OData.Core.UriParser.Visitors;
 
-namespace ParserExt
+namespace ODataSamples.UriParser.ParserExt
 {
     class QueryNodeToStringVisitor : QueryNodeVisitor<string>
     {
