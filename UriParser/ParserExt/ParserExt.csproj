@@ -54,7 +54,7 @@
   <ItemGroup>
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="ModelWrapper.cs" />
-    <Compile Include="ParserExtModel.cs" />
+    <Compile Include="Models.cs" />
     <Compile Include="PathToStringHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.OData.Core.UriParser;
 using Microsoft.OData.Core.UriParser.Metadata;
 
@@ -46,6 +47,21 @@ namespace ParserExt
             var clause2 = parser2.ParseOrderBy();
             Console.WriteLine(path2.ToLogString());
             Console.WriteLine(clause2.Expression.ToLogString());
+
+            // Query option parser also supports custom resolver
+            var parser3 = new ODataQueryOptionParser(
+                extModel.Model,
+                extModel.Fish,
+                extModel.PetSet,
+                new Dictionary<string, string>
+                {
+                    {"$orderby", "color"}
+                })
+            {
+                Resolver = new ODataUriResolver { EnableCaseInsensitive = true }
+            };
+            var clause3 = parser3.ParseOrderBy();
+            Console.WriteLine(clause3.Expression.ToLogString());
         }
 
         private static void TestUnqualified()
@@ -158,8 +174,8 @@ namespace ParserExt
                 new Uri("http://demo/odata.svc/People?$filter=Name eq 'Red' mul 3"));
             try
             {
-                // Would thrown exception
-                var clause = parser.ParseFilter();
+                // Would throw exception
+                parser.ParseFilter();
             }
             catch (Exception ex)
             {
