@@ -1,63 +1,166 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Demo1;
 using Microsoft.OData.Core;
+using ODataSamples.Common;
 using ODataSamples.Common.Model;
 
 namespace ODataSamples.Writer
 {
     class Program
     {
+        private static readonly Uri ServiceRoot = new Uri("http://demo/odata.svc/");
+        private static readonly ParserExtModel ExtModel = new ParserExtModel();
+        private static readonly ODataFeed Feed;
+        private static readonly ODataComplexValue Address1;
+        private static readonly ODataEntry PersonEntry;
+        private static readonly ODataEntry PetEntry;
+        private static readonly ODataEntry FishEntry;
+
+        static Program ()
+        {
+            Feed = new ODataFeed();
+
+            Address1 = new ODataComplexValue()
+            {
+                InstanceAnnotations = new List<ODataInstanceAnnotation>()
+                {
+                    new ODataInstanceAnnotation("ns.ann2", new ODataPrimitiveValue("hi"))
+                },
+                TypeName = "TestNS.Address", // Need this for parsed model.
+                Properties = new List<ODataProperty>
+                {
+                    new ODataProperty()
+                    {
+                        Name = "ZipCode",
+                        Value = "200",
+                    },
+                },
+            };
+
+            PersonEntry = new ODataEntry()
+            {
+                InstanceAnnotations = new List<ODataInstanceAnnotation>()
+                {
+                    new ODataInstanceAnnotation("ns.ann1", new ODataPrimitiveValue("hi"))
+                },
+                Properties = new List<ODataProperty>
+                {
+                    new ODataProperty()
+                    {
+                        Name = "Id",
+                        Value = 1,
+                    },
+                    new ODataProperty()
+                    {
+                        Name = "Name",
+                        Value = "Shang",
+                    },
+                    new ODataProperty()
+                    {
+                        Name = "Addr",
+                        Value = Address1
+                    }
+                },
+            };
+
+            PetEntry = new ODataEntry()
+            {
+                Properties = new List<ODataProperty>
+                {
+                    new ODataProperty()
+                    {
+                        Name = "Id",
+                        Value = 1,
+                    },
+                    new ODataProperty()
+                    {
+                        Name = "Color",
+                        Value = new ODataEnumValue("Red")
+                    },
+                },
+            };
+
+            FishEntry = new ODataEntry()
+            {
+                TypeName = "TestNS.Fish",
+                Properties = new List<ODataProperty>
+                {
+                    new ODataProperty()
+                    {
+                        Name = "Id",
+                        Value = 2,
+                    },
+                    new ODataProperty()
+                    {
+                        Name = "Color",
+                        Value = new ODataEnumValue("Blue"),
+                    },
+                    new ODataProperty()
+                    {
+                        Name = "Name",
+                        Value = "Qin",
+                    },
+                },
+            };
+        }
+
         static void Main(string[] args)
         {
-            var extModel = new ParserExtModel();
-            var stream = new MemoryStream();
-            var msg = new Message()
-            {
-                Stream = stream,
-            };
+            WriteTopLevelFeed();
+            WriteTopLevelEntry();
+        }
+
+        private static void WriteTopLevelFeed()
+        {
+            var msg = ODataSamplesUtil.CreateMessage();
 
             var settings = new ODataMessageWriterSettings()
             {
                 ODataUri = new ODataUri()
                 {
-                    ServiceRoot = new Uri("http://host/svc")
+                    ServiceRoot = new Uri("http://demo/odata.svc/PetSet")
                 },
                 DisableMessageStreamDisposal = true,
-                JsonPCallback = "fsjflsajflsjalfjas",
+                Indent = true,
             };
 
-            ODataFeed feed = new ODataFeed();
-            ODataEntry entry = new ODataEntry();
-            entry.TypeName = "TestNS.Fish";
-            var ppr = new List<ODataProperty>();
-            ppr.Add(new ODataProperty()
+            using (var omw = new ODataMessageWriter((IODataResponseMessage) msg, settings, ExtModel.Model))
             {
-                Name = "Color",
-                Value = new ODataEnumValue("blue")
-            });
-            entry.Properties = ppr;
-
-            using (ODataMessageWriter omw = new ODataMessageWriter((IODataResponseMessage)msg, settings, extModel.Model))
-            {
-                var writer = omw.CreateODataFeedWriter(extModel.People);
-                writer.WriteStart(feed);
-                writer.WriteStart(entry);
+                var writer = omw.CreateODataFeedWriter(ExtModel.PetSet);
+                writer.WriteStart(Feed);
+                writer.WriteStart(PetEntry);
+                writer.WriteEnd();
+                writer.WriteStart(FishEntry);
                 writer.WriteEnd();
                 writer.WriteEnd();
             }
 
-            stream.Seek(0, SeekOrigin.Begin);
+            Console.WriteLine(ODataSamplesUtil.MessageToString(msg));
+        }
 
-            using (var sr = new StreamReader(stream))
+        private static void WriteTopLevelEntry()
+        {
+            var msg = ODataSamplesUtil.CreateMessage();
+            msg.PreferenceAppliedHeader().AnnotationFilter = "*";
+
+            var settings = new ODataMessageWriterSettings()
             {
-                var payload = sr.ReadToEnd();
-                Console.WriteLine(payload);
+                ODataUri = new ODataUri()
+                {
+                    ServiceRoot = new Uri("http://demo/odata.svc/People(2)")
+                },
+                DisableMessageStreamDisposal = true,
+                Indent = true,
+            };
+
+            using (var omw = new ODataMessageWriter((IODataResponseMessage)msg, settings, ExtModel.Model))
+            {
+                var writer = omw.CreateODataEntryWriter(ExtModel.People);
+                writer.WriteStart(PersonEntry);
+                writer.WriteEnd();
             }
+
+            Console.WriteLine(ODataSamplesUtil.MessageToString(msg));
         }
     }
 }

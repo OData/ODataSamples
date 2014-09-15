@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.OData.Core;
 
-namespace Demo1
+namespace ODataSamples.Common
 {
     public class Message : IODataRequestMessage, IODataResponseMessage, IDisposable
     {
