@@ -1,0 +1,5 @@
+﻿{
+"@odata.context":"http://demo/odata.svc/People(2)/$metadata#People/$entity","@ns.ann1":"hi","Id":1,"Name":"Shang","Addr":{
+"@ns.ann2":"hi","ZipCode":"200"
+}
+}

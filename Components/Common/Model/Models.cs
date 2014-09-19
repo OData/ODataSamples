@@ -5,7 +5,7 @@ namespace ODataSamples.Common.Model
 {
     public class ParserExtModel : ModelWrapper
     {
-        public IEdmType Person;
+        public IEdmEntityType Person;
         public IEdmType Pet;
         public IEdmType Fish;
         public IEdmEntitySet People;
@@ -13,7 +13,7 @@ namespace ODataSamples.Common.Model
 
         public ParserExtModel()
         {
-            Person = Model.FindType("TestNS.Person");
+            Person = (IEdmEntityType)Model.FindType("TestNS.Person");
             Pet = Model.FindType("TestNS.Pet");
             Fish = Model.FindType("TestNS.Fish");
             People = Model.FindDeclaredEntitySet("People");
