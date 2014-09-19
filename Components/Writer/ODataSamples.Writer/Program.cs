@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Timers;
 using Microsoft.OData.Core;
 using ODataSamples.Common;
 using ODataSamples.Common.Model;
@@ -15,8 +17,13 @@ namespace ODataSamples.Writer
         private static readonly ODataEntry PersonEntry;
         private static readonly ODataEntry PetEntry;
         private static readonly ODataEntry FishEntry;
+        private static readonly ODataMessageWriterSettings BaseSettings = new ODataMessageWriterSettings()
+        {
+            DisableMessageStreamDisposal = true,
+            Indent = true,
+        };
 
-        static Program ()
+        static Program()
         {
             Feed = new ODataFeed();
 
@@ -107,24 +114,24 @@ namespace ODataSamples.Writer
         static void Main(string[] args)
         {
             WriteTopLevelFeed();
+            WriteTopLevelFeed(false);
             WriteTopLevelEntry();
         }
 
-        private static void WriteTopLevelFeed()
+        private static void WriteTopLevelFeed(bool enableFullValidation = true)
         {
             var msg = ODataSamplesUtil.CreateMessage();
 
-            var settings = new ODataMessageWriterSettings()
+            var settings = new ODataMessageWriterSettings(BaseSettings)
             {
                 ODataUri = new ODataUri()
                 {
                     ServiceRoot = new Uri("http://demo/odata.svc/PetSet")
                 },
-                DisableMessageStreamDisposal = true,
-                Indent = true,
+                EnableFullValidation = enableFullValidation
             };
 
-            using (var omw = new ODataMessageWriter((IODataResponseMessage) msg, settings, ExtModel.Model))
+            using (var omw = new ODataMessageWriter((IODataResponseMessage)msg, settings, ExtModel.Model))
             {
                 var writer = omw.CreateODataFeedWriter(ExtModel.PetSet);
                 writer.WriteStart(Feed);
@@ -143,14 +150,12 @@ namespace ODataSamples.Writer
             var msg = ODataSamplesUtil.CreateMessage();
             msg.PreferenceAppliedHeader().AnnotationFilter = "*";
 
-            var settings = new ODataMessageWriterSettings()
+            var settings = new ODataMessageWriterSettings(BaseSettings)
             {
                 ODataUri = new ODataUri()
                 {
                     ServiceRoot = new Uri("http://demo/odata.svc/People(2)")
                 },
-                DisableMessageStreamDisposal = true,
-                Indent = true,
             };
 
             using (var omw = new ODataMessageWriter((IODataResponseMessage)msg, settings, ExtModel.Model))
