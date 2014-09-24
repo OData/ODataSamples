@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.Common", "Comm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.Writer", "Writer\ODataSamples.Writer\ODataSamples.Writer.csproj", "{831ED0D3-7802-4DB4-A2A8-2AC5FED02C05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseBasic", "UriParser\ParseBasic\ParseBasic.csproj", "{B735678C-7F6D-4C0B-B48F-19DC8780C6C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserExt", "UriParser\ParserExt\ParserExt.csproj", "{F36AC4D9-1594-46AA-BB07-8E683679C9C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{831ED0D3-7802-4DB4-A2A8-2AC5FED02C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{831ED0D3-7802-4DB4-A2A8-2AC5FED02C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{831ED0D3-7802-4DB4-A2A8-2AC5FED02C05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B735678C-7F6D-4C0B-B48F-19DC8780C6C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B735678C-7F6D-4C0B-B48F-19DC8780C6C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B735678C-7F6D-4C0B-B48F-19DC8780C6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B735678C-7F6D-4C0B-B48F-19DC8780C6C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F36AC4D9-1594-46AA-BB07-8E683679C9C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F36AC4D9-1594-46AA-BB07-8E683679C9C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F36AC4D9-1594-46AA-BB07-8E683679C9C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F36AC4D9-1594-46AA-BB07-8E683679C9C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,12 +23,27 @@ namespace ODataSamples.UriParser.ParserExt
         private StringAsEnumResolver stringAsEnum = new StringAsEnumResolver();
         private UnqualifiedODataUriResolver unqualified = new UnqualifiedODataUriResolver();
 
+        private bool enableCaseInsensitive;
+
+        public override bool EnableCaseInsensitive
+        {
+            get
+            {
+                return this.enableCaseInsensitive;
+            }
+            set
+            {
+                this.enableCaseInsensitive = value;
+                stringAsEnum.EnableCaseInsensitive = this.enableCaseInsensitive;
+                unqualified.EnableCaseInsensitive = this.enableCaseInsensitive;
+            }
+        }
+
         public override IEnumerable<IEdmOperation> ResolveBoundOperations(
             IEdmModel model,
             string identifier,
             IEdmType bindingType)
         {
-            unqualified.EnableCaseInsensitive = this.EnableCaseInsensitive;
             return unqualified.ResolveBoundOperations(model, identifier, bindingType);
         }
 
@@ -38,7 +53,6 @@ namespace ODataSamples.UriParser.ParserExt
             ref SingleValueNode rightNode,
             out IEdmTypeReference typeReference)
         {
-            stringAsEnum.EnableCaseInsensitive = this.EnableCaseInsensitive;
             stringAsEnum.PromoteBinaryOperandTypes(binaryOperatorKind, ref leftNode, ref rightNode, out typeReference);
         }
 
@@ -47,7 +61,6 @@ namespace ODataSamples.UriParser.ParserExt
             IDictionary<string, string> namedValues,
             Func<IEdmTypeReference, string, object> convertFunc)
         {
-            stringAsEnum.EnableCaseInsensitive = this.EnableCaseInsensitive;
             return stringAsEnum.ResolveKeys(type, namedValues, convertFunc);
         }
 
@@ -56,14 +69,12 @@ namespace ODataSamples.UriParser.ParserExt
             IList<string> positionalValues,
             Func<IEdmTypeReference, string, object> convertFunc)
         {
-            stringAsEnum.EnableCaseInsensitive = this.EnableCaseInsensitive;
             return stringAsEnum.ResolveKeys(type, positionalValues, convertFunc);
         }
 
         public override IDictionary<IEdmOperationParameter, SingleValueNode> ResolveOperationParameters(
             IEdmOperation operation, IDictionary<string, SingleValueNode> input)
         {
-            stringAsEnum.EnableCaseInsensitive = this.EnableCaseInsensitive;
             return stringAsEnum.ResolveOperationParameters(operation, input);
         }
     }
