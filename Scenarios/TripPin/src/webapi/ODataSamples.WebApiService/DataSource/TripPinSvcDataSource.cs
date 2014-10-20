@@ -52,7 +52,7 @@
                         City = new City()
                         {
                             Name = "San Francisco",
-                            Country = "United States",
+                            CountryRegion = "United States",
                             Region = "California"    
                         },
                         Loc = GeographyPoint.Create(37.6188888888889, -122.374722222222)
@@ -69,7 +69,7 @@
                         City = new City()
                         {
                             Name = "Los Angeles",
-                            Country = "United States", 
+                            CountryRegion = "United States", 
                             Region = "California"
                         },
                         Loc = GeographyPoint.Create(33.9425, -118.408055555556)
@@ -86,7 +86,7 @@
                         City = new City()
                         {
                             Name = "Shanghai",
-                            Country = "China",
+                            CountryRegion = "China",
                             Region = "Shanghai"
                         },
                         Loc = GeographyPoint.Create(31.1977777777778, 121.336111111111)
@@ -103,7 +103,7 @@
                         City = new City()
                         {
                             Name = "Beijing",
-                            Country = "China",
+                            CountryRegion = "China",
                             Region = "Beijing"
                         },
                         Loc = GeographyPoint.Create(40.08, 116.584444444444)
@@ -120,7 +120,7 @@
                         City = new City()
                         {
                             Name = "New York City",
-                            Country = "United States",
+                            CountryRegion = "United States",
                             Region = "New York"
                         },
                         Loc = GeographyPoint.Create(40.6397222222222, -73.7788888888889)
@@ -165,7 +165,7 @@
                         Address = "P.O. Box 555",
                         City = new City()
                         {
-                            Country = "United States",
+                            CountryRegion = "United States",
                             Name = "Lander",
                             Region = "WY"
                         }
@@ -215,7 +215,7 @@
                                     City = new City() 
                                     {
                                         Name = "New York City", 
-                                        Country = "United States", 
+                                        CountryRegion = "United States", 
                                         Region = "New York" 
                                     }
                                 }
@@ -270,7 +270,7 @@
                                     Address = "10 Beijing Street, 100000",
                                     City = new City(){
                                         Name = "Beijing",
-                                        Country = "China",
+                                        CountryRegion = "China",
                                         Region = "Beijing"
                                     },
                                     BuildingInfo = "Beijing Restaurant"
@@ -374,7 +374,7 @@
                           Address = "187 Suffolk Ln.",
                           City = new City()
                           {
-                              Country = "United States",
+                              CountryRegion = "United States",
                               Name = "Boise",
                               Region = "ID"
                           }
@@ -423,7 +423,7 @@
                                         City = new City() 
                                         {
                                             Name = "New York City", 
-                                            Country = "United States", 
+                                            CountryRegion = "United States", 
                                             Region = "New York" 
                                         }, 
                                         Address = "100 Church Street, 8th Floor, Manhattan, 10007"
@@ -491,7 +491,7 @@
                                         City = new City()
                                         {
                                             Name = "Beijing",
-                                            Country = "China",
+                                            CountryRegion = "China",
                                             Region = "Beijing"
                                         },
                                         Address = "10 Beijing Street, 100000"
@@ -526,7 +526,7 @@
                           Address = "2817 Milton Dr.",
                           City = new City()
                           {
-                              Country = "United States",
+                              CountryRegion = "United States",
                               Name = "Albuquerque",
                               Region = "NM"
                           }
@@ -572,7 +572,7 @@
                                         City = new City()
                                         {
                                             Name = "New York City",
-                                            Country = "United States",
+                                            CountryRegion = "United States",
                                             Region = "New York"
                                         },
                                         Address = "100 Church Street, 8th Floor, Manhattan, 10007"
@@ -640,7 +640,7 @@
                                         City = new City()
                                         {
                                             Name = "Beijing",
-                                            Country = "China",
+                                            CountryRegion = "China",
                                             Region = "Beijing"
                                         },
                                         Address = "10 Beijing Street, 100000"
@@ -686,7 +686,7 @@
                           Address = "89 Jefferson Way Suite 2",
                           City = new City()
                           {
-                              Country = "United States",
+                              CountryRegion = "United States",
                               Name = "Portland",
                               Region = "WA"
                           }
@@ -754,7 +754,7 @@
                           Address = "55 Grizzly Peak Rd.",
                           City = new City()
                           {
-                              Country = "United States",
+                              CountryRegion = "United States",
                               Name = "Butte",
                               Region = "MT"
                           }
@@ -843,7 +843,7 @@
                           Address = "87 Polk St. Suite 5",
                           City = new City()
                           {
-                              Country = "United States",
+                              CountryRegion = "United States",
                               Name = "San Francisco",
                               Region = "CA"
                           }
@@ -853,7 +853,7 @@
                           Address = "89 Chiaroscuro Rd.",
                           City = new City()
                           {
-                              Country = "United States",
+                              CountryRegion = "United States",
                               Name = "Portland",
                               Region = "OR"
                           }

@@ -8,7 +8,7 @@
         public string Name { get; set; }
 
         [Required]
-        public string Country { get; set; }
+        public string CountryRegion { get; set; }
 
         [Required]
         public string Region { get; set; }
