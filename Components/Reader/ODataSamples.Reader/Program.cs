@@ -13,7 +13,6 @@ namespace ODataSamples.Reader
         static void Main(string[] args)
         {
             ReadEntry(true);
-            ReadEntry(false);
         }
 
         // Simple demo for reading entry
@@ -28,7 +27,8 @@ namespace ODataSamples.Reader
 
             var setting = new ODataMessageReaderSettings()
             {
-                EnableFullValidation = enableFullValidation
+                EnableFullValidation = enableFullValidation,
+                ShouldIncludeAnnotation = _ => true,
             };
 
             using (var messageReader = new ODataMessageReader((IODataResponseMessage)message, setting, ExtModel.Model))
@@ -45,10 +45,18 @@ namespace ODataSamples.Reader
                 }
             }
 
-            Console.WriteLine(entry.Id);
+            Console.WriteLine("Id: {0}", entry.Id);
+            Console.WriteLine("properties:");
+
             foreach (var property in entry.Properties)
             {
                 Console.WriteLine("{0}:{1}", property.Name, property.Value);
+            }
+
+            Console.WriteLine("Annotations:");
+            foreach (var annotation in entry.InstanceAnnotations)
+            {
+                Console.WriteLine("{0}:{1}", annotation.Name, annotation.Value);
             }
         }
     }
