@@ -116,6 +116,7 @@ namespace ODataSamples.Writer
             WriteTopLevelFeed();
             WriteTopLevelFeed(false);
             WriteTopLevelEntry();
+            ContainmentTest.FeedWriteReadNormal();
         }
 
         private static void WriteTopLevelFeed(bool enableFullValidation = true)

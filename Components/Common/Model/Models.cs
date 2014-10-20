@@ -26,17 +26,43 @@ namespace ODataSamples.Common.Model
         }
     }
 
-    class CraftModel : ModelWrapper
+    public class CraftModel : ModelWrapper
     {
         private EdmModel model;
+
+        public EdmSingleton MyLogin;
+        public EdmNavigationProperty MailBox;
+
         public CraftModel()
         {
             model = new EdmModel();
-            var person = new EdmEntityType("NS", "Person");
+
             var address = new EdmComplexType("NS", "Address");
-            person.AddStructuralProperty("Addr", new EdmComplexTypeReference(address, /*Nullable*/false));
-            model.AddElement(person);
             model.AddElement(address);
+
+            var mail = new EdmEntityType("NS", "Mail");
+            var mailId = mail.AddStructuralProperty("Id", EdmPrimitiveTypeKind.Int32);
+            mail.AddKeys(mailId);
+            model.AddElement(mail);
+
+            var person = new EdmEntityType("NS", "Person");
+            model.AddElement(person);
+            var personId = person.AddStructuralProperty("Id", EdmPrimitiveTypeKind.Int32);
+            person.AddKeys(personId);
+
+            person.AddStructuralProperty("Addr", new EdmComplexTypeReference(address, /*Nullable*/false));
+            MailBox = person.AddUnidirectionalNavigation(new EdmNavigationPropertyInfo()
+            {
+                ContainsTarget = true,
+                Name = "Mails",
+                TargetMultiplicity = EdmMultiplicity.Many,
+                Target = mail,
+            });
+
+
+            var container = new EdmEntityContainer("NS", "DefaultContainer");
+            model.AddElement(container);
+            MyLogin = container.AddSingleton("MyLogin", person);
         }
 
         protected override IEdmModel GetModel()
