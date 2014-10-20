@@ -26,7 +26,7 @@
         <Property Name="Name" Type="Edm.String" />
       </EntityType>
       <EnumType Name="Color">
-        <Member Name="Red" Value="1" />
+        <Member Name="Cyan" Value="1" />
         <Member Name="Blue" Value="2" />
       </EnumType>
       <Function Name="GetColorCmyk">

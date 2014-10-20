@@ -145,7 +145,7 @@ namespace ODataSamples.UriParser.ParserExt
             var parser = new ODataUriParser(
                extModel.Model,
                ServiceRoot,
-               new Uri("http://demo/odata.svc/PetSet?$filter=Color eq TestNS.Color'Red'"));
+               new Uri("http://demo/odata.svc/PetSet?$filter=Color eq TestNS.Color'Cyan'"));
             var path = parser.ParsePath();
             Console.WriteLine(path.ToLogString());
             var clause = parser.ParseFilter();
@@ -154,7 +154,7 @@ namespace ODataSamples.UriParser.ParserExt
             var parser2 = new ODataUriParser(
                  extModel.Model,
                  ServiceRoot,
-                 new Uri("http://demo/odata.svc/petset?$FILTER=color EQ 'Red'"))
+                 new Uri("http://demo/odata.svc/petset?$FILTER=color EQ 'Cyan'"))
             {
                 Resolver = new AllInOneResolver { EnableCaseInsensitive = true }
             };
@@ -172,7 +172,7 @@ namespace ODataSamples.UriParser.ParserExt
             var parser = new ODataUriParser(
                 extModel.Model,
                 ServiceRoot,
-                new Uri("http://demo/odata.svc/People?$filter=Name eq 'Red' mul 3"));
+                new Uri("http://demo/odata.svc/People?$filter=Name eq 'Cyan' mul 3"));
             try
             {
                 // Would throw exception
@@ -186,7 +186,7 @@ namespace ODataSamples.UriParser.ParserExt
             var parser2 = new ODataUriParser(
                 extModel.Model,
                 ServiceRoot,
-                new Uri("http://demo/odata.svc/People?$filter=Name eq 'Red' mul 3"))
+                new Uri("http://demo/odata.svc/People?$filter=Name eq 'Cyan' mul 3"))
             {
                 Resolver = new StringRepResolver()
             };

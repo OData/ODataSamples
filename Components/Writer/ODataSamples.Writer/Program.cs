@@ -82,7 +82,7 @@ namespace ODataSamples.Writer
                     new ODataProperty()
                     {
                         Name = "Color",
-                        Value = new ODataEnumValue("Red")
+                        Value = new ODataEnumValue("Cyan")
                     },
                 },
             };
