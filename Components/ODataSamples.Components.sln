@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseBasic", "UriParser\Par
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserExt", "UriParser\ParserExt\ParserExt.csproj", "{F36AC4D9-1594-46AA-BB07-8E683679C9C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.Edm", "Edm\ODataSamples.Edm\ODataSamples.Edm.csproj", "{ADB1D25F-6CFE-438C-AED3-4D066BDA92E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F36AC4D9-1594-46AA-BB07-8E683679C9C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F36AC4D9-1594-46AA-BB07-8E683679C9C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F36AC4D9-1594-46AA-BB07-8E683679C9C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADB1D25F-6CFE-438C-AED3-4D066BDA92E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB1D25F-6CFE-438C-AED3-4D066BDA92E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB1D25F-6CFE-438C-AED3-4D066BDA92E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB1D25F-6CFE-438C-AED3-4D066BDA92E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
