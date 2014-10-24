@@ -3,9 +3,9 @@ using Microsoft.OData.Core.UriBuilder;
 using Microsoft.OData.Core.UriParser;
 using Microsoft.OData.Core.UriParser.Semantic;
 
-namespace ODataSamples.UriParser.ParserExt
+namespace ODataSamples.Common.Extensions
 {
-    static class ExtensionMethods
+    public static class ExtensionMethods
     {
         public static string ToLogString(this ODataUri odataUri)
         {

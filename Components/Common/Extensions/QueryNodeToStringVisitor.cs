@@ -4,9 +4,9 @@ using System.Text;
 using Microsoft.OData.Core.UriParser.Semantic;
 using Microsoft.OData.Core.UriParser.Visitors;
 
-namespace ODataSamples.UriParser.ParserExt
+namespace ODataSamples.Common.Extensions
 {
-    class QueryNodeToStringVisitor : QueryNodeVisitor<string>
+    public class QueryNodeToStringVisitor : QueryNodeVisitor<string>
     {
         private const string Ident = "  ";
 
@@ -41,6 +41,16 @@ namespace ODataSamples.UriParser.ParserExt
         public override string Visit(SingleValuePropertyAccessNode nodeIn)
         {
             return WrapWithIdent(string.Format("Property:[{0}]", nodeIn.Property.Name));
+        }
+
+        public override string Visit(SingleValueOpenPropertyAccessNode nodeIn)
+        {
+            return WrapWithIdent(string.Format("OpenProperty:[{0}]", nodeIn.Name));
+        }
+
+        public override string Visit(ConvertNode nodeIn)
+        {
+            return WrapWithIdent(string.Format("ConvertNode:[{0}<={1}]", nodeIn.TypeReference, nodeIn.Source.Accept(this)));
         }
 
         private string WrapWithIdent(string current, Func<string> inner = null)

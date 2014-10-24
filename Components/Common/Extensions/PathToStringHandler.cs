@@ -1,11 +1,12 @@
 ﻿using System.Linq;
+using System.Text;
 using Microsoft.OData.Core.UriParser.Semantic;
 using Microsoft.OData.Core.UriParser.Visitors;
 using Microsoft.OData.Edm;
 
-namespace ODataSamples.UriParser.ParserExt
+namespace ODataSamples.Common.Extensions
 {
-    class PathToStringTranslator : PathSegmentTranslator<string>
+    public class PathToStringTranslator : PathSegmentTranslator<string>
     {
         public static PathToStringTranslator Instance = new PathToStringTranslator();
 
@@ -30,7 +31,13 @@ namespace ODataSamples.UriParser.ParserExt
 
         public override string Translate(KeySegment segment)
         {
-            return string.Format("{{Keys}}");
+            StringBuilder builder = new StringBuilder();
+            foreach (var keyValuePair in segment.Keys)
+            {
+                builder.AppendFormat("{0}={1},", keyValuePair.Key, keyValuePair.Value);
+            }
+
+            return string.Format("{{Keys:[{0}]}}", builder.ToString());
         }
 
         public override string Translate(PropertySegment segment)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.OData.Core.UriParser;
 using Microsoft.OData.Core.UriParser.Metadata;
+using ODataSamples.Common.Extensions;
 using ODataSamples.Common.Model;
 
 namespace ODataSamples.UriParser.ParserExt

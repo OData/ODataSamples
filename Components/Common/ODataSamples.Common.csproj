@@ -56,6 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ExtensionMethods.cs" />
+    <Compile Include="Extensions\PathToStringHandler.cs" />
+    <Compile Include="Extensions\QueryNodeToStringVisitor.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Model\Models.cs" />
     <Compile Include="Model\ModelWrapper.cs" />
