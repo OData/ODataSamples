@@ -12,6 +12,18 @@ namespace ParseBasic
         static void Main(string[] args)
         {
             KeyAfterFunction();
+            FilterOnOpenProperty();
+        }
+
+        private static void FilterOnOpenProperty()
+        {
+            Console.WriteLine("TestKeyAfterFunction");
+            var parser = new ODataUriParser(
+                extModel.Model,
+                ServiceRoot,
+                new Uri("http://demo/odata.svc/Resources?$filter=Name eq 'w'"));
+
+            var filter = parser.ParseFilter();
         }
 
         private static void KeyAfterFunction()

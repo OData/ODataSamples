@@ -11,6 +11,12 @@
         <Property Name="Addr" Type="TestNS.Address" Nullable="false" />
         <NavigationProperty Name="Pets" Type="TestNS.Pet" Nullable="false" />
       </EntityType>
+      <EntityType Name="Resource" OpenType="true">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.String" Nullable="false"/>
+      </EntityType>
       <ComplexType Name="Address">
         <Property Name="ZipCode" Type="Edm.String" />
       </ComplexType>
@@ -57,6 +63,7 @@
           <NavigationPropertyBinding Path="Pets" Target="PetSet" />
         </EntitySet>
         <EntitySet Name="PetSet" EntityType="TestNS.Pet" />
+        <EntitySet Name="Resources" EntityType="TestNS.Resource" />
         <Singleton Name="Boss" Type="TestNS.Person" />
         <FunctionImport Name="GetColorCmykImport" Function="TestNS.GetColorCmyk" />
       </EntityContainer>
