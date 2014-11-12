@@ -31,6 +31,8 @@
 
         //public Stream Photo { get; set; }
 
+        public string Introduction { get; set; }
+
         public List<string> Emails { get; set; }
 
         public List<Location> AddressInfo { get; set; }

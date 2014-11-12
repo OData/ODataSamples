@@ -85,6 +85,7 @@
         [ODataRoute("People({key})/UserName")]
         [ODataRoute("People({key})/LastName")]
         [ODataRoute("People({key})/FirstName")]
+        [ODataRoute("People({key})/Introduction")]
         public IHttpActionResult GetPersonProperty([FromODataUri] string key)
         {
             var person = TripPinSvcDataSource.Instance.People.SingleOrDefault(item => item.UserName == key);
@@ -95,7 +96,11 @@
 
             var propertyName = this.Url.Request.RequestUri.Segments.Last();
             var propertyValue = ControllerHelper.GetPropertyValueFromModel(person, propertyName);
-            return ControllerHelper.GetOKHttpActionResult(this, propertyValue);
+            return (propertyValue == null)
+                ?
+                StatusCode(HttpStatusCode.NoContent)
+                :
+                ControllerHelper.GetOKHttpActionResult(this, propertyValue);
         }
 
         // GET odata/People('key')/Property/$value
@@ -104,7 +109,8 @@
         [ODataRoute("People({key})/UserName/$value")]
         [ODataRoute("People({key})/LastName/$value")]
         [ODataRoute("People({key})/FirstName/$value")]
-        public string GetPersonPropertyValue([FromODataUri] string key)
+        [ODataRoute("People({key})/Introduction/$value")]
+        public object GetPersonPropertyValue([FromODataUri] string key)
         {
             var person = TripPinSvcDataSource.Instance.People.SingleOrDefault(item => item.UserName == key);
             if (person == null)
@@ -114,7 +120,8 @@
 
             var segments = this.Url.Request.RequestUri.Segments;
             var propertyName = segments[segments.Length - 2].TrimEnd('/');
-            return ControllerHelper.GetPropertyValueFromModel(person, propertyName).ToString();
+            object val = ControllerHelper.GetPropertyValueFromModel(person, propertyName);
+            return val == null ? (object)StatusCode(HttpStatusCode.NoContent) : (object)val.ToString();
         }
 
         // POST odata/People
