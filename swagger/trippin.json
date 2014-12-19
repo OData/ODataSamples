@@ -1,0 +1,1317 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "OData Service",
+    "description": "The OData Service at  http://services.odata.org/V4/TripPinServiceRW/$metadata",
+    "version": "0.1.0",
+    "x-odata-version": "4.0"
+  },
+  "host": "services.odata.org",
+  "schemes": [
+    "http"
+  ],
+  "basePath": "/V4/(S(cnbm44wtbc1v5bgrlek5lpcc))/TripPinServiceRW",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/Photos": {
+      "get": {
+        "summary": "Get EntitySet Photos",
+        "description": "Returns the EntitySet Photos",
+        "tags": [
+          "Photos"
+        ],
+        "parameters": [
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Expand navigation property",
+            "type": "string"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "select structural property",
+            "type": "string"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "order by some property",
+            "type": "string"
+          },
+          {
+            "name": "$top",
+            "in": "query",
+            "description": "top elements",
+            "type": "integer"
+          },
+          {
+            "name": "$skip",
+            "in": "query",
+            "description": "skip elements",
+            "type": "integer"
+          },
+          {
+            "name": "$count",
+            "in": "query",
+            "description": "inlcude count in response",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet Photos",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Photo"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Post a new entity to EntitySet Photos",
+        "description": "Post a new entity to EntitySet Photos",
+        "tags": [
+          "Photos"
+        ],
+        "parameters": [
+          {
+            "name": "Photo",
+            "in": "body",
+            "description": "The entity to post",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Photo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet Photos",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Photo"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/Photos({Id})": {
+      "get": {
+        "summary": "Get entity from Photos by key.",
+        "description": "Returns the entity with the key from Photos",
+        "tags": [
+          "Photos"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "key: Id",
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "description",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet Photos",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Photo"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update entity in EntitySet Photos",
+        "description": "Update entity in EntitySet Photos",
+        "tags": [
+          "Photos"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "key: Id",
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "Photo",
+            "in": "body",
+            "description": "The entity to patch",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Photo"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Empty response"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete entity in EntitySet Photos",
+        "description": "Delete entity in EntitySet Photos",
+        "tags": [
+          "Photos"
+        ],
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "description": "key: Id",
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "If-Match header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Empty response"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/People": {
+      "get": {
+        "summary": "Get EntitySet People",
+        "description": "Returns the EntitySet People",
+        "tags": [
+          "People"
+        ],
+        "parameters": [
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Expand navigation property",
+            "type": "string"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "select structural property",
+            "type": "string"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "order by some property",
+            "type": "string"
+          },
+          {
+            "name": "$top",
+            "in": "query",
+            "description": "top elements",
+            "type": "integer"
+          },
+          {
+            "name": "$skip",
+            "in": "query",
+            "description": "skip elements",
+            "type": "integer"
+          },
+          {
+            "name": "$count",
+            "in": "query",
+            "description": "inlcude count in response",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet People",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Person"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Post a new entity to EntitySet People",
+        "description": "Post a new entity to EntitySet People",
+        "tags": [
+          "People"
+        ],
+        "parameters": [
+          {
+            "name": "Person",
+            "in": "body",
+            "description": "The entity to post",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Person"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet People",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Person"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/People('{UserName}')": {
+      "get": {
+        "summary": "Get entity from People by key.",
+        "description": "Returns the entity with the key from People",
+        "tags": [
+          "People"
+        ],
+        "parameters": [
+          {
+            "name": "UserName",
+            "in": "path",
+            "description": "key: UserName",
+            "type": "string"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "description",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet People",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Person"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update entity in EntitySet People",
+        "description": "Update entity in EntitySet People",
+        "tags": [
+          "People"
+        ],
+        "parameters": [
+          {
+            "name": "UserName",
+            "in": "path",
+            "description": "key: UserName",
+            "type": "string"
+          },
+          {
+            "name": "Person",
+            "in": "body",
+            "description": "The entity to patch",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Person"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Empty response"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete entity in EntitySet People",
+        "description": "Delete entity in EntitySet People",
+        "tags": [
+          "People"
+        ],
+        "parameters": [
+          {
+            "name": "UserName",
+            "in": "path",
+            "description": "key: UserName",
+            "type": "string"
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "If-Match header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Empty response"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/Airlines": {
+      "get": {
+        "summary": "Get EntitySet Airlines",
+        "description": "Returns the EntitySet Airlines",
+        "tags": [
+          "Airlines"
+        ],
+        "parameters": [
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Expand navigation property",
+            "type": "string"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "select structural property",
+            "type": "string"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "order by some property",
+            "type": "string"
+          },
+          {
+            "name": "$top",
+            "in": "query",
+            "description": "top elements",
+            "type": "integer"
+          },
+          {
+            "name": "$skip",
+            "in": "query",
+            "description": "skip elements",
+            "type": "integer"
+          },
+          {
+            "name": "$count",
+            "in": "query",
+            "description": "inlcude count in response",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet Airlines",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airline"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Post a new entity to EntitySet Airlines",
+        "description": "Post a new entity to EntitySet Airlines",
+        "tags": [
+          "Airlines"
+        ],
+        "parameters": [
+          {
+            "name": "Airline",
+            "in": "body",
+            "description": "The entity to post",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airline"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet Airlines",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airline"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/Airlines('{AirlineCode}')": {
+      "get": {
+        "summary": "Get entity from Airlines by key.",
+        "description": "Returns the entity with the key from Airlines",
+        "tags": [
+          "Airlines"
+        ],
+        "parameters": [
+          {
+            "name": "AirlineCode",
+            "in": "path",
+            "description": "key: AirlineCode",
+            "type": "string"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "description",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet Airlines",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airline"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update entity in EntitySet Airlines",
+        "description": "Update entity in EntitySet Airlines",
+        "tags": [
+          "Airlines"
+        ],
+        "parameters": [
+          {
+            "name": "AirlineCode",
+            "in": "path",
+            "description": "key: AirlineCode",
+            "type": "string"
+          },
+          {
+            "name": "Airline",
+            "in": "body",
+            "description": "The entity to patch",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airline"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Empty response"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete entity in EntitySet Airlines",
+        "description": "Delete entity in EntitySet Airlines",
+        "tags": [
+          "Airlines"
+        ],
+        "parameters": [
+          {
+            "name": "AirlineCode",
+            "in": "path",
+            "description": "key: AirlineCode",
+            "type": "string"
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "If-Match header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Empty response"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/Airports": {
+      "get": {
+        "summary": "Get EntitySet Airports",
+        "description": "Returns the EntitySet Airports",
+        "tags": [
+          "Airports"
+        ],
+        "parameters": [
+          {
+            "name": "$expand",
+            "in": "query",
+            "description": "Expand navigation property",
+            "type": "string"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "select structural property",
+            "type": "string"
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "order by some property",
+            "type": "string"
+          },
+          {
+            "name": "$top",
+            "in": "query",
+            "description": "top elements",
+            "type": "integer"
+          },
+          {
+            "name": "$skip",
+            "in": "query",
+            "description": "skip elements",
+            "type": "integer"
+          },
+          {
+            "name": "$count",
+            "in": "query",
+            "description": "inlcude count in response",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet Airports",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airport"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Post a new entity to EntitySet Airports",
+        "description": "Post a new entity to EntitySet Airports",
+        "tags": [
+          "Airports"
+        ],
+        "parameters": [
+          {
+            "name": "Airport",
+            "in": "body",
+            "description": "The entity to post",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airport"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet Airports",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airport"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/Airports('{IcaoCode}')": {
+      "get": {
+        "summary": "Get entity from Airports by key.",
+        "description": "Returns the entity with the key from Airports",
+        "tags": [
+          "Airports"
+        ],
+        "parameters": [
+          {
+            "name": "IcaoCode",
+            "in": "path",
+            "description": "key: IcaoCode",
+            "type": "string"
+          },
+          {
+            "name": "$select",
+            "in": "query",
+            "description": "description",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "EntitySet Airports",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airport"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update entity in EntitySet Airports",
+        "description": "Update entity in EntitySet Airports",
+        "tags": [
+          "Airports"
+        ],
+        "parameters": [
+          {
+            "name": "IcaoCode",
+            "in": "path",
+            "description": "key: IcaoCode",
+            "type": "string"
+          },
+          {
+            "name": "Airport",
+            "in": "body",
+            "description": "The entity to patch",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airport"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Empty response"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete entity in EntitySet Airports",
+        "description": "Delete entity in EntitySet Airports",
+        "tags": [
+          "Airports"
+        ],
+        "parameters": [
+          {
+            "name": "IcaoCode",
+            "in": "path",
+            "description": "key: IcaoCode",
+            "type": "string"
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "description": "If-Match header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Empty response"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/GetNearestAirport(lat={lat},lon={lon})": {
+      "get": {
+        "summary": "Call operation import  GetNearestAirport",
+        "description": "Call operation import  GetNearestAirport",
+        "tags": [
+          "Function Import"
+        ],
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "path",
+            "description": "parameter: lat",
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "name": "lon",
+            "in": "path",
+            "description": "parameter: lon",
+            "type": "number",
+            "format": "double"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response from GetNearestAirport",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airport"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/ResetDataSource()": {
+      "post": {
+        "summary": "Call operation import  ResetDataSource",
+        "description": "Call operation import  ResetDataSource",
+        "tags": [
+          "Action Import"
+        ],
+        "responses": {
+          "204": {
+            "description": "Empty response"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/People('{UserName}')/Microsoft.OData.SampleService.Models.TripPin.GetFavoriteAirline()": {
+      "get": {
+        "summary": "Call operation  GetFavoriteAirline",
+        "description": "Call operation  GetFavoriteAirline",
+        "tags": [
+          "People",
+          "Function"
+        ],
+        "parameters": [
+          {
+            "name": "UserName",
+            "in": "path",
+            "description": "key: UserName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response from GetFavoriteAirline",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Airline"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/People('{UserName}')/Microsoft.OData.SampleService.Models.TripPin.GetFriendsTrips(userName='{userName}')": {
+      "get": {
+        "summary": "Call operation  GetFriendsTrips",
+        "description": "Call operation  GetFriendsTrips",
+        "tags": [
+          "People",
+          "Function"
+        ],
+        "parameters": [
+          {
+            "name": "UserName",
+            "in": "path",
+            "description": "key: UserName",
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "path",
+            "description": "parameter: userName",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response from GetFriendsTrips",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Trip"
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    },
+    "/People('{UserName}')/Microsoft.OData.SampleService.Models.TripPin.ShareTrip()": {
+      "post": {
+        "summary": "Call operation  ShareTrip",
+        "description": "Call operation  ShareTrip",
+        "tags": [
+          "People",
+          "Action"
+        ],
+        "parameters": [
+          {
+            "name": "UserName",
+            "in": "path",
+            "description": "key: UserName",
+            "type": "string"
+          },
+          {
+            "name": "userName",
+            "in": "body",
+            "description": "parameter: userName",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tripId",
+            "in": "body",
+            "description": "parameter: tripId",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Empty response"
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/_Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Microsoft.OData.SampleService.Models.TripPin.City": {
+      "properties": {
+        "CountryRegion": {
+          "description": "CountryRegion",
+          "type": "string"
+        },
+        "Name": {
+          "description": "Name",
+          "type": "string"
+        },
+        "Region": {
+          "description": "Region",
+          "type": "string"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.Location": {
+      "properties": {
+        "Address": {
+          "description": "Address",
+          "type": "string"
+        },
+        "City": {
+          "description": "City",
+          "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.City"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.EventLocation": {
+      "properties": {
+        "Address": {
+          "description": "Address",
+          "type": "string"
+        },
+        "City": {
+          "description": "City",
+          "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.City"
+        },
+        "BuildingInfo": {
+          "description": "BuildingInfo",
+          "type": "string"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.AirportLocation": {
+      "properties": {
+        "Address": {
+          "description": "Address",
+          "type": "string"
+        },
+        "City": {
+          "description": "City",
+          "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.City"
+        },
+        "Loc": {
+          "description": "Loc",
+          "type": "string"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.Photo": {
+      "properties": {
+        "Id": {
+          "description": "Id",
+          "type": "integer",
+          "format": "int64"
+        },
+        "Name": {
+          "description": "Name",
+          "type": "string"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.Person": {
+      "properties": {
+        "UserName": {
+          "description": "UserName",
+          "type": "string"
+        },
+        "FirstName": {
+          "description": "FirstName",
+          "type": "string"
+        },
+        "LastName": {
+          "description": "LastName",
+          "type": "string"
+        },
+        "Emails": {
+          "description": "Emails",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "AddressInfo": {
+          "description": "AddressInfo",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.Location"
+          }
+        },
+        "Gender": {
+          "description": "Gender",
+          "type": "string"
+        },
+        "Concurrency": {
+          "description": "Concurrency",
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.Airline": {
+      "properties": {
+        "AirlineCode": {
+          "description": "AirlineCode",
+          "type": "string"
+        },
+        "Name": {
+          "description": "Name",
+          "type": "string"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.Airport": {
+      "properties": {
+        "IcaoCode": {
+          "description": "IcaoCode",
+          "type": "string"
+        },
+        "Name": {
+          "description": "Name",
+          "type": "string"
+        },
+        "IataCode": {
+          "description": "IataCode",
+          "type": "string"
+        },
+        "Location": {
+          "description": "Location",
+          "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.AirportLocation"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.PlanItem": {
+      "properties": {
+        "PlanItemId": {
+          "description": "PlanItemId",
+          "type": "integer",
+          "format": "int32"
+        },
+        "ConfirmationCode": {
+          "description": "ConfirmationCode",
+          "type": "string"
+        },
+        "StartsAt": {
+          "description": "StartsAt",
+          "type": "string",
+          "format": "date-time"
+        },
+        "EndsAt": {
+          "description": "EndsAt",
+          "type": "string",
+          "format": "date-time"
+        },
+        "Duration": {
+          "description": "Duration",
+          "type": "string"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.PublicTransportation": {
+      "properties": {
+        "PlanItemId": {
+          "description": "PlanItemId",
+          "type": "integer",
+          "format": "int32"
+        },
+        "ConfirmationCode": {
+          "description": "ConfirmationCode",
+          "type": "string"
+        },
+        "StartsAt": {
+          "description": "StartsAt",
+          "type": "string",
+          "format": "date-time"
+        },
+        "EndsAt": {
+          "description": "EndsAt",
+          "type": "string",
+          "format": "date-time"
+        },
+        "Duration": {
+          "description": "Duration",
+          "type": "string"
+        },
+        "SeatNumber": {
+          "description": "SeatNumber",
+          "type": "string"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.Flight": {
+      "properties": {
+        "PlanItemId": {
+          "description": "PlanItemId",
+          "type": "integer",
+          "format": "int32"
+        },
+        "ConfirmationCode": {
+          "description": "ConfirmationCode",
+          "type": "string"
+        },
+        "StartsAt": {
+          "description": "StartsAt",
+          "type": "string",
+          "format": "date-time"
+        },
+        "EndsAt": {
+          "description": "EndsAt",
+          "type": "string",
+          "format": "date-time"
+        },
+        "Duration": {
+          "description": "Duration",
+          "type": "string"
+        },
+        "SeatNumber": {
+          "description": "SeatNumber",
+          "type": "string"
+        },
+        "FlightNumber": {
+          "description": "FlightNumber",
+          "type": "string"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.Event": {
+      "properties": {
+        "PlanItemId": {
+          "description": "PlanItemId",
+          "type": "integer",
+          "format": "int32"
+        },
+        "ConfirmationCode": {
+          "description": "ConfirmationCode",
+          "type": "string"
+        },
+        "StartsAt": {
+          "description": "StartsAt",
+          "type": "string",
+          "format": "date-time"
+        },
+        "EndsAt": {
+          "description": "EndsAt",
+          "type": "string",
+          "format": "date-time"
+        },
+        "Duration": {
+          "description": "Duration",
+          "type": "string"
+        },
+        "Description": {
+          "description": "Description",
+          "type": "string"
+        },
+        "OccursAt": {
+          "description": "OccursAt",
+          "$ref": "#/definitions/Microsoft.OData.SampleService.Models.TripPin.EventLocation"
+        }
+      }
+    },
+    "Microsoft.OData.SampleService.Models.TripPin.Trip": {
+      "properties": {
+        "TripId": {
+          "description": "TripId",
+          "type": "integer",
+          "format": "int32"
+        },
+        "ShareId": {
+          "description": "ShareId",
+          "type": "string"
+        },
+        "Description": {
+          "description": "Description",
+          "type": "string"
+        },
+        "Name": {
+          "description": "Name",
+          "type": "string"
+        },
+        "Budget": {
+          "description": "Budget",
+          "type": "number",
+          "format": "float"
+        },
+        "StartsAt": {
+          "description": "StartsAt",
+          "type": "string",
+          "format": "date-time"
+        },
+        "EndsAt": {
+          "description": "EndsAt",
+          "type": "string",
+          "format": "date-time"
+        },
+        "Tags": {
+          "description": "Tags",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "_Error": {
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/_InError"
+        }
+      }
+    },
+    "_InError": {
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
