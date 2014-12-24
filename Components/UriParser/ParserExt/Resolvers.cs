@@ -13,10 +13,6 @@ namespace ODataSamples.UriParser.ParserExt
     /// <remarks>
     /// Usage:
     /// new ODataUriParser(model, uri) { Resolver = new AllInOneResolver() {EnableCaseInsensitive = true}; };
-    /// 
-    /// The EnableCaseInsensitive of ODataUriResolver is a non-virtual property now, so we need to set it every time for
-    /// the resolvers we took, next time should consider make it a virtual property, thus we could override the set/get
-    /// behavior, and conduct the EnableCaseInsensitive propagating behaviour there.
     /// </remarks>
     class AllInOneResolver : ODataUriResolver
     {

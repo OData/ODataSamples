@@ -13,8 +13,8 @@ namespace ParseBasic
         static void Main(string[] args)
         {
             KeyContainingSpecialChar();
-            //KeyAfterFunction();
-            //FilterOnOpenProperty();
+            KeyAfterFunction();
+            FilterOnOpenProperty();
         }
 
         private static void KeyContainingSpecialChar()
