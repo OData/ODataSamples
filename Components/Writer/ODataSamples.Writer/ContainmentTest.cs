@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.OData.Core;
+using Microsoft.OData.Core.UriParser;
 using Microsoft.OData.Core.UriParser.Semantic;
 using Microsoft.OData.Edm;
 using Microsoft.OData.Edm.Library;
@@ -12,7 +13,7 @@ namespace ODataSamples.Writer
     public static class ContainmentTest
     {
         public static CraftModel CraftModel = new CraftModel();
-        
+
 
         public static void FeedWriteReadNormal()
         {
@@ -41,12 +42,18 @@ namespace ODataSamples.Writer
                 NavigationSourceKind = EdmNavigationSourceKind.ContainedEntitySet
             });
 
-            // Construct the normal path for the contained entity.
-            ODataPath path = new ODataPath(
-                new ODataPathSegment[]
-                {
-                    new SingletonSegment(CraftModel.MyLogin), new NavigationPropertySegment(CraftModel.MailBox, CraftModel.MyLogin)
-                });
+            // Parse the full request Uri
+            ODataPath path = new ODataUriParser(
+                CraftModel.Model,
+                new Uri("http://example.org/svc/"),
+                new Uri("http://example.org/svc/MyLogin/Mails")).ParsePath();
+
+            // Alternatively, construct the normal path for the contained entity manually.
+            //ODataPath path = new ODataPath(
+            //    new ODataPathSegment[]
+            //    {
+            //        new SingletonSegment(CraftModel.MyLogin), new NavigationPropertySegment(CraftModel.MailBox, CraftModel.MyLogin)
+            //    });
 
             var stream = new MemoryStream();
 
@@ -88,7 +95,7 @@ namespace ODataSamples.Writer
             {
                 if (reader.State == ODataReaderState.EntryEnd)
                 {
-                    entry = (ODataEntry) reader.Item;
+                    entry = (ODataEntry)reader.Item;
                     break;
                 }
             }
