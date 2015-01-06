@@ -16,7 +16,7 @@ This project is for OData V4 samples on .NET, including sample services, sample 
 ###Scenarios Demo
 
 ####Sample services Web API Implementation
-Plesae check at /Scenarios/TripPin/src/webapi
+Please check at /Scenarios/TripPin/src/webapi
 
 ##Community
 
