@@ -6,11 +6,11 @@ Sample Service
 This project works as a sample for OData V4. It contains the implementation of the service as well as some client scenarios of this service. The underlying model for this service is TripPin which is designed to cover almost every important features OData V4 and to be as real as possible. 
 
 ##Structure of this project
-###Web API Implementation
-**[Web API Implementation](https://github.com/OData/ODataSamples/tree/master/Scenarios/TripPin/src/webapi)** uses ASP.NET Web API OData V4. The live service for this implementation is on http://services.odata.org/TripPinWebApiService.
+###[Web API Implementation](https://github.com/OData/ODataSamples/tree/master/Scenarios/TripPin/src/webapi)
+This uses ASP.NET Web API OData V4. The live service for this implementation is on http://services.odata.org/TripPinWebApiService.
 
-###ODataLib Implementation
-[ODataLib Implementation](https://github.com/OData/ODataSamples/tree/master/Scenarios/TripPin/src/odatalib) directly uses ODataLib. The read/write live service for this implementation si on http://services.odata.org/V4/TripPinServiceRW. 
+###[ODataLib Implementation](https://github.com/OData/ODataSamples/tree/master/Scenarios/TripPin/src/odatalib) 
+This directly uses ODataLib. The read/write live service for this implementation si on http://services.odata.org/V4/TripPinServiceRW. 
 
 ##Model design of TripPin
 
