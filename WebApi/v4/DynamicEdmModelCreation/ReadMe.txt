@@ -31,8 +31,5 @@ The steps are:
 2. Create a customized ODataRoute to override GetVirtualPath logic, and generate OData links correctly.
 3. Create a customized MapODataServiceRoute that takes a Func<HttpRequestMessage, IEdmModel> instead of an IEdmModel.
 
-This sample is provided as part of the ASP.NET Web Stack sample repository at
-http://aspnet.codeplex.com/
-
-For more information about the samples, please see
-http://go.microsoft.com/fwlink/?LinkId=261487
+This sample is provided as part of the OData WebApi sample repository at
+https://github.com/OData/ODataSamples

@@ -1,12 +1,6 @@
 ODataQueryLimitationsSample
 --------------------------------------------------------------------
 
-This sample is provided as part of the ASP.NET Web Stack sample repository at 
-http://aspnet.codeplex.com/
-
-For more information about the samples, please see
-http://go.microsoft.com/fwlink/?LinkId=261487
-
 This sample shows how to use the query limitations feature in Web API for OData v4.0.
 The sample covers:
 
@@ -20,3 +14,6 @@ The sample covers:
    path.
 7) Showing the response when a client tries to expand a non expandable property.
 8) Showing the response when a client tries to filter on a valid set of properties.
+
+This sample is provided as part of the OData WebApi sample repository at
+https://github.com/OData/ODataSamples

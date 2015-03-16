@@ -1,4 +1,4 @@
-﻿This sample illustrates various ways to implement OData actions in ASP.NET Web API.
+﻿This sample illustrates various ways to implement OData actions in OData WebApi.
 
 The sample implements a simple movie rental scenario. The application displays a list of movies,
 and the user can check out or return a movie. You can also add a movie to the list. 
@@ -18,3 +18,5 @@ These actions demonstrate some of the of various options for OData actions:
 * Actions bound to an entity collection
 * Non-bindable actions
 
+This sample is provided as part of the OData WebApi sample repository at
+https://github.com/OData/ODataSamples

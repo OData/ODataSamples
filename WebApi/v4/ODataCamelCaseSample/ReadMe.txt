@@ -6,8 +6,5 @@ Now only property names (both entity type properties and complex type properties
 
 This sample illustrates how to implement that. It is a console application, just open the solution and press F5 to run it.
 
-This sample is provided as part of the ASP.NET Web Stack sample repository at 
-http://aspnet.codeplex.com/
-
-For more information about the samples, please see
-http://go.microsoft.com/fwlink/?LinkId=261487
+This sample is provided as part of the OData WebApi sample repository at
+https://github.com/OData/ODataSamples

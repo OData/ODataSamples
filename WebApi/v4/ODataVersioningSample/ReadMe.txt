@@ -96,9 +96,5 @@ The sample uses AutoMapper to simplify the mapping code between domain model and
 more information about AutoMapper, please see
 http://automapper.org/
 
-This sample is provided as part of the ASP.NET Web Stack sample repository at
-http://aspnet.codeplex.com/
-
-For more information about the samples, please see
-http://go.microsoft.com/fwlink/?LinkId=261487
-
+This sample is provided as part of the OData WebApi sample repository at
+https://github.com/OData/ODataSamples
