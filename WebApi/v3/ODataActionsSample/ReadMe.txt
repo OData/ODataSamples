@@ -1,4 +1,4 @@
-﻿This sample illustrates various ways to implement OData actions in OData WebApi.
+﻿This sample illustrates various ways to implement OData actions in Web API.
 
 The sample implements a simple movie rental scenario. The application displays a list of movies,
 and the user can check out or return a movie. You can also add a movie to the list. 
