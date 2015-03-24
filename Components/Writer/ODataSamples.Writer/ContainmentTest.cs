@@ -4,7 +4,6 @@ using Microsoft.OData.Core;
 using Microsoft.OData.Core.UriParser;
 using Microsoft.OData.Core.UriParser.Semantic;
 using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Library;
 using ODataSamples.Common;
 using ODataSamples.Common.Model;
 
@@ -17,6 +16,8 @@ namespace ODataSamples.Writer
 
         public static void FeedWriteReadNormal()
         {
+            Console.WriteLine("FeedWriteReadNormal");
+
             ODataFeed Feed = new ODataFeed();
 
             Feed.SetSerializationInfo(new ODataFeedAndEntrySerializationInfo()

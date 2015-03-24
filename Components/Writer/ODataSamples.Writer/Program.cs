@@ -25,6 +25,7 @@ namespace ODataSamples.Writer
 
         static Program()
         {
+            #region Feed and entry definition
             Feed = new ODataFeed();
 
             Address1 = new ODataComplexValue()
@@ -109,25 +110,28 @@ namespace ODataSamples.Writer
                     },
                 },
             };
+            #endregion
         }
 
         static void Main(string[] args)
         {
             WriteTopLevelFeed();
-            WriteTopLevelFeed(false);
             WriteTopLevelEntry();
             ContainmentTest.FeedWriteReadNormal();
+            WriteTopLevelEntityReferenceLinks();
         }
 
         private static void WriteTopLevelFeed(bool enableFullValidation = true)
         {
+            Console.WriteLine("WriteTopLevelFeed, enableFullValidation:{0}", enableFullValidation);
+
             var msg = ODataSamplesUtil.CreateMessage();
 
             var settings = new ODataMessageWriterSettings(BaseSettings)
             {
                 ODataUri = new ODataUri()
                 {
-                    ServiceRoot = new Uri("http://demo/odata.svc/PetSet")
+                    ServiceRoot = ServiceRoot
                 },
                 EnableFullValidation = enableFullValidation
             };
@@ -148,6 +152,8 @@ namespace ODataSamples.Writer
 
         private static void WriteTopLevelEntry()
         {
+            Console.WriteLine("WriteTopLevelEntry");
+
             var msg = ODataSamplesUtil.CreateMessage();
             msg.PreferenceAppliedHeader().AnnotationFilter = "*";
 
@@ -155,7 +161,7 @@ namespace ODataSamples.Writer
             {
                 ODataUri = new ODataUri()
                 {
-                    ServiceRoot = new Uri("http://demo/odata.svc/People(2)")
+                    ServiceRoot = ServiceRoot
                 },
             };
 
@@ -164,6 +170,37 @@ namespace ODataSamples.Writer
                 var writer = omw.CreateODataEntryWriter(ExtModel.People);
                 writer.WriteStart(PersonEntry);
                 writer.WriteEnd();
+            }
+
+            Console.WriteLine(ODataSamplesUtil.MessageToString(msg));
+        }
+
+        private static void WriteTopLevelEntityReferenceLinks()
+        {
+            Console.WriteLine("WriteTopLevelEntityReferenceLinks");
+
+            var msg = ODataSamplesUtil.CreateMessage();
+            msg.PreferenceAppliedHeader().AnnotationFilter = "*";
+
+            var settings = new ODataMessageWriterSettings(BaseSettings)
+            {
+                ODataUri = new ODataUri()
+                {
+                    ServiceRoot = new Uri("http://demo/odata.svc/")
+                },
+            };
+
+            var link1 = new ODataEntityReferenceLink() { Url = new Uri("http://demo/odata.svc/People(3)") };
+            var link2 = new ODataEntityReferenceLink() { Url = new Uri("http://demo/odata.svc/People(4)") };
+
+            var links = new ODataEntityReferenceLinks()
+            {
+                Links = new[] { link1, link2 }
+            };
+            
+            using (var omw = new ODataMessageWriter((IODataResponseMessage)msg, settings, ExtModel.Model))
+            {
+                omw.WriteEntityReferenceLinks(links);
             }
 
             Console.WriteLine(ODataSamplesUtil.MessageToString(msg));
