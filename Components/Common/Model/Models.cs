@@ -3,6 +3,46 @@ using Microsoft.OData.Edm.Library;
 
 namespace ODataSamples.Common.Model
 {
+    public class V4Model : ModelWrapper
+    {
+        public IEdmEntityType Product { get; private set; }
+        public IEdmEntityType Supplier { get; private set; }
+        public IEdmEntitySet ProductsSet { get; private set; }
+
+        public V4Model()
+        {
+            Product = (IEdmEntityType)Model.FindType("ODataDemo.Product");
+            Supplier = (IEdmEntityType)Model.FindType("ODataDemo.Supplier");
+            ProductsSet = Model.FindDeclaredEntitySet("Products");
+        }
+
+        protected override IEdmModel GetModel()
+        {
+            return LoadMetadataFromResource("ODataSamples.Common.Model.V4.xml");
+        }
+    }
+
+    public class TripPinModel : ModelWrapper
+    {
+        public IEdmEntityType Person { get; private set; }
+
+        public IEdmEntityType Trip { get; private set; }
+
+        public IEdmEntitySet PeopleSet { get; private set; }
+
+        public TripPinModel()
+        {
+            Person = (IEdmEntityType)Model.FindType("Microsoft.OData.SampleService.Models.TripPin.Person");
+            Trip = (IEdmEntityType)Model.FindType("Microsoft.OData.SampleService.Models.TripPin.Trip");
+            PeopleSet = Model.FindDeclaredEntitySet("People");
+        }
+
+        protected override IEdmModel GetModel()
+        {
+            return LoadMetadataFromResource("ODataSamples.Common.Model.TripPin.xml");
+        }
+    }
+
     public class ParserExtModel : ModelWrapper
     {
         public IEdmEntityType Person;

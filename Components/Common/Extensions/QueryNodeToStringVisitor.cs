@@ -40,7 +40,7 @@ namespace ODataSamples.Common.Extensions
 
         public override string Visit(SingleValuePropertyAccessNode nodeIn)
         {
-            return WrapWithIdent(string.Format("Property:[{0}]", nodeIn.Property.Name));
+            return WrapWithIdent(string.Format("Property:[{0}<={1}]", nodeIn.Property.Name,nodeIn.Source.Accept(this)));
         }
 
         public override string Visit(SingleValueOpenPropertyAccessNode nodeIn)
@@ -51,6 +51,26 @@ namespace ODataSamples.Common.Extensions
         public override string Visit(ConvertNode nodeIn)
         {
             return WrapWithIdent(string.Format("ConvertNode:[{0}<={1}]", nodeIn.TypeReference, nodeIn.Source.Accept(this)));
+        }
+
+        public override string Visit(AnyNode nodeIn)
+        {
+            return WrapWithIdent(string.Format("AnyNode:[{0}<={1}\nExp={2}]", nodeIn.TypeReference, nodeIn.Source.Accept(this),nodeIn.Body.Accept(this)));
+        }
+
+        public override string Visit(CollectionNavigationNode nodeIn)
+        {
+            return WrapWithIdent(string.Format("CollectionNavigationNode:[{0}<={1}]", nodeIn.CollectionType, nodeIn.Source.Accept(this)));
+        }
+
+        public override string Visit(EntityRangeVariableReferenceNode nodeIn)
+        {
+            return WrapWithIdent(string.Format("EntityRangeVariableReferenceNode:[{0}<={1}]", nodeIn.TypeReference, nodeIn.Name));
+        }
+
+        public override string Visit(SingleNavigationNode nodeIn)
+        {
+            return WrapWithIdent(string.Format("SingleNavigationNode:[{0}<={1}]", nodeIn.TypeReference, nodeIn.NavigationSource));
         }
 
         private string WrapWithIdent(string current, Func<string> inner = null)
