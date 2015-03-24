@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.Reader", "Reader\ODataSamples.Reader\ODataSamples.Reader.csproj", "{6E583274-7CA6-4589-8872-3F712FA1E3BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.Reader", "Reader\ODataSamples.Reader.csproj", "{6E583274-7CA6-4589-8872-3F712FA1E3BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.Common", "Common\ODataSamples.Common.csproj", "{1DD9083A-08BC-4010-AE42-9A776E354FBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.Writer", "Writer\ODataSamples.Writer\ODataSamples.Writer.csproj", "{831ED0D3-7802-4DB4-A2A8-2AC5FED02C05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.Writer", "Writer\ODataSamples.Writer.csproj", "{831ED0D3-7802-4DB4-A2A8-2AC5FED02C05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseBasic", "UriParser\ParseBasic\ParseBasic.csproj", "{B735678C-7F6D-4C0B-B48F-19DC8780C6C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseBasic", "UriParser.Basic\ODataSamples.UriParser.Basic.csproj", "{B735678C-7F6D-4C0B-B48F-19DC8780C6C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserExt", "UriParser\ParserExt\ParserExt.csproj", "{F36AC4D9-1594-46AA-BB07-8E683679C9C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserExt", "UriParser.Ext\ODataSamples.UriParser.Ext.csproj", "{F36AC4D9-1594-46AA-BB07-8E683679C9C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.Edm", "Edm\ODataSamples.Edm\ODataSamples.Edm.csproj", "{ADB1D25F-6CFE-438C-AED3-4D066BDA92E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.Edm", "Edm\ODataSamples.Edm.csproj", "{ADB1D25F-6CFE-438C-AED3-4D066BDA92E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSamples.UriBuilder", "UriBuilder\ODataSamples.UriBuilder.csproj", "{7A436690-9EF3-4AE1-82BD-4916AEF173F4}"
 EndProject
