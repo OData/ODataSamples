@@ -31,7 +31,7 @@ namespace System.Web.OData.NHibernate
                 }
             }
 
-            if (sb[sb.Length - 1] == ',')
+            if (sb.Length > 0 && sb[sb.Length - 1] == ',')
             {
                 sb.Remove(sb.Length - 1, 1);
             }
