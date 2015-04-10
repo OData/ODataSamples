@@ -113,3 +113,6 @@ pip-log.txt
 .mr.developer.cfg
 # Mac crap
 .DS_Store
+# DB files
+*.mdf
+*.ldf
