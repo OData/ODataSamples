@@ -2,6 +2,7 @@ using System;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace AdventureWorksLTSample.Models
 {
@@ -10,7 +11,10 @@ namespace AdventureWorksLTSample.Models
         public AdventureWorksContext()
             : base("name=AdventureWorksContext")
         {
-            CreateDataSourceIfNotExisted();
+            if (!Database.Exists())
+            {
+                ResetDataSource();
+            }
         }
 
         public virtual DbSet<Address> Addresses { get; set; }
@@ -24,17 +28,29 @@ namespace AdventureWorksLTSample.Models
         public virtual DbSet<SalesOrderDetail> SalesOrderDetails { get; set; }
         public virtual DbSet<SalesOrderHeader> SalesOrderHeaders { get; set; }
 
-        public bool ResetDataSource()
+        public static void ResetDataSource()
         {
-            if (Database.Exists())
+            var possibleSqlCmdExePaths = new[]
             {
-                if (!Database.Delete())
-                {
-                    return false;
-                }
-            }
+                Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Microsoft SQL Server\110\Tools\Binn\SQLCMD.EXE"),
+                Environment.ExpandEnvironmentVariables(@"%ProgramW6432%\Microsoft SQL Server\110\Tools\Binn\SQLCMD.EXE"),
+                Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Microsoft SQL Server\120\Tools\Binn\SQLCMD.EXE"),
+                Environment.ExpandEnvironmentVariables(@"%ProgramW6432%\Microsoft SQL Server\120\Tools\Binn\SQLCMD.EXE"),
+            };
 
-            return CreateAdventureWorksLtDatabase();
+            var sqlCmdExePath = possibleSqlCmdExePaths.First(File.Exists);
+
+            var dbPath = string.Format("{0}\\AdventureWorks_2012_LT_Script\\", GetDataDirectory());
+            var argumentString = string.Format("-i instawltdb.sql -S (localdb)\\v11.0 -v SqlSamplesDatabasePath=\"{0}\" -v SqlSamplesSourceDataPath=\"{0}\"", dbPath);
+            var start = new ProcessStartInfo()
+            {
+                FileName = sqlCmdExePath,
+                WorkingDirectory = dbPath,
+                Arguments = argumentString,
+                UseShellExecute = false
+            };
+
+            Process.Start(start).WaitForExit();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -139,37 +155,6 @@ namespace AdventureWorksLTSample.Models
             modelBuilder.Entity<SalesOrderHeader>()
                 .Property(e => e.TotalDue)
                 .HasPrecision(19, 4);
-        }
-        private void CreateDataSourceIfNotExisted()
-        {
-            if (!Database.Exists())
-            {
-                CreateAdventureWorksLtDatabase();
-            }
-        }
-
-        private static bool CreateAdventureWorksLtDatabase()
-        {
-            var dbPath = Path.Combine(GetDataDirectory(), "AdventureWorks_2012_LT_Script") + "\\";
-
-            var start = new ProcessStartInfo()
-            {
-                FileName = "sqlcmd.exe",
-                WorkingDirectory = dbPath,
-                Arguments = "-i instawltdb.sql -S (localdb)\\v11.0",
-                UseShellExecute = false
-            };
-            start.EnvironmentVariables.Add("SqlSamplesDatabasePath", dbPath);
-            start.EnvironmentVariables.Add("SqlSamplesSourceDataPath", dbPath);
-
-            var process = Process.Start(start);
-            if (process == null)
-            {
-                return false;
-            }
-            
-            process.WaitForExit();
-            return process.ExitCode == 0;
         }
 
         private static string GetDataDirectory()
