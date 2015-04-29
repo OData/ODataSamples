@@ -14,10 +14,10 @@ namespace AdventureWorksLTSample
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            RegeiterAdventureWorks(config, GlobalConfiguration.DefaultServer);
+            RegisterAdventureWorks(config, GlobalConfiguration.DefaultServer);
         }
 
-        public static async void RegeiterAdventureWorks(HttpConfiguration config, HttpServer server)
+        public static async void RegisterAdventureWorks(HttpConfiguration config, HttpServer server)
         {
             await config.MapODataDomainRoute<AdventureWorksController>(
                 "AdventureWorksLT",

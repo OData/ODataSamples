@@ -2,6 +2,7 @@
 using Microsoft.Restier.WebApi;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.OData.Routing;
 
 namespace AdventureWorksLTSample.Controllers
 {
@@ -16,7 +17,7 @@ namespace AdventureWorksLTSample.Controllers
         /// Attribute routing to enable $count
         /// </summary>
         /// <returns>IHttpActionResult of count</returns>
-        [System.Web.OData.Routing.ODataRouteAttribute("Products/$count")]
+        [ODataRoute("Products/$count")]
         public async Task<IHttpActionResult> GetProductsCount()
         {
             return Ok(await this.Domain.GetProductsCountAsync());
@@ -26,7 +27,7 @@ namespace AdventureWorksLTSample.Controllers
         /// Attribute routing to enable $count
         /// </summary>
         /// <returns>IHttpActionResult of count</returns>
-        [System.Web.OData.Routing.ODataRouteAttribute("ColoredProducts/$count")]
+        [ODataRoute("ColoredProducts/$count")]
         public async Task<IHttpActionResult> GetColoredProductsCount()
         {
             return Ok(await this.Domain.GetColoredProductsCountAsync());
