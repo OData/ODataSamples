@@ -30,27 +30,13 @@ namespace AdventureWorksLTSample.Models
 
         public static void ResetDataSource()
         {
-            var possibleSqlCmdExePaths = new[]
-            {
-                Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Microsoft SQL Server\110\Tools\Binn\SQLCMD.EXE"),
-                Environment.ExpandEnvironmentVariables(@"%ProgramW6432%\Microsoft SQL Server\110\Tools\Binn\SQLCMD.EXE"),
-                Environment.ExpandEnvironmentVariables(@"%ProgramFiles%\Microsoft SQL Server\120\Tools\Binn\SQLCMD.EXE"),
-                Environment.ExpandEnvironmentVariables(@"%ProgramW6432%\Microsoft SQL Server\120\Tools\Binn\SQLCMD.EXE"),
-            };
-
-            var sqlCmdExePath = possibleSqlCmdExePaths.First(File.Exists);
-
-            var dbPath = string.Format("{0}\\AdventureWorks_2012_LT_Script\\", GetDataDirectory());
-            var argumentString = string.Format("-i instawltdb.sql -S (localdb)\\v11.0 -v SqlSamplesDatabasePath=\"{0}\" -v SqlSamplesSourceDataPath=\"{0}\"", dbPath);
-            var start = new ProcessStartInfo()
-            {
-                FileName = sqlCmdExePath,
-                WorkingDirectory = dbPath,
-                Arguments = argumentString,
-                UseShellExecute = false
-            };
-
-            Process.Start(start).WaitForExit();
+            var dbPath = SqlLoader.GetDatabaseDirectory("AdventureWorks_2012_LT_Script");
+            var loader = new SqlLoader();
+            loader.AddDatabaseEngine("(localdb)\\v11.0");
+            loader.AddScript("instawltdb.sql");
+            loader.AddScriptArgument("SqlSamplesDatabasePath", dbPath);
+            loader.AddScriptArgument("SqlSamplesSourceDataPath", dbPath);
+            loader.Execute(dbPath);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -155,11 +141,6 @@ namespace AdventureWorksLTSample.Models
             modelBuilder.Entity<SalesOrderHeader>()
                 .Property(e => e.TotalDue)
                 .HasPrecision(19, 4);
-        }
-
-        private static string GetDataDirectory()
-        {
-            return AppDomain.CurrentDomain.GetData("DataDirectory") as string;
         }
     }
 }

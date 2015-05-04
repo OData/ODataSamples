@@ -130,6 +130,7 @@
     <Compile Include="Models\ProductModelProductDescription.cs" />
     <Compile Include="Models\SalesOrderDetail.cs" />
     <Compile Include="Models\SalesOrderHeader.cs" />
+    <Compile Include="Models\SqlLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
