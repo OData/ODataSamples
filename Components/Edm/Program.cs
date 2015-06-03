@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using Microsoft.OData.Edm;
@@ -21,7 +22,8 @@ namespace ODataSamples.Edm
             ReferentialConstraintDemo();
             EnumMemberExpressionDemo();
             CustomTermDemo();
-            MutualReferenceDemo();
+            MutualReferenceByCodeDemo();
+            MutualReferenceByEdmxDemo();
         }
 
         private static void ReferentialConstraintDemo()
@@ -117,9 +119,112 @@ namespace ODataSamples.Edm
             ShowModel(model);
         }
 
-        private static void MutualReferenceDemo()
+        private static void MutualReferenceByCodeDemo()
         {
-            
+            Console.WriteLine("MutualReferenceByCodeDemo");
+
+            var subModel1 = new EdmModel();
+            var complex1 = new EdmComplexType("NS1", "Complex1");
+            subModel1.AddElement(complex1);
+            var reference1 = new EdmReference("http://model2");
+            reference1.AddInclude(new EdmInclude("Alias2", "NS2"));
+            var references1 = new List<IEdmReference> {reference1};
+            subModel1.SetEdmReferences(references1);
+
+            var subModel2 = new EdmModel();
+            var complex2 = new EdmComplexType("NS2", "Complex2");
+            subModel2.AddElement(complex2);
+            var reference2 = new EdmReference("http://model1");
+            reference2.AddInclude(new EdmInclude("Alias1", "NS1"));
+            var references2 = new List<IEdmReference> {reference2};
+            subModel2.SetEdmReferences(references2);
+
+            complex1.AddStructuralProperty("Prop", new EdmComplexTypeReference(complex2, true));
+            complex2.AddStructuralProperty("Prop", new EdmComplexTypeReference(complex1, true));
+
+            var mainModel = new EdmModel();
+            var complex3 = new EdmComplexType("NS", "Complex3");
+            mainModel.AddElement(complex3);
+            complex3.AddStructuralProperty("Prop1", new EdmComplexTypeReference(complex1, true));
+            complex3.AddStructuralProperty("Prop2", new EdmComplexTypeReference(complex2, true));
+            var references3 = new List<IEdmReference> { reference1, reference2 };
+            mainModel.SetEdmReferences(references3);
+
+            ShowModel(mainModel);
+            ShowModel(subModel1);
+            ShowModel(subModel2);
+        }
+
+        private static void MutualReferenceByEdmxDemo()
+        {
+            Console.WriteLine("MutualReferenceByEdmxDemo");
+
+            const string mainEdmx =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<edmx:Edmx Version=""4.0"" xmlns:edmx=""http://docs.oasis-open.org/odata/ns/edmx"">
+  <edmx:Reference Uri=""http://model2"">
+    <edmx:Include Namespace=""NS2"" Alias=""Alias2"" />
+  </edmx:Reference>
+  <edmx:Reference Uri=""http://model1"">
+    <edmx:Include Namespace=""NS1"" Alias=""Alias1"" />
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace=""NS"" xmlns=""http://docs.oasis-open.org/odata/ns/edm"">
+      <ComplexType Name=""Complex3"">
+        <Property Name=""Prop1"" Type=""NS1.Complex1"" />
+        <Property Name=""Prop2"" Type=""NS2.Complex2"" />
+      </ComplexType>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>";
+            const string edmx1 =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<edmx:Edmx Version=""4.0"" xmlns:edmx=""http://docs.oasis-open.org/odata/ns/edmx"">
+  <edmx:Reference Uri=""http://model2"">
+    <edmx:Include Namespace=""NS2"" Alias=""Alias2"" />
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace=""NS1"" xmlns=""http://docs.oasis-open.org/odata/ns/edm"">
+      <ComplexType Name=""Complex1"">
+        <Property Name=""Prop"" Type=""NS2.Complex2"" />
+      </ComplexType>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>";
+            const string edmx2 =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<edmx:Edmx Version=""4.0"" xmlns:edmx=""http://docs.oasis-open.org/odata/ns/edmx"">
+  <edmx:Reference Uri=""http://model1"">
+    <edmx:Include Namespace=""NS1"" Alias=""Alias1"" />
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace=""NS2"" xmlns=""http://docs.oasis-open.org/odata/ns/edm"">
+      <ComplexType Name=""Complex2"">
+        <Property Name=""Prop"" Type=""NS1.Complex1"" />
+      </ComplexType>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>";
+
+            IEdmModel model;
+            IEnumerable<EdmError> errors;
+            if (!EdmxReader.TryParse(XmlReader.Create(new StringReader(mainEdmx)), (uri) =>
+            {
+                if (string.Equals(uri.AbsoluteUri, "http://model1/"))
+                {
+                    return XmlReader.Create(new StringReader(edmx1));
+                }
+
+                if (string.Equals(uri.AbsoluteUri, "http://model2/"))
+                {
+                    return XmlReader.Create(new StringReader(edmx2));
+                }
+
+                throw new Exception("invalid url");
+            }, out model, out errors))
+            {
+                throw new Exception("bad model");
+            }
         }
 
         private static void ShowModel(IEdmModel model)
