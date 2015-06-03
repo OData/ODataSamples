@@ -21,6 +21,7 @@ namespace ODataSamples.Edm
             ReferentialConstraintDemo();
             EnumMemberExpressionDemo();
             CustomTermDemo();
+            MutualReferenceDemo();
         }
 
         private static void ReferentialConstraintDemo()
@@ -114,6 +115,11 @@ namespace ODataSamples.Edm
             model.AddVocabularyAnnotation(annotation);
 
             ShowModel(model);
+        }
+
+        private static void MutualReferenceDemo()
+        {
+            
         }
 
         private static void ShowModel(IEdmModel model)
