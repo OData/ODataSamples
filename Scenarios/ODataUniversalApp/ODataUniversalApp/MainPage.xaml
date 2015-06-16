@@ -1,0 +1,22 @@
+﻿<Page
+    x:Class="ODataUniversalApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ODataUniversalApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Button x:Name="airlineCodes" Content="Query" HorizontalAlignment="Left" Height="41" Margin="97,491,0,0" VerticalAlignment="Top" Width="111" Click="query_Click" RenderTransformOrigin="0.498,0.584"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="27,85,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Height="371" Width="858"/>
+        <Button x:Name="inheritance" Content="Inheritance" HorizontalAlignment="Left" Margin="260,491,0,0" VerticalAlignment="Top" Height="41" Width="93" Click="inheritance_Click"/>
+        <Button x:Name="delete" Content="Delete" HorizontalAlignment="Left" Margin="400,491,0,0" VerticalAlignment="Top" Height="41" Width="95" Click="delete_Click"/>
+        <Button x:Name="update" Content="Update" HorizontalAlignment="Left" Margin="545,491,0,0" VerticalAlignment="Top" Height="41" Width="107" Click="update_Click"/>
+        <Button x:Name="operation" Content="Operation" HorizontalAlignment="Left" Margin="694,491,0,0" VerticalAlignment="Top" Height="41" Width="112" Click="operation_Click"/>
+        <Button x:Name="annotation" Content="Annotation (beta)" HorizontalAlignment="Left" Height="39" Margin="97,567,0,0" VerticalAlignment="Top" Width="153" Click="annotation_Click"/>
+        <Button x:Name="collectionPrimitive" Content="Primitive[]" HorizontalAlignment="Left" Height="39" Margin="260,567,0,0" VerticalAlignment="Top" Width="153" Click="collectionPrimitive_Click"/>
+        <Button x:Name="collectionComplex" Content="Complex[]" HorizontalAlignment="Left" Height="39" Margin="432,567,0,0" VerticalAlignment="Top" Width="153" Click="collectionComplex_Click"/>
+        <Button x:Name="navigation" Content="Navigation (buggy)" HorizontalAlignment="Left" Height="39" Margin="614,567,0,0" VerticalAlignment="Top" Width="153" Click="navigation_Click"/>
+    </Grid>
+</Page>
