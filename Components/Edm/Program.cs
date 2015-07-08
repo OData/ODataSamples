@@ -12,6 +12,7 @@ using Microsoft.OData.Edm.Library.Annotations;
 using Microsoft.OData.Edm.Library.Expressions;
 using Microsoft.OData.Edm.Library.Values;
 using Microsoft.OData.Edm.Validation;
+using ODataSamples.Common.Model;
 
 namespace ODataSamples.Edm
 {
@@ -24,6 +25,7 @@ namespace ODataSamples.Edm
             CustomTermDemo();
             MutualReferenceByCodeDemo();
             MutualReferenceByEdmxDemo();
+            EdmAnnotationDemo();
         }
 
         private static void ReferentialConstraintDemo()
@@ -224,6 +226,19 @@ namespace ODataSamples.Edm
             }, out model, out errors))
             {
                 throw new Exception("bad model");
+            }
+        }
+        
+        private static void EdmAnnotationDemo()
+        {
+            var annotationModel = new AnnotationModel();
+            var model = annotationModel.Model;
+            var person = (IEdmEntityType)model.FindType("TestNS.Person");
+            var annotation = model.FindVocabularyAnnotations<IEdmValueAnnotation>(person, "TestNS.OutColor").First();
+            var memberExp = (IEdmEnumMemberExpression)annotation.Value;
+            foreach (var member in memberExp.EnumMembers)
+            {
+                Console.WriteLine(member.Name);
             }
         }
 

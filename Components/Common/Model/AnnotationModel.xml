@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="TestNS" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="Person">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="Name" Type="Edm.String" />
+        <Annotation Term="TestNS.OutColor">
+          <EnumMember>TestNS2.Color/Blue TestNS2.Color/Cyan</EnumMember>
+        </Annotation>
+      </EntityType>
+      <Term Name="OutColor" Type="TestNS2.Color" />
+    </Schema>
+    <Schema Namespace="TestNS2" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EnumType Name="Color" IsFlags="true">
+        <Member Name="Cyan" Value="1" />
+        <Member Name="Blue" Value="2" />
+      </EnumType>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

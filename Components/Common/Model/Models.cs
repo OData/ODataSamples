@@ -110,4 +110,12 @@ namespace ODataSamples.Common.Model
             return this.model;
         }
     }
+
+    public class AnnotationModel : ModelWrapper
+    {
+        protected override IEdmModel GetModel()
+        {
+            return LoadMetadataFromResource("ODataSamples.Common.Model.AnnotationModel.xml");
+        }
+    }
 }
