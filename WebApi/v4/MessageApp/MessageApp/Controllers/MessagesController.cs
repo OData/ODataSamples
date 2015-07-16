@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.OData;
@@ -28,6 +29,7 @@ namespace MessageApp.Controllers
                 DynamicProperties = new Dictionary<string, object>
                 {
                     {"EName1", "e value 1"},
+                    {"EName6", DateTimeOffset.UtcNow },
                 }
             };
 
