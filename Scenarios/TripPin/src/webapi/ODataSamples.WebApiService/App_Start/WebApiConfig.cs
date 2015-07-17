@@ -29,6 +29,10 @@
             builder.EntitySet<Airline>("Airlines");
             builder.Singleton<Person>("Me");
 
+            // Customer - Order scenarios
+            builder.EntitySet<Customer>("Customers");
+            builder.EntitySet<Order>("Orders");
+
             #region Unbound Function & Action
 
             builder.Action("ResetDataSource");
