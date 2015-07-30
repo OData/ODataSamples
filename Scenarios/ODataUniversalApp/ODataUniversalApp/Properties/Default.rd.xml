@@ -25,7 +25,22 @@
     
     
     <!-- Add your application specific runtime directives here. -->
+    <Namespace Name="ODataUniversalApp" Dynamic="Required All" />
 
+    <Namespace Name="System.Collections.Generic" >
+      <TypeInstantiation Arguments="System.String" Name="ICollection" Dynamic="Public" Serialize="Public">
+        <MethodInstantiation Arguments="System.String" Name="Clear" />
+      </TypeInstantiation>
+    </Namespace>
+
+    <Namespace Name="Microsoft.Spatial" >
+      <Type Name="GeographyOperationsExtensions" Browse="Required Public" >
+        <Method Name="Distance" Dynamic="Required" />
+      </Type>
+      <Type Name="GeometryOperationsExtensions" Browse="Required Public" >
+        <Method Name="Distance" Dynamic="Required" />
+      </Type>
+    </Namespace>
 
   </Application>
 </Directives>
