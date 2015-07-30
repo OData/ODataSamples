@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Timers;
 using Microsoft.OData.Core;
 using ODataSamples.Common;
 using ODataSamples.Common.Model;
@@ -17,8 +15,11 @@ namespace ODataSamples.Writer
         private static readonly ODataEntry PersonEntry;
         private static readonly ODataEntry PetEntry;
         private static readonly ODataEntry FishEntry;
+        private static readonly ODataNavigationLink PersonFavouritePetNavigationLink;
+        private static readonly ODataNavigationLink PersonPetsNavigationLink;
         private static readonly ODataMessageWriterSettings BaseSettings = new ODataMessageWriterSettings()
         {
+            ODataUri = new ODataUri { ServiceRoot = ServiceRoot },
             DisableMessageStreamDisposal = true,
             Indent = true,
         };
@@ -45,6 +46,7 @@ namespace ODataSamples.Writer
                 },
             };
 
+            #region PersonEntry
             PersonEntry = new ODataEntry()
             {
                 InstanceAnnotations = new List<ODataInstanceAnnotation>()
@@ -70,7 +72,9 @@ namespace ODataSamples.Writer
                     }
                 },
             };
+            #endregion
 
+            #region PetEntry
             PetEntry = new ODataEntry()
             {
                 Properties = new List<ODataProperty>
@@ -87,6 +91,7 @@ namespace ODataSamples.Writer
                     },
                 },
             };
+            #endregion PetEntry
 
             FishEntry = new ODataEntry()
             {
@@ -111,6 +116,22 @@ namespace ODataSamples.Writer
                 },
             };
             #endregion
+
+            PersonFavouritePetNavigationLink = new ODataNavigationLink
+            {
+                Name = "FavouritePet",
+                AssociationLinkUrl = new Uri("Person(1)/FavouritePetPet/$ref", UriKind.Relative),
+                Url = new Uri("Person(1)/FavouritePetPet", UriKind.Relative),
+                IsCollection = false
+            };
+
+            PersonPetsNavigationLink = new ODataNavigationLink
+            {
+                Name = "Pets",
+                AssociationLinkUrl = new Uri("Person(1)/Pets/$ref", UriKind.Relative),
+                Url = new Uri("Person(1)/Pets", UriKind.Relative),
+                IsCollection = true
+            };
         }
 
         static void Main(string[] args)
@@ -119,6 +140,7 @@ namespace ODataSamples.Writer
             WriteTopLevelEntry();
             ContainmentTest.FeedWriteReadNormal();
             WriteTopLevelEntityReferenceLinks();
+            WriteInnerEntityReferenceLink();
         }
 
         private static void WriteTopLevelFeed(bool enableFullValidation = true)
@@ -129,10 +151,6 @@ namespace ODataSamples.Writer
 
             var settings = new ODataMessageWriterSettings(BaseSettings)
             {
-                ODataUri = new ODataUri()
-                {
-                    ServiceRoot = ServiceRoot
-                },
                 EnableFullValidation = enableFullValidation
             };
 
@@ -157,18 +175,23 @@ namespace ODataSamples.Writer
             var msg = ODataSamplesUtil.CreateMessage();
             msg.PreferenceAppliedHeader().AnnotationFilter = "*";
 
-            var settings = new ODataMessageWriterSettings(BaseSettings)
-            {
-                ODataUri = new ODataUri()
-                {
-                    ServiceRoot = ServiceRoot
-                },
-            };
-
-            using (var omw = new ODataMessageWriter((IODataResponseMessage)msg, settings, ExtModel.Model))
+            using (var omw = new ODataMessageWriter((IODataResponseMessage)msg, BaseSettings, ExtModel.Model))
             {
                 var writer = omw.CreateODataEntryWriter(ExtModel.People);
                 writer.WriteStart(PersonEntry);
+
+                writer.WriteStart(PersonPetsNavigationLink);
+                writer.WriteStart(new ODataFeed());
+                writer.WriteStart(PetEntry);
+                writer.WriteEnd();
+                writer.WriteEnd();
+                writer.WriteEnd();
+
+                writer.WriteStart(PersonFavouritePetNavigationLink);
+                writer.WriteStart(PetEntry);
+                writer.WriteEnd();
+                writer.WriteEnd();
+
                 writer.WriteEnd();
             }
 
@@ -182,14 +205,6 @@ namespace ODataSamples.Writer
             var msg = ODataSamplesUtil.CreateMessage();
             msg.PreferenceAppliedHeader().AnnotationFilter = "*";
 
-            var settings = new ODataMessageWriterSettings(BaseSettings)
-            {
-                ODataUri = new ODataUri()
-                {
-                    ServiceRoot = new Uri("http://demo/odata.svc/")
-                },
-            };
-
             var link1 = new ODataEntityReferenceLink() { Url = new Uri("http://demo/odata.svc/People(3)") };
             var link2 = new ODataEntityReferenceLink() { Url = new Uri("http://demo/odata.svc/People(4)") };
 
@@ -197,10 +212,46 @@ namespace ODataSamples.Writer
             {
                 Links = new[] { link1, link2 }
             };
-            
-            using (var omw = new ODataMessageWriter((IODataResponseMessage)msg, settings, ExtModel.Model))
+
+            using (var omw = new ODataMessageWriter((IODataResponseMessage)msg, BaseSettings, ExtModel.Model))
             {
                 omw.WriteEntityReferenceLinks(links);
+            }
+
+            Console.WriteLine(ODataSamplesUtil.MessageToString(msg));
+        }
+
+        private static void WriteInnerEntityReferenceLink()
+        {
+            Console.WriteLine("WriteInnerEntityReferenceLink in Request Payload (odata.bind)");
+
+            var msg = ODataSamplesUtil.CreateMessage();
+            msg.PreferenceAppliedHeader().AnnotationFilter = "*";
+
+            var link1 = new ODataEntityReferenceLink
+            {
+                Url = new Uri("http://demo/odata.svc/PetSet(Id=1,Color=TestNS.Color'Blue')")
+            };
+            var link2 = new ODataEntityReferenceLink
+            {
+                Url = new Uri("http://demo/odata.svc/PetSet(Id=2,Color=TestNS.Color'Blue')")
+            };
+
+            using (var omw = new ODataMessageWriter((IODataRequestMessage)msg, BaseSettings, ExtModel.Model))
+            {
+                var writer = omw.CreateODataEntryWriter(ExtModel.People);
+                writer.WriteStart(PersonEntry);
+
+                writer.WriteStart(PersonPetsNavigationLink);
+                writer.WriteEntityReferenceLink(link1);
+                writer.WriteEntityReferenceLink(link2);
+                writer.WriteEnd();
+
+                writer.WriteStart(PersonFavouritePetNavigationLink);
+                writer.WriteEntityReferenceLink(link1);
+                writer.WriteEnd();
+
+                writer.WriteEnd();
             }
 
             Console.WriteLine(ODataSamplesUtil.MessageToString(msg));
