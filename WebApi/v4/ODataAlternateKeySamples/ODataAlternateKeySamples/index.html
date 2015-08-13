@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Alternate Key in Web API OData</title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 5px;
+        }
+
+        table.tbl {
+            float: left;
+            width: 33%;
+        }
+
+        table.query {
+            float: left;
+            width: 33%;
+        }
+
+        .result {
+            background: green;
+        }
+
+        .bad_result {
+            background: red;
+        }
+    </style>
+
+</head>
+<body>
+<h1>Alternate key test. For detail information about alternate key, please refer to <a href="https://github.com/OData/vocabularies/blob/master/OData.Community.Keys.V1.md">Alternate key spec</a>
+</h1>
+<p>All Customers, Orders, People</p>
+<div>
+    <table id="customerTbl" class="tbl">
+        <tr>
+            <th colspan="3">
+                <h4>Customers</h4>
+            </th>
+        </tr>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>SSN</th>
+        </tr>
+    </table>
+
+    <table id="orderTbl" class="tbl">
+        <tr>
+            <th colspan="4">
+                <h4>Orders</h4>
+            </th>
+        </tr>
+        <tr>
+            <th>OrderId</th>
+            <th>Name</th>
+            <th>Token</th>
+            <th>Amount</th>
+        </tr>
+    </table>
+
+    <table id="peopleTbl" class="tbl">
+        <tr>
+            <th colspan="3">
+                <h4>People</h4>
+            </th>
+        </tr>
+        <tr>
+            <th>ID</th>
+            <th>Country</th>
+            <th>Passport</th>
+        </tr>
+    </table>
+</div>
+<div>
+    <h3>Query with declared keys and alternate keys: </h3>
+    <table class="query">
+        <tr>
+            <th colspan="2">
+                <h4>Query Customer</h4>
+            </th>
+        </tr>
+        <tr>
+            <td><label>By ID:</label><input type="text" id="customerId" size="5"></input></td>
+            <td><input type="button" value="Post" onclick=" QueryCustomerByID(); " /></td>
+        </tr>
+        <tr>
+            <td><label>By SSN:</label><input type="text" id="customerSSN" size="50"></input></td>
+            <td><input type="button" value="Post" onclick=" QueryCustomerBySSN(); "/></td>
+        </tr>
+        <tr>
+            <td colspan="2" id="customerResult"></td>
+        </tr>
+    </table>
+
+    <table class="query">
+        <tr>
+            <th colspan="2">
+                <h4>Query Order</h4>
+            </th>
+        </tr>
+        <tr>
+            <td><label>By OrderId:</label><input type="text" id="orderId" size="5"></input></td>
+            <td><input type="button" value="Post" onclick=" QueryOrderByID(); "/></td>
+        </tr>
+        <tr>
+            <td><label>By Name:</label><input type="text" id="orderName" size="50"></input></td>
+            <td><input type="button" value="Post" onclick=" QueryOrderByName(); "/></td>
+        </tr>
+        <tr>
+            <td><label>By Token:</label><input type="text" id="orderToken" size="50"></input></td>
+            <td><input type="button" value="Post" onclick=" QueryOrderByToken(); "/></td>
+        </tr>
+        <tr>
+            <td colspan="2" id="orderResult"></td>
+        </tr>
+    </table>
+
+    <table class="query">
+        <tr>
+            <th colspan="2">
+                <h4>Query Person</h4>
+            </th>
+        </tr>
+        <tr>
+            <td><label>By Id:</label><input type="text" id="personId" size="5"></input></td>
+            <td><input type="button" value="Post" onclick=" QueryPersonByID(); "/></td>
+        </tr>
+        <tr>
+            <td><label>By Country:</label><input type="text" id="personCity" size="50"></input><br/><br/>
+                <label>By Passport:</label><input type="text" id="personPassport" size="50"></input></td>
+            <td><input type="button" value="Post" onclick=" QueryPersonByCityAndPassport(); " /></td>
+        </tr>
+        <tr>
+            <td colspan="2" id="personResult"></td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <p id="result"/>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        // Send an AJAX request
+        var uri = 'odata/Customers';
+
+        $.getJSON(uri)
+            .done(function(data) {
+                // On success, 'data' contains a list of customers.
+                $.each(data["value"], function(key, item) {
+                    var id = '<td>' + item.ID + '</td>';
+                    var name = '<td>' + item.Name + '</td>';
+                    var ssn = '<td>' + item.SSN + '</td>';
+
+                    var row = '<tr>' + id + name + ssn + '</tr>';
+                    $("#customerTbl").append(row);
+                });
+            });
+
+        uri = 'odata/Orders';
+
+        $.getJSON(uri)
+            .done(function (data) {
+                // On success, 'data' contains a list of customers.
+                $.each(data["value"], function (key, item) {
+                    var id = '<td>' + item.OrderId + '</td>';
+                    var name = '<td>' + item.Name + '</td>';
+                    var ssn = '<td>' + item.Token + '</td>';
+                    var amount = '<td>' + item.Amount + '</td>';
+
+                    var row = '<tr>' + id + name + ssn + amount + '</tr>';
+                    $("#orderTbl").append(row);
+                });
+            });
+
+        uri = 'odata/People';
+        $.getJSON(uri)
+            .done(function (data) {
+                // On success, 'data' contains a list of customers.
+                $.each(data["value"], function (key, item) {
+                    var id = '<td>' + item.ID + '</td>';
+                    var country = '<td>' + item.Country + '</td>';
+                    var passport = '<td>' + item.Passport + '</td>';
+
+                    var row = '<tr>' + id + country + passport + '</tr>';
+                    $("#peopleTbl").append(row);
+                });
+            });
+    });
+
+    function QueryCustomerByID() {
+        var id = $('#customerId').val();
+        $.getJSON('odata/Customers(' + id + ')')
+            .done(function (data) {
+                $('#customerResult').text(formatCustomer(data)).addClass('result').removeClass('bad_result');
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $('#customerResult').text('Error: ' + err).removeClass('result').addClass('bad_result');
+        });
+    }
+
+    function QueryCustomerBySSN() {
+        var ssn = $('#customerSSN').val();
+        $.getJSON('odata/Customers(SSN=\'' + ssn + '\')')
+            .done(function (data) {
+                $('#customerResult').text(formatCustomer(data)).addClass('result').removeClass('bad_result');
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $('#customerResult').text('Error: ' + err).removeClass('result').addClass('bad_result');
+            });
+    }
+
+    function formatCustomer(customer) {
+        return customer.ID + ') :' + customer.Name + ', ' + customer.SSN;
+    }
+
+    function QueryOrderByID() {
+        var id = $('#orderId').val();
+        $.getJSON('odata/Orders(' + id + ')')
+            .done(function (data) {
+                $('#orderResult').text(formatOrder(data)).addClass('result').removeClass('bad_result');
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $('#orderResult').text('Error: ' + err).removeClass('result').addClass('bad_result');
+            });
+    }
+
+    function QueryOrderByName() {
+        var name = $('#orderName').val();
+        $.getJSON('odata/Orders(Name=\'' + name + '\')')
+            .done(function (data) {
+                $('#orderResult').text(formatOrder(data)).addClass('result').removeClass('bad_result');
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $('#orderResult').text('Error: ' + err).removeClass('result').addClass('bad_result');
+            });
+    }
+
+    function QueryOrderByToken() {
+        var token = $('#orderToken').val();
+        $.getJSON('odata/Orders(Token=' + token + ')')
+            .done(function (data) {
+                $('#orderResult').text(formatOrder(data)).addClass('result').removeClass('bad_result');
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $('#orderResult').text('Error: ' + err).removeClass('result').addClass('bad_result');
+            });
+    }
+
+    function formatOrder(order) {
+        return order.OrderId + ') :' + order.Name + ', ' + order.Token + ', $: ' + order.Amount;
+    }
+
+    function QueryPersonByID() {
+        var id = $('#personId').val();
+        $.getJSON('odata/People(' + id + ')')
+            .done(function (data) {
+                $('#personResult').text(formatPerson(data)).addClass('result').removeClass('bad_result');
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $('#personResult').text('Error: ' + err).removeClass('result').addClass('bad_result');
+            });
+    }
+
+    function QueryPersonByCityAndPassport() {
+        var city = $('#personCity').val();
+        var passport = $('#personPassport').val();
+        $.getJSON('odata/People(Country=\'' + city + '\',Passport=\'' + passport + '\')')
+            .done(function (data) {
+                $('#personResult').text(formatPerson(data)).addClass('result').removeClass('bad_result');
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $('#personResult').text('Error: ' + err).removeClass('result').addClass('bad_result');
+            });
+    }
+
+    function formatPerson(person) {
+        return person.ID + ') :' + person.Country + ', ' + person.Passport;
+    }
+
+</script>
+</body>
+</html>
