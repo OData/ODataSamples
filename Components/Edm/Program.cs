@@ -12,6 +12,7 @@ using Microsoft.OData.Edm.Library.Annotations;
 using Microsoft.OData.Edm.Library.Expressions;
 using Microsoft.OData.Edm.Library.Values;
 using Microsoft.OData.Edm.Validation;
+using Microsoft.OData.Edm.Vocabularies.V1;
 using ODataSamples.Common.Model;
 
 namespace ODataSamples.Edm
@@ -25,7 +26,8 @@ namespace ODataSamples.Edm
             CustomTermDemo();
             MutualReferenceByCodeDemo();
             MutualReferenceByEdmxDemo();
-            EdmAnnotationDemo();
+            EdmReadAnnotationDemo();
+            EdmWriteAnnotationDemo();
         }
 
         private static void ReferentialConstraintDemo()
@@ -130,7 +132,7 @@ namespace ODataSamples.Edm
             subModel1.AddElement(complex1);
             var reference1 = new EdmReference("http://model2");
             reference1.AddInclude(new EdmInclude("Alias2", "NS2"));
-            var references1 = new List<IEdmReference> {reference1};
+            var references1 = new List<IEdmReference> { reference1 };
             subModel1.SetEdmReferences(references1);
 
             var subModel2 = new EdmModel();
@@ -138,7 +140,7 @@ namespace ODataSamples.Edm
             subModel2.AddElement(complex2);
             var reference2 = new EdmReference("http://model1");
             reference2.AddInclude(new EdmInclude("Alias1", "NS1"));
-            var references2 = new List<IEdmReference> {reference2};
+            var references2 = new List<IEdmReference> { reference2 };
             subModel2.SetEdmReferences(references2);
 
             complex1.AddStructuralProperty("Prop", new EdmComplexTypeReference(complex2, true));
@@ -228,9 +230,11 @@ namespace ODataSamples.Edm
                 throw new Exception("bad model");
             }
         }
-        
-        private static void EdmAnnotationDemo()
+
+        private static void EdmReadAnnotationDemo()
         {
+            Console.WriteLine("EdmReadAnnotationDemo");
+
             var annotationModel = new AnnotationModel();
             var model = annotationModel.Model;
             var person = (IEdmEntityType)model.FindType("TestNS.Person");
@@ -240,6 +244,40 @@ namespace ODataSamples.Edm
             {
                 Console.WriteLine(member.Name);
             }
+        }
+
+        private static void EdmWriteAnnotationDemo()
+        {
+            Console.WriteLine("EdmWriteAnnotationDemo");
+
+            var model = new EdmModel();
+
+            var mail = new EdmEntityType("ns", "Mail");
+            model.AddElement(mail);
+            mail.AddKeys(mail.AddStructuralProperty("Id", EdmPrimitiveTypeKind.Int32));
+
+            var person = new EdmEntityType("ns", "Person");
+            model.AddElement(person);
+            person.AddKeys(person.AddStructuralProperty("Id", EdmPrimitiveTypeKind.Int32));
+            var mails = person.AddUnidirectionalNavigation(new EdmNavigationPropertyInfo()
+            {
+                ContainsTarget = true,
+                Name = "Mails",
+                TargetMultiplicity = EdmMultiplicity.Many,
+                Target = mail,
+            });
+
+            var ann1 = new EdmAnnotation(mails, CoreVocabularyModel.DescriptionTerm, new EdmStringConstant("test1"));
+            ann1.SetSerializationLocation(model, EdmVocabularyAnnotationSerializationLocation.Inline);
+            model.AddVocabularyAnnotation(ann1);
+
+            var container = new EdmEntityContainer("ns", "container");
+            model.AddElement(container);
+            var people = container.AddEntitySet("People", person);
+            var ann2 = new EdmAnnotation(people, CoreVocabularyModel.DescriptionTerm, new EdmStringConstant("test2"));
+            model.AddVocabularyAnnotation(ann2);
+
+            ShowModel(model);
         }
 
         private static void ShowModel(IEdmModel model)
