@@ -103,6 +103,7 @@ namespace ODataSamples.Edm
             Console.WriteLine("CustomTermDemo");
 
             var model = new EdmModel();
+            model.SetNamespaceAlias("ns", "Alias1");
             var term = new EdmTerm("ns", "ErrorCodes",
                 new EdmCollectionTypeReference(new EdmCollectionType(EdmCoreModel.Instance.GetString(false))));
             model.AddElement(term);
