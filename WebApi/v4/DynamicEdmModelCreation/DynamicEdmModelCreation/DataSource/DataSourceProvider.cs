@@ -31,6 +31,11 @@ namespace DynamicEdmModelCreation.DataSource
             GetDataSource(dataSourceName).Get(key, entity);
         }
 
+        public static object GetProperty(string dataSourceName, string property, EdmEntityObject entity)
+        {
+            return GetDataSource(dataSourceName).GetProperty(property, entity);
+        }
+
         private static IDataSource GetDataSource(string dataSourceName)
         {
             dataSourceName = dataSourceName == null ? string.Empty : dataSourceName.ToLowerInvariant();

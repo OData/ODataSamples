@@ -1,4 +1,6 @@
-﻿using System.Web.OData;
+﻿using System.Linq;
+using System.Web.Http;
+using System.Web.OData;
 using System.Web.OData.Extensions;
 using System.Web.OData.Routing;
 using DynamicEdmModelCreation.DataSource;
@@ -40,6 +42,35 @@ namespace DynamicEdmModelCreation.Controllers
             DataSourceProvider.Get((string)Request.Properties[Constants.ODataDataSource], key, entity);
 
             return entity;
+        }
+
+        public IHttpActionResult GetName(string key)
+        {
+            // Get entity type from path.
+            ODataPath path = Request.ODataProperties().Path;
+
+            if (path.PathTemplate != "~/entityset/key/property")
+            {
+                return BadRequest("Not the correct property access request!");
+            }
+
+            PropertyAccessPathSegment property = path.Segments.Last() as PropertyAccessPathSegment;
+            IEdmEntityType entityType = property.Property.DeclaringType as IEdmEntityType;
+
+            // Create an untyped entity object with the entity type.
+            EdmEntityObject entity = new EdmEntityObject(entityType);
+
+            DataSourceProvider.Get((string)Request.Properties[Constants.ODataDataSource], key, entity);
+
+            object value = DataSourceProvider.GetProperty((string)Request.Properties[Constants.ODataDataSource], "Name", entity);
+
+            if (value == null)
+            {
+                return NotFound();
+            }
+
+            string strValue = value as string;
+            return Ok(strValue);
         }
     }
 }
