@@ -33,5 +33,12 @@ namespace DynamicEdmModelCreation.DataSource
             entity.TrySetPropertyValue("Name", "Foo");
             entity.TrySetPropertyValue("ID", int.Parse(key));
         }
+
+        public object GetProperty(string property, EdmEntityObject entity)
+        {
+            object value;
+            entity.TryGetPropertyValue(property, out value);
+            return value;
+        }
     }
 }

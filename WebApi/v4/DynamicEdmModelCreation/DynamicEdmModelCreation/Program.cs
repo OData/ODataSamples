@@ -35,6 +35,9 @@ namespace DynamicEdmModelCreation
             await SendQuery("/odata/anotherdatasource/$metadata", "Query $metadata.");
             await SendQuery("/odata/anotherdatasource/Students", "Query the Students entity set.");
             await SendQuery("/odata/anotherdatasource/Students(100)", "Query a Student entry.");
+
+            await SendQuery("/odata/mydatasource/Products(1)/Name", "Query the name of Products(1).");
+            await SendQuery("/odata/anotherdatasource/Students(100)/Name", "Query the name of Students(100).");
         }
 
         private static async Task SendQuery(string query, string queryDescription)

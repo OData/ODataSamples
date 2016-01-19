@@ -11,5 +11,7 @@ namespace DynamicEdmModelCreation.DataSource
         void Get(IEdmEntityTypeReference entityType, EdmEntityObjectCollection collection);
 
         void Get(string key, EdmEntityObject entity);
+
+        object GetProperty(string property, EdmEntityObject entity);
     }
 }
