@@ -72,5 +72,42 @@ namespace DynamicEdmModelCreation.Controllers
             string strValue = value as string;
             return Ok(strValue);
         }
+
+        public IHttpActionResult GetNavigation(string key, string navigation)
+        {
+            ODataPath path = Request.ODataProperties().Path;
+
+            if (path.PathTemplate != "~/entityset/key/navigation")
+            {
+                return BadRequest("Not the correct navigation property access request!");
+            }
+
+            NavigationPathSegment property = path.Segments.Last() as NavigationPathSegment;
+            if (property == null)
+            {
+                return BadRequest("Not the correct navigation property access request!");
+            }
+
+            IEdmEntityType entityType = property.NavigationProperty.DeclaringType as IEdmEntityType;
+
+            EdmEntityObject entity = new EdmEntityObject(entityType);
+
+            DataSourceProvider.Get((string)Request.Properties[Constants.ODataDataSource], key, entity);
+
+            object value = DataSourceProvider.GetProperty((string)Request.Properties[Constants.ODataDataSource], navigation, entity);
+
+            if (value == null)
+            {
+                return NotFound();
+            }
+
+            IEdmEntityObject nav = value as IEdmEntityObject;
+            if (nav == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(nav);
+        }
     }
 }
