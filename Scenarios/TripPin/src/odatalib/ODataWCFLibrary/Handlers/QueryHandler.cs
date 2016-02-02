@@ -1,4 +1,8 @@
-// Copyright (c) Microsoft Corporation.  All rights reserved.
+//---------------------------------------------------------------------
+// <copyright file="QueryHandler.cs" company="Microsoft">
+//      Copyright (C) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+// </copyright>
+//---------------------------------------------------------------------
 
 namespace Microsoft.Test.OData.Services.ODataWCFService.Handlers
 {
@@ -23,7 +27,7 @@ namespace Microsoft.Test.OData.Services.ODataWCFService.Handlers
 
         protected override RequestHandler DispatchHandler()
         {
-            // TODO [Tiano]: Remove the following if to use Delta framework
+            // TODO: Remove the following if to use Delta framework
             if (RequestUri.Segments.Length > 0)
             {
                 int length = RequestUri.Segments.Length;
@@ -84,8 +88,10 @@ namespace Microsoft.Test.OData.Services.ODataWCFService.Handlers
 
             if (queryResults == null)
             {
-                // For individual property or $value
-                if (this.QueryContext.Target.Property != null)
+                // For individual property or $value includes navigation properties or $ref if the relationship terminates on a single entity
+                // If the relationship terminates on a collection, TypeKind will be Collection and an empty collection will be returned.
+                if (this.QueryContext.Target.Property != null 
+                    || this.QueryContext.Target.TypeKind == EdmTypeKind.Entity)
                 {
                     // Protocol 9.1.4 Response Code 204 No Content
                     // A request returns 204 No Content if the requested resource has the null value, 
@@ -139,6 +145,7 @@ namespace Microsoft.Test.OData.Services.ODataWCFService.Handlers
                     }
 
                     ODataEntityReferenceLinks linksCollection = new ODataEntityReferenceLinks() { Links = links, NextPageLink = this.QueryContext.NextLink };
+                    linksCollection.InstanceAnnotations.Add(new ODataInstanceAnnotation("Links.Annotation", new ODataPrimitiveValue(true)));
                     messageWriter.WriteEntityReferenceLinks(linksCollection);
                 }
                 else if (this.QueryContext.Target.IsReference && this.QueryContext.Target.TypeKind == EdmTypeKind.Entity)
@@ -148,6 +155,7 @@ namespace Microsoft.Test.OData.Services.ODataWCFService.Handlers
                     {
                         Url = Utility.BuildLocationUri(this.QueryContext, queryResults),
                     };
+                    link.InstanceAnnotations.Add(new ODataInstanceAnnotation("Link.Annotation", new ODataPrimitiveValue(true)));
 
                     messageWriter.WriteEntityReferenceLink(link);
                 }
@@ -164,7 +172,7 @@ namespace Microsoft.Test.OData.Services.ODataWCFService.Handlers
 
                     ODataWriter resultWriter = messageWriter.CreateODataFeedWriter(entitySet, entityType);
 
-                    ResponseWriter.WriteFeed(resultWriter, iEnumerableResults, entitySet, ODataVersion.V4, this.QueryContext.QuerySelectExpandClause, this.QueryContext.TotalCount, this.QueryContext.DeltaLink, this.QueryContext.NextLink, this.RequestHeaders);
+                    ResponseWriter.WriteFeed(resultWriter, entityType, iEnumerableResults, entitySet, ODataVersion.V4, this.QueryContext.QuerySelectExpandClause, this.QueryContext.TotalCount, this.QueryContext.DeltaLink, this.QueryContext.NextLink, this.RequestHeaders);
                     resultWriter.Flush();
                 }
                 else if (this.QueryContext.Target.NavigationSource != null && this.QueryContext.Target.TypeKind == EdmTypeKind.Entity)

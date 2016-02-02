@@ -1,4 +1,10 @@
-﻿namespace Microsoft.OData.SampleService.Models.TripPin
+﻿//---------------------------------------------------------------------
+// <copyright file="TripPinServiceRWDescriptor.cs" company="Microsoft">
+//      Copyright (C) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+// </copyright>
+//---------------------------------------------------------------------
+
+namespace Microsoft.OData.SampleService.Models.TripPin
 {
     using System;
     using System.Collections.Generic;

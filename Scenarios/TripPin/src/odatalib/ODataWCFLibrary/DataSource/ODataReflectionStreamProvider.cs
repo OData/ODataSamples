@@ -1,4 +1,10 @@
-﻿namespace Microsoft.Test.OData.Services.ODataWCFService.DataSource
+﻿//---------------------------------------------------------------------
+// <copyright file="ODataReflectionStreamProvider.cs" company="Microsoft">
+//      Copyright (C) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+// </copyright>
+//---------------------------------------------------------------------
+
+namespace Microsoft.Test.OData.Services.ODataWCFService.DataSource
 {
     using System;
     using System.Collections.Generic;
@@ -20,7 +26,7 @@
             mediaEntity.Stream = ConvertToNonClosingStream(stream);
             mediaEntity.ContentType = contentType;
             mediaEntity.Id = DateTime.UtcNow.Ticks % 1000 + 1000; //TODO: [tiano]implement a key generator for all keys
-            mediaEntity.ETagValue = Utility.NextETagValue();
+            mediaEntity.ETagValue = DateTime.UtcNow.Ticks;
         }
 
         public void UpdateStream(object entity, Stream stream, string contentType)
@@ -29,7 +35,7 @@
             mediaEntity.Stream.Dispose();
             mediaEntity.Stream = ConvertToNonClosingStream(stream);
             mediaEntity.ContentType = contentType;
-            mediaEntity.ETagValue = Utility.NextETagValue();
+            mediaEntity.ETagValue = DateTime.UtcNow.Ticks;
         }
 
         public void DeleteStream(object entity)

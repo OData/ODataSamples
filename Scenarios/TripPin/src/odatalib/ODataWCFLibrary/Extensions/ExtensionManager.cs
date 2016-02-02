@@ -1,4 +1,10 @@
-﻿namespace Microsoft.Test.OData.Services.ODataWCFService.Extensions
+﻿//---------------------------------------------------------------------
+// <copyright file="ExtensionManager.cs" company="Microsoft">
+//      Copyright (C) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+// </copyright>
+//---------------------------------------------------------------------
+
+namespace Microsoft.Test.OData.Services.ODataWCFService.Extensions
 {
     using System;
     using System.Collections.Generic;
@@ -26,7 +32,8 @@
             }
             else
             {
-                directory = Path.GetDirectoryName(typeof(ExtensionManager).Assembly.Location);
+                var localPath = new Uri(typeof(ExtensionManager).Assembly.CodeBase).LocalPath;
+                directory = Path.GetDirectoryName(localPath);
             }
 
             var directoryCatalog = new DirectoryCatalog(directory);

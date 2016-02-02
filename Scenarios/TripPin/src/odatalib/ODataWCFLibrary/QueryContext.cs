@@ -1,4 +1,8 @@
-// Copyright (c) Microsoft Corporation.  All rights reserved.
+//---------------------------------------------------------------------
+// <copyright file="QueryContext.cs" company="Microsoft">
+//      Copyright (C) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+// </copyright>
+//---------------------------------------------------------------------
 
 namespace Microsoft.Test.OData.Services.ODataWCFService
 {
@@ -347,7 +351,7 @@ namespace Microsoft.Test.OData.Services.ODataWCFService
                         clientSize = ServiceConstants.DefaultPageSize;
                     }
 
-                    this.appliedPageSize = (clientSize > ServiceConstants.DefaultPageSize) ? ServiceConstants.DefaultPageSize : clientSize;
+                    this.appliedPageSize = clientSize;
                 }
                 else
                 {
