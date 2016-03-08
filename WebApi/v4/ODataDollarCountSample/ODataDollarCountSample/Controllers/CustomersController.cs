@@ -15,7 +15,8 @@ namespace ODataDollarCountSample.Controllers
                 new Customer
                 {
                     Id = 1,
-                    Name = "Name1",
+                    Name = "Tony",
+                    Salary = 10.9,
                     Emails = new List<string> { "a@microsoft.com", "a@live.com", "a@hotmail.com" },
                     ShipAddresses = new List<Address> 
                     { 
@@ -23,6 +24,32 @@ namespace ODataDollarCountSample.Controllers
                         new Address{ City="Shanghai", Street="Renmin" }
                     },
                     AvailableDays = new List<Day> { Day.Saturday, Day.Sunday },
+                },
+                new Customer
+                {
+                    Id = 2,
+                    Name = "Mike",
+                    Salary = 20.7,
+                    Emails = new List<string> { "mike@microsoft.com", "mike@qq.com" },
+                    ShipAddresses = new List<Address> 
+                    { 
+                        new Address{ City="Redmond", Street="One Microsoft Rd" },
+                        new Address{ City="New York", Street="51 St" }
+                    },
+                    AvailableDays = new List<Day> { Day.Monday, Day.Sunday },
+                },
+                new Customer
+                {
+                    Id = 3,
+                    Name = "Peter",
+                    Salary = 30.4,
+                    Emails = new List<string> { "Peter@google.com", "Peter@163.com" },
+                    ShipAddresses = new List<Address> 
+                    { 
+                        new Address{ City="Shanghai", Street="Zixing Rd" },
+                        new Address{ City="New York", Street="40 St" }
+                    },
+                    AvailableDays = new List<Day> { Day.Monday, Day.Friday },
                 }
             };
 

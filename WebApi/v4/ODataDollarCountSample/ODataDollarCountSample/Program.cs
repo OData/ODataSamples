@@ -33,6 +33,12 @@ namespace ODataDollarCountSample
                 response = Get(requestUri);
                 Comment(response);
 
+                // Request that returns the Customers count.
+                requestUri = _baseAddress + "/odata/Customers/$count?$filter=Salary lt 15.0";
+                Comment("GET " + requestUri);
+                response = Get(requestUri);
+                Comment(response);
+
                 // Request that returns the Emails count.
                 requestUri = _baseAddress + "/odata/Customers(1)/Emails/$count";
                 Comment("GET " + requestUri);
@@ -86,8 +92,10 @@ namespace ODataDollarCountSample
         {
             Console.WriteLine(response);
 
+            Console.WriteLine("Content: ");
             string content = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine(content);
+            Console.WriteLine();
         }
     }
 }
