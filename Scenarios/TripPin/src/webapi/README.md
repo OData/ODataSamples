@@ -19,7 +19,7 @@ This is a common .NET Web API project. So a simple way to run it is to click the
 
 ##Known Issues
 
-You may find that there are feature gap between the service implemented by OLD and implemented by Web API. The reason is that Web API for OData is still an active project and OData team are working hard to improve it. The features not supported yet are:
+You may find that there are feature gap between the service implemented by ODL and implemented by Web API. The reason is that Web API for OData is still an active project and OData team are working hard to improve it. The features not supported yet are:
 * Media entity
 * Derived complex type
 * .etc.
