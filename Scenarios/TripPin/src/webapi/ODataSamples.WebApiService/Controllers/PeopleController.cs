@@ -27,6 +27,7 @@
         }
 
         // GET odata/People('key')
+        [EnableQuery]
         public IHttpActionResult Get([FromODataUri] string key, ODataQueryOptions<Person> queryOptions)
         {
             IEnumerable<Person> appliedPeople = TripPinSvcDataSource.Instance.People.Where(item => item.UserName == key);
