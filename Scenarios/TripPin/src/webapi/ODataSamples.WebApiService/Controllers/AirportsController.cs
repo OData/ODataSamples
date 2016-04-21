@@ -23,6 +23,7 @@
         }
 
         // GET odata/Airports('key')
+        [EnableQuery]
         public IHttpActionResult Get([FromODataUri] string key)
         {
             var airport = TripPinSvcDataSource.Instance.Airports.SingleOrDefault(item => item.IcaoCode == key);
