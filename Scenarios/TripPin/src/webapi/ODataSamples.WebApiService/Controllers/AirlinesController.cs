@@ -18,6 +18,7 @@
         }
 
         // GET odata/Airlines('key')
+        [EnableQuery]
         public IHttpActionResult Get([FromODataUri] string key)
         {
             var airline = TripPinSvcDataSource.Instance.Airlines.SingleOrDefault(item => item.AirlineCode == key);
