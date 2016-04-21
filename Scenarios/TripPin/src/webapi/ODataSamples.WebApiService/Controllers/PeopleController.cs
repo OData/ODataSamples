@@ -126,7 +126,7 @@
                 ?
                 StatusCode(HttpStatusCode.NoContent)
                 :
-                ControllerHelper.GetOKHttpActionResult(this, val);
+                ControllerHelper.GetOKHttpActionResult(this, val, true);
         }
 
         // POST odata/People
