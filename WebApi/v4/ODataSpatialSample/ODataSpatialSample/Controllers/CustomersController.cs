@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.OData;
 using System.Web.OData.Query;
+using Microsoft.OData.Core;
 using Microsoft.OData.Core.UriParser.Semantic;
 using Microsoft.OData.Core.UriParser.TreeNodeKinds;
 using Microsoft.OData.Edm;
@@ -54,6 +55,17 @@ namespace ODataSpatialSample.Controllers
             if (customer == null)
             {
                 return NotFound();
+            }
+
+            return Ok(customer);
+        }
+
+        public IHttpActionResult Post(Customer customer)
+        {
+            if (customer == null)
+            {
+                // 5.10 or higher will support to post the spatial type
+                return BadRequest("Post the spatial type doesn't support yet!");
             }
 
             return Ok(customer);

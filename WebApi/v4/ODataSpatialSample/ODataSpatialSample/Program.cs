@@ -5,6 +5,7 @@ using System.Data.Entity.Spatial;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -37,6 +38,8 @@ namespace ODataSpatialSample
             // only return Customers(1)
             Query(client, "Customers?&$filter=geo.intersects(Location, geography'SRID=4326;POLYGON((0 0, 0 1.5, 1.5 1.5, 1.5 0, 0 0))')");
 
+            Post(client, "Customers");
+
             Console.ReadKey();
         }
 
@@ -45,6 +48,51 @@ namespace ODataSpatialSample
             Console.WriteLine("\n**********************************\n[Request]: " + request);
 
             HttpResponseMessage response = await client.GetAsync(BaseUri + request);
+
+            Console.WriteLine("[StatusCode]: " + response.StatusCode);
+
+            if (response.Content != null)
+            {
+                Console.WriteLine("[Content]:\n" + await response.Content.ReadAsStringAsync());
+            }
+        }
+
+        private static async void Post(HttpClient client, string requestUri)
+        {
+            Console.WriteLine("\n**********************************\n[Request]: POST " + requestUri);
+
+        const string payload = @"{
+  ""Location"":{
+    ""type"":""Point"",""coordinates"":[
+      2.0,2.0,2.0,2.0
+    ],""crs"":{
+      ""type"":""name"",""properties"":{
+        ""name"":""EPSG:4326""
+      }
+    }
+  },""LineString"":{
+    ""type"":""LineString"",""coordinates"":[
+      [
+        1.0,1.0
+      ],[
+        3.0,3.0
+      ],[
+        4.0,4.0
+      ],[
+        0.0,0.0
+      ]
+    ],""crs"":{
+      ""type"":""name"",""properties"":{
+        ""name"":""EPSG:4326""
+      }
+    }
+  },""Name"":""Venus""
+}";
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, BaseUri + requestUri);
+            request.Content = new StringContent(payload);
+            request.Content.Headers.ContentType = MediaTypeWithQualityHeaderValue.Parse("application/json");
+            HttpResponseMessage response = client.SendAsync(request).Result;
 
             Console.WriteLine("[StatusCode]: " + response.StatusCode);
 
