@@ -1,8 +1,5 @@
-using System;
+
 using System.Data.Entity;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 
 namespace AdventureWorksLTSample.Models
 {
@@ -30,9 +27,12 @@ namespace AdventureWorksLTSample.Models
 
         public static void ResetDataSource()
         {
+            // This is a folder in  App_Data folder
             var dbPath = SqlLoader.GetDatabaseDirectory("AdventureWorks_2012_LT_Script");
             var loader = new SqlLoader();
-            loader.AddDatabaseEngine("(localdb)\\v11.0");
+            loader.SetDatabaseEngine("(localdb)\\MSSQLLocalDB");
+
+            // It is in folder App_Data/AdventureWorks_2012_LT_Script folder
             loader.AddScript("instawltdb.sql");
             loader.AddScriptArgument("SqlSamplesDatabasePath", dbPath);
             loader.AddScriptArgument("SqlSamplesSourceDataPath", dbPath);

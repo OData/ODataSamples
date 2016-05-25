@@ -1,7 +1,8 @@
 ﻿using System.Web.Http;
-using AdventureWorksLTSample.Controllers;
-using Microsoft.Restier.WebApi;
-using Microsoft.Restier.WebApi.Batch;
+using AdventureWorksLTSample.Models;
+using Microsoft.Restier.Providers.EntityFramework;
+using Microsoft.Restier.Publishers.OData.Batch;
+using Microsoft.Restier.Publishers.OData.Routing;
 
 namespace AdventureWorksLTSample
 {
@@ -19,10 +20,10 @@ namespace AdventureWorksLTSample
 
         public static async void RegisterAdventureWorks(HttpConfiguration config, HttpServer server)
         {
-            await config.MapODataDomainRoute<AdventureWorksController>(
+            await config.MapRestierRoute<EntityFrameworkApi<AdventureWorksContext>>(
                 "AdventureWorksLT",
-                "AdventureWorksLT",
-                new ODataDomainBatchHandler(server)
+                "api/AdventureWorksLT",
+                new RestierBatchHandler(server)
                 );
         }
     }

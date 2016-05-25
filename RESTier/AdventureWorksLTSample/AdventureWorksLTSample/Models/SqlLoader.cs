@@ -16,7 +16,7 @@ namespace AdventureWorksLTSample.Models
             AddOption("-v", string.Format("{0}=\"{1}\"", argName, argValue));
         }
 
-        public void AddDatabaseEngine(string dbName)
+        public void SetDatabaseEngine(string dbName)
         {
             AddOption("-S", dbName);
         }

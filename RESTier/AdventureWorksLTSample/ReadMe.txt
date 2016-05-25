@@ -1,20 +1,16 @@
 ODataServiceSample
 ------------------
 
-This sample illustrates how to create an OData service with RESTier.
+This sample illustrates how to create an simplest OData service with RESTier and without any customization logic.
 It requires to be run with VS 2015 as it uses LocalDB, it will set up DB automatically, user just need to import the solution into VS 2015, build and run. In addition the OData service exposes a $metadata document which allows the data to the consumed by OData Client for .NET clients and other clients that accept the $metadata format.
 
 The data model contains several entity sets and operations.
-User can practice with the sample like, (root URL is http://localhost:18384/api/trippin/)
-  GET /People
-  GET /People(key)
-  GET /People?$filter=..&$orderby=..&$top=..&$skip=..
-  PATCH /People(key)
-  POST /People
-  GET /People(key)/Microsoft.OData.Service.Sample.Trippin.Models.GetNumberOfFriends
-  POST /Trips({key})/Microsoft.OData.Service.Sample.Trippin.Models.EndTrip
-  GET /GetPersonWithMostFriends
-  POST /ResetDataSource
+User can practice with the sample like, (root URL is http://localhost:5647/api/AdventureWorksLT/)
+  GET /Products
+  GET /Products(key)
+  GET /Products?$filter=..&$orderby=..&$top=..&$skip=..
+  PATCH /Products(key)
+  POST /Products
 
 Furthermore, the service exposes a Service Document (aka. $metadata document) that 
 lists all the top-level entities so clients can discover them. This enables OData clients
