@@ -138,7 +138,7 @@ The class diagram below describes the model design for TripPinInMemory.
 22. Action
 
 	```
-	PUT http://localhost:12691/People('russellwhyte')/LastName
+	PUT http://services.odata.org/TripPinRESTierService/People('russellwhyte')/LastName
 	Header:
 		Content-Type: application/json
 	Body:
