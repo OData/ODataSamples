@@ -33,10 +33,13 @@ namespace Microsoft.OData.Service.Sample.Spatial.Api
                 var entityConfiguration = builder.StructuralTypes.First(t => t.ClrType == typeof(Person));
                 entityConfiguration.AddProperty(typeof(Person).GetProperty("PointLocation"));
                 entityConfiguration.AddProperty(typeof(Person).GetProperty("LineString"));
+                entityConfiguration.AddProperty(typeof(Person).GetProperty("FullName"));
 
                 var person = builder.EntityType<Person>();
                 person.Ignore(t => t.DbLocation);
                 person.Ignore(t => t.DbLineString);
+                person.Ignore(t => t.FirstName);
+                person.Ignore(t => t.LastName);
                 return Task.FromResult(builder.GetEdmModel());
             }
         }

@@ -14,6 +14,23 @@ namespace Microsoft.OData.Service.Sample.Spatial.Models
 
         public string UserName { get; set; }
 
+        [NotMapped]
+        public string FullName {
+            get
+            {
+                return FirstName+ " "+LastName;
+            }
+            set
+            {
+                var strArray = value.Split(' ');
+                if (strArray.Length == 2)
+                {
+                    FirstName = strArray[0];
+                    LastName = strArray[1];
+                }
+            }
+        }
+
         [Required]
         public string FirstName { get; set; }
 
