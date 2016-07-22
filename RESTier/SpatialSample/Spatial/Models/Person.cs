@@ -37,35 +37,35 @@ namespace Microsoft.OData.Service.Sample.Spatial.Models
         [MaxLength(26), MinLength(1)]
         public string LastName { get; set; }
 
-        private GeographyPointWrapper _pointWrapper;
-        private GeographyLineStringWrapper _lineStringWrapper;
+        private DbGeography _dbLocation;
+        private DbGeography _lineString;
 
         [Column("PointLocation")]
         public DbGeography DbLocation
         {
-            get { return _pointWrapper; }
-            set { _pointWrapper = value; }
+            get { return _dbLocation; }
+            set { _dbLocation = value; }
         }
 
         [NotMapped]
         public GeographyPoint PointLocation
         {
-            get { return _pointWrapper; }
-            set { _pointWrapper = value; }
+            get { return _dbLocation.ToGeographyPoint(); }
+            set { _dbLocation = value.ToDbGeography(); }
         }
 
         [Column("LineString")]
         public DbGeography DbLineString
         {
-            get { return _lineStringWrapper; }
-            set { _lineStringWrapper = value; }
+            get { return _lineString; }
+            set { _lineString = value; }
         }
 
         [NotMapped]
         public GeographyLineString LineString
         {
-            get { return _lineStringWrapper; }
-            set { _lineStringWrapper = value; }
+            get { return _lineString.ToGeographyLineString(); }
+            set { _lineString = value.ToDbGeography(); }
         }
     }
 }

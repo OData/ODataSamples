@@ -51,8 +51,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\GeographyLineStringWrapper.cs" />
-    <Compile Include="Models\GeographyPointWrapper.cs" />
+    <Compile Include="Models\GeographyConverter.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\SpatialModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
