@@ -17,12 +17,14 @@ namespace ODataSamples.UriBuilder
         private static readonly Uri TripPinRoot = new Uri("http://services.odata.org/V4/TripPinService/");
         private static readonly V4Model V4Model = new V4Model();
         private static readonly TripPinModel TripPinModel = new TripPinModel();
+        private static readonly SchoolModel SchoolModel = new SchoolModel();
 
         static void Main(string[] args)
         {
             BuildOrderBy();
             BuildFilterWithBinaryOperator();
             BuildFilterWithNestedAny();
+            BuildNavigationWithAny();
         }
 
         private static void BuildOrderBy()
@@ -152,6 +154,28 @@ namespace ODataSamples.UriBuilder
             var builder = new ODataUriBuilder(ODataUrlConventions.Default, odataUri);
             Console.WriteLine(builder.BuildUri());
             // http://services.odata.org/V4/TripPinService/People?$filter=Friends%2Fany(e0:e0%2FFriends%2Fany(e1:e1%2FTrips%2Fany(e2:e2%2FBudget gt 1200)))
+        }
+
+        private static void BuildNavigationWithAny()
+        {
+            // Request URI
+            var requestUri = new Uri("Students?$filter=StudentId gt 100", UriKind.Relative);
+            var requestODataUri = new ODataUriParser(SchoolModel.Model, requestUri).ParseUri();
+            var requestFilterExpression = requestODataUri.Filter.Expression;
+
+            // URI that contains additional condition
+            var conditionUri = new Uri("Students?$filter=Courses/any(c:c/Teacher/Education/Degrees/any(d:d/Category eq 'English Literature'))", UriKind.Relative);
+            var conditionODataUri = new ODataUriParser(SchoolModel.Model, conditionUri).ParseUri();
+            var conditionExpression = conditionODataUri.Filter.Expression;
+
+            // New $filter expression
+            var newFilterExpression = new BinaryOperatorNode(BinaryOperatorKind.And, requestFilterExpression, conditionExpression);
+            requestODataUri.Filter = new FilterClause(newFilterExpression, requestODataUri.Filter.RangeVariable);
+            var builder = new ODataUriBuilder(ODataUrlConventions.Default, requestODataUri);
+            Console.WriteLine(builder.BuildUri());
+
+            // http://host/Students?$filter=StudentId%20gt%20100%20and%20Courses%2Fany%28c%3Ac%2FTeacher%2FEducation%2FDegrees%2Fany%28d%3Ad%2FCategory%20eq%20%27English%20Literature%27%29%29
+            // http://host/Students?$filter=StudentId gt 100 and Courses/any(c:c/Teacher/Education/Degrees/any(d:d/Category eq 'English Literature'))
         }
     }
 }

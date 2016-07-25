@@ -118,4 +118,34 @@ namespace ODataSamples.Common.Model
             return LoadMetadataFromResource("ODataSamples.Common.Model.AnnotationModel.xml");
         }
     }
+
+    public class SchoolModel : ModelWrapper
+    {
+        public IEdmEntityType Student { get; private set; }
+
+        public IEdmEntityType Course { get; private set; }
+
+        public IEdmEntityType Teacher { get; private set; }
+
+        public IEdmEntitySet StudentSet { get; private set; }
+
+        public IEdmEntitySet CourseSet { get; private set; }
+
+        public IEdmEntitySet TeacherSet { get; private set; }
+
+        public SchoolModel()
+        {
+            Student = (IEdmEntityType)Model.FindType("Microsoft.OData.SampleService.Models.School.Student");
+            Course = (IEdmEntityType)Model.FindType("Microsoft.OData.SampleService.Models.School.Course");
+            Teacher = (IEdmEntityType)Model.FindType("Microsoft.OData.SampleService.Models.School.Teacher");
+            StudentSet = Model.FindDeclaredEntitySet("Students");
+            CourseSet = Model.FindDeclaredEntitySet("Courses");
+            TeacherSet = Model.FindDeclaredEntitySet("Teachers");
+        }
+
+        protected override IEdmModel GetModel()
+        {
+            return LoadMetadataFromResource("ODataSamples.Common.Model.School.xml");
+        }
+    }
 }

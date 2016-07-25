@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="Microsoft.OData.SampleService.Models.School" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="Student">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="StudentId" Type="Edm.Int32" Nullable="false" />
+        <NavigationProperty Name="Courses" Type="Collection(Microsoft.OData.SampleService.Models.School.Course)" Nullable="false" />
+      </EntityType>
+      <EntityType Name="Teacher">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="TeacherId" Type="Edm.Int32" Nullable="false" />
+        <NavigationProperty Name="Education" Type="Microsoft.OData.SampleService.Models.School.Education" ContainsTarget="true" Nullable="false" />
+      </EntityType>
+      <EntityType Name="Course">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="CourseId" Type="Edm.Int32" Nullable="false" />
+        <NavigationProperty Name="Teacher" Type="Microsoft.OData.SampleService.Models.School.Teacher" Nullable="false" />
+      </EntityType>
+      <EntityType Name="Education">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="EducationId" Type="Edm.Int32" Nullable="false" />
+        <NavigationProperty Name="Degrees" Type="Collection(Microsoft.OData.SampleService.Models.School.Degree)" ContainsTarget="true" Nullable="false" />
+      </EntityType>
+      <EntityType Name="Degree">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="DegreeId" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Category" Type="Edm.String" Nullable="false" />
+      </EntityType>
+      <EntityContainer Name="DefaultContainer">
+        <EntitySet Name="Students" EntityType="Microsoft.OData.SampleService.Models.School.Student">
+          <NavigationPropertyBinding Path="Courses" Target="Courses" />
+        </EntitySet>
+        <EntitySet Name="Courses" EntityType="Microsoft.OData.SampleService.Models.School.Course">
+          <NavigationPropertyBinding Path="Teacher" Target="Teachers" />
+        </EntitySet>
+        <EntitySet Name="Teachers" EntityType="Microsoft.OData.SampleService.Models.School.Teacher" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
