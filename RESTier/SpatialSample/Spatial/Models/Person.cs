@@ -4,6 +4,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Spatial;
+using Microsoft.Restier.Providers.EntityFramework;
 using Microsoft.Spatial;
 
 namespace Microsoft.OData.Service.Sample.Spatial.Models

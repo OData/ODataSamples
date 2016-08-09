@@ -67,7 +67,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// </summary>
         /// <param name="trip">The trip to update.</param>
         /// <returns>The trip updated.</returns>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", HasSideEffects = true)]
+        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", IsBound = true, HasSideEffects = true)]
         public Trip EndTrip(Trip trip)
         {
             // DO NOT ACTUALLY UPDATE THE TRIP.
@@ -79,7 +79,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// </summary>
         /// <param name="person">The key of the binding person.</param>
         /// <returns>The number of friends of the person.</returns>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models")]
+        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", IsBound = true)]
         public int GetNumberOfFriends(Person person)
         {
             if (person == null)
@@ -150,7 +150,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
 
         protected override IServiceCollection ConfigureApi(IServiceCollection services)
         {
-            // Add customized OData valiadtion settings 
+            // Add customized OData validation settings 
             Func<IServiceProvider, ODataValidationSettings> validationSettingFactory = (sp) => new ODataValidationSettings
             {
                 MaxAnyAllExpressionDepth =3,
@@ -160,7 +160,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
             return base.ConfigureApi(services)
                 .AddSingleton<ODataPayloadValueConverter, CustomizedPayloadValueConverter>()
                 .AddSingleton<ODataValidationSettings>(validationSettingFactory)
-                .AddService<IChangeSetItemProcessor, CustomizedSubmitProcessor>()
+                .AddService<IChangeSetItemFilter, CustomizedSubmitProcessor>()
                 .AddService<IModelBuilder, TrippinModelExtender>();
         }
 

@@ -2,7 +2,7 @@
 using AdventureWorksLTSample.Models;
 using Microsoft.Restier.Providers.EntityFramework;
 using Microsoft.Restier.Publishers.OData.Batch;
-using Microsoft.Restier.Publishers.OData.Routing;
+using Microsoft.Restier.Publishers.OData;
 
 namespace AdventureWorksLTSample
 {
