@@ -6,6 +6,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
     public class Event : PlanItem
     {
         public EventLocation OccursAt { get; set; }
+
         public string Description { get; set; }
 
         public override object Clone()
@@ -30,6 +31,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                     }
                 },
             };
+
             return newPlan;
         }
     }

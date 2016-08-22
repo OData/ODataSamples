@@ -1,52 +1,43 @@
-﻿using System.Web.Http;
+﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Licensed under the MIT License.  See License.txt in the project root for license information.
+
+using System.Linq;
+using System.Web.Http;
 using System.Web.OData;
 using System.Web.OData.Routing;
-using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
+using Microsoft.OData.Service.Sample.TrippinInMemory.Api;
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory.Controllers
 {
-    /// <summary>
-    /// Functions/Actions don't work with Restier 0.5.0-beta now,
-    /// Use this controller to handle functions/actions;
-    /// </summary>
     public class TrippinController : ODataController
     {
-        private TrippinApi api = null;
+        private TrippinApi _api;
         private TrippinApi Api
         {
-            get {
-                if (api == null)
+            get
+            {
+                if (_api == null)
                 {
-                    api = new TrippinApi();
+                    _api = new TrippinApi();
                 }
-                return api;
+
+                return _api;
             }
         }
 
         /// <summary>
-        /// Unbound function to get the person who has most number of friends
+        /// Restier only supports put and post entity set.
+        /// Use property name to simulate the bound action.
         /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [ODataRoute("GetPersonWithMostFriends")]
-        public IHttpActionResult GetPersonWithMostFriends()
-        {
-            return Ok(Api.GetPersonWithMostFriends());
-        }
-
-        /// <summary>
-        /// Action to update the LastName of one person,
-        /// Notice that the parameter name should be {"value":"test"} rather than {"name":"test"}
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="key">Key of people entity set, parsed from uri.</param>
+        /// <param name="name">The value of last name to be updated.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
         [HttpPut]
         [ODataRoute("People({key})/LastName")]
         public IHttpActionResult UpdatePersonLastName([FromODataUri]string key, [FromBody] string name)
         {
-            System.Diagnostics.Debug.WriteLine("Input LastName is: " + name);
-            if (Api.UpdatePersonLastName(key, name))
+            var person = Api.People.Single(p => p.UserName == key);
+            if (Api.UpdatePersonLastName(person, name))
             {
                 return Ok();
             }

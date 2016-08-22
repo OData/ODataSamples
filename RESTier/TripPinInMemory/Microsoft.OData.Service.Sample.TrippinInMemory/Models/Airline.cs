@@ -10,6 +10,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
         [Key]
         public string AirlineCode { get; set; }
 
+        [ConcurrencyCheck]
         public string Name { get; set; }
     }
 }

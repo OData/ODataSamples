@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Licensed under the MIT License.  See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,38 +11,28 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
 {
     public class TripPinDataSource
     {
-        private static TripPinDataSource instance = null;
-        public static TripPinDataSource Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new TripPinDataSource();
-                }
-                return instance;
-            }
-        }
-
         public List<Person> People { get; set; }
+
         public List<Airport> Airports { get; private set; }
+
         public List<Airline> Airlines { get; private set; }
+
         public Person Me { get; set; }
 
-        private TripPinDataSource()
+        public TripPinDataSource()
         {
             this.Reset();
             this.Initialize();
         }
 
-        public void Reset()
+        private void Reset()
         {
             this.People = new List<Person>();
             this.Airports = new List<Airport>();
             this.Airlines = new List<Airline>();
         }
 
-        public void Initialize()
+        private void Initialize()
         {
             #region Airports
             this.Airports.AddRange(new List<Airport>()
@@ -54,7 +47,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                         {
                             Name = "San Francisco",
                             CountryRegion = "United States",
-                            Region = "California"    
+                            Region = "California"
                         },
                         Loc = GeographyPoint.Create(37.6188888888889, -122.374722222222)
                     },
@@ -70,7 +63,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                         City = new City()
                         {
                             Name = "Los Angeles",
-                            CountryRegion = "United States", 
+                            CountryRegion = "United States",
                             Region = "California"
                         },
                         Loc = GeographyPoint.Create(33.9425, -118.408055555556)
@@ -138,7 +131,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 new Airline()
                 {
                     Name = "American Airlines",
-                    AirlineCode = "AA" 
+                    AirlineCode = "AA"
                 },
 
                 new Airline()
@@ -179,7 +172,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                       }
                     },
                     Trips = new List<Trip>
-                    {                        
+                    {
                         new Trip()
                         {
                             TripId = 0,
@@ -215,15 +208,15 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                                     StartsAt = new DateTimeOffset(new DateTime(2014, 1, 2, 13, 0, 0)),
                                     EndsAt = new DateTimeOffset(new DateTime(2014, 1, 6, 13, 0, 0)),
                                     Duration = new TimeSpan(3, 0, 0),
-                                    OccursAt = new EventLocation() 
+                                    OccursAt = new EventLocation()
                                     {
-                                        BuildingInfo = "Regus Business Center", 
-                                        City = new City() 
+                                        BuildingInfo = "Regus Business Center",
+                                        City = new City()
                                         {
-                                            Name = "New York City", 
-                                            CountryRegion = "United States", 
-                                            Region = "New York" 
-                                        }, 
+                                            Name = "New York City",
+                                            CountryRegion = "United States",
+                                            Region = "New York"
+                                        },
                                         Address = "100 Church Street, 8th Floor, Manhattan, 10007"
                                     }
                                 },
@@ -254,7 +247,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             {
                                 new Flight()
                                 {
-                                    PlanItemId = 21,
+                                    PlanItemId = 14,
                                     ConfirmationCode = "JH58494",
                                     FlightNumber = "FM1930",
                                     StartsAt = new DateTimeOffset(new DateTime(2014, 2, 1, 8, 0, 0)),
@@ -266,7 +259,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                                 },
                                 new Flight()
                                 {
-                                    PlanItemId = 32,
+                                    PlanItemId = 15,
                                     ConfirmationCode = "JH58495",
                                     FlightNumber = "MU1930",
                                     StartsAt = new DateTimeOffset(new DateTime(2014, 2, 10, 15, 30, 0)),
@@ -278,7 +271,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                                 },
                                 new Event()
                                 {
-                                    PlanItemId = 5,
+                                    PlanItemId = 16,
                                     Description = "Dinner",
                                     StartsAt = new DateTimeOffset(new DateTime(2014, 2, 2, 18, 0, 0)),
                                     EndsAt = new DateTimeOffset(new DateTime(2014, 2, 2, 21, 0, 0)),
@@ -308,8 +301,14 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             StartsAt = new DateTime(2014, 2, 1),
                             EndsAt = new DateTime(2014, 2, 4)
                         }
-                    }
-                },            
+                    },
+                    Features = new List<Feature>
+                    {
+                        Feature.Feature1,
+                        Feature.Feature2
+                    },
+                    FavoriteFeature = Feature.Feature1
+                },
                 new Person()
                 {
                     FirstName = "Scott",
@@ -346,7 +345,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             {
                                 new Flight()
                                 {
-                                    PlanItemId = 11,
+                                    PlanItemId = 17,
                                     ConfirmationCode = "JH58493",
                                     FlightNumber = "VA1930",
                                     StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1, 8, 0, 0)),
@@ -358,7 +357,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                                 },
                                 new Event()
                                 {
-                                    PlanItemId = 12,
+                                    PlanItemId = 18,
                                     Description = "Client Meeting",
                                     ConfirmationCode = "4372899DD",
                                     StartsAt = new DateTimeOffset(new DateTime(2014, 1, 2, 13, 0, 0)),
@@ -378,7 +377,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                                 },
                                 new Flight()
                                 {
-                                    PlanItemId = 13,
+                                    PlanItemId = 19,
                                     ConfirmationCode = "JH58493",
                                     FlightNumber = "VA1930",
                                     StartsAt = new DateTimeOffset(new DateTime(2014, 1, 4, 13, 0, 0)),
@@ -403,7 +402,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             {
                                 new Flight()
                                 {
-                                    PlanItemId = 21,
+                                    PlanItemId = 20,
                                     ConfirmationCode = "JH58494",
                                     FlightNumber = "FM1930",
                                     StartsAt = new DateTimeOffset(new DateTime(2014, 2, 1, 8, 0, 0)),
@@ -415,7 +414,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                                 },
                                 new Flight()
                                 {
-                                    PlanItemId = 32,
+                                    PlanItemId = 21,
                                     ConfirmationCode = "JH58495",
                                     FlightNumber = "MU1930",
                                     StartsAt = new DateTimeOffset(new DateTime(2014, 2, 10, 16, 30, 0)),
@@ -427,7 +426,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                                 },
                                 new Event()
                                 {
-                                    PlanItemId = 5,
+                                    PlanItemId = 22,
                                     Description = "Dinner",
                                     StartsAt = new DateTimeOffset(new DateTime(2014, 2, 2, 18, 0, 0)),
                                     EndsAt = new DateTimeOffset(new DateTime(2014, 2, 2, 21, 0, 0)),
@@ -447,7 +446,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             }
                         }
                     }
-                },     
+                },
                 new Person()
                 {
                     FirstName = "Ronald",
@@ -523,21 +522,9 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                     FirstName = "Willie",
                     LastName = "Ashmore",
                     UserName = "willieashmore",
-                    Gender = PersonGender.Male, 
-                    Emails = new List<string> { "Willie@example.com", "Willie@contoso.com" },
-                    AddressInfo = new List<Location>
-                    {
-                      new Location()
-                      {
-                          Address = "89 Jefferson Way Suite 2",
-                          City = new City()
-                          {
-                              CountryRegion = "United States",
-                              Name = "Portland",
-                              Region = "WA"
-                          }
-                      }
-                    },
+                    Gender = PersonGender.Male,
+                    Emails = new List<string>(),
+                    AddressInfo = new List<Location>(),
                     Trips = new List<Trip>
                     {
                         new Trip()
@@ -568,8 +555,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 {
                     FirstName = "Vincent",
                     LastName = "Calabrese",
-                    UserName = "vincentcalabrese", 
-                    Gender = PersonGender.Male, 
+                    UserName = "vincentcalabrese",
+                    Gender = PersonGender.Male,
                     Emails = new List<string> { "Vincent@example.com", "Vincent@contoso.com" },
                     AddressInfo = new List<Location>
                     {
@@ -598,48 +585,21 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             EndsAt = new DateTimeOffset(new DateTime(2013, 5, 8))
                         }
                     }
-                },                
+                },
                 new Person()
                 {
                     FirstName = "Clyde",
-                    LastName = "Guess", 
+                    LastName = "Guess",
                     UserName = "clydeguess",
                     Gender = PersonGender.Male,
-                    Emails = new List<string> { "Clyde@example.com" },
-                    AddressInfo = new List<Location>
-                    {
-                      new Location()
-                      {
-                          Address = "55 Grizzly Peak Rd.",
-                          City = new City()
-                          {
-                              CountryRegion = "United States",
-                              Name = "Butte",
-                              Region = "MT"
-                          }
-                      }
-                    },
-                    Trips = new List<Trip>
-                    {
-                        new Trip()
-                        {
-                            TripId = 10,
-                            ShareId = new Guid("a88f675d-9199-4392-9656-b08e3b46df8a"),
-                            Name = "Study trip",
-                            Budget = 1550.3f,
-                            Description = "This is a 2 weeks study trip",
-                            Tags = new List<string>{"study"},
-                            StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
-                        }
-                    }
-                },             
+                    HomeAddress = new Location()
+                },
                 new Person()
                 {
                     FirstName = "Keith",
-                    LastName = "Pinckney", 
+                    LastName = "Pinckney",
                     UserName = "keithpinckney",
-                    Gender = PersonGender.Male, 
+                    Gender = PersonGender.Male,
                     Emails = new List<string> { "Keith@example.com", "Keith@contoso.com" },
                     AddressInfo = new List<Location>
                     {
@@ -671,10 +631,10 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 },
                 new Person()
                 {
-                    FirstName = "Marshall", 
+                    FirstName = "Marshall",
                     LastName = "Garay",
-                    UserName = "marshallgaray", 
-                    Gender = PersonGender.Male, 
+                    UserName = "marshallgaray",
+                    Gender = PersonGender.Male,
                     Emails = new List<string> { "Marshall@example.com", "Marshall@contoso.com" },
                     AddressInfo = new List<Location>
                     {
@@ -706,9 +666,9 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 },
                 new Person()
                 {
-                    FirstName = "Ryan", 
-                    LastName = "Theriault", 
-                    UserName = "ryantheriault", 
+                    FirstName = "Ryan",
+                    LastName = "Theriault",
+                    UserName = "ryantheriault",
                     Gender = PersonGender.Male,
                     Emails = new List<string> { "Ryan@example.com", "Ryan@contoso.com" },
                     AddressInfo = new List<Location>
@@ -742,7 +702,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 new Person()
                 {
                     FirstName = "Elaine",
-                    LastName = "Stewart", 
+                    LastName = "Stewart",
                     UserName = "elainestewart",
                     Gender = PersonGender.Female,
                     Emails = new List<string> { "Elaine@example.com", "Elaine@contoso.com" },
@@ -773,10 +733,10 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
                         }
                     }
-                },                
+                },
                 new Person()
                 {
-                    FirstName = "Sallie", 
+                    FirstName = "Sallie",
                     LastName = "Sampson",
                     UserName = "salliesampson",
                     Gender = PersonGender.Female,
@@ -818,13 +778,13 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
                         }
                     }
-                },                
+                },
                 new Person()
                 {
                     FirstName = "Joni",
                     LastName = "Rosales",
-                    UserName = "jonirosales", 
-                    Gender = PersonGender.Female, 
+                    UserName = "jonirosales",
+                    Gender = PersonGender.Female,
                     Emails = new List<string> { "Joni@example.com", "Joni@contoso.com" },
                     AddressInfo = new List<Location>
                     {
@@ -891,8 +851,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 },
                 new Person()
                 {
-                    FirstName = "Angel", 
-                    LastName = "Huffman", 
+                    FirstName = "Angel",
+                    LastName = "Huffman",
                     UserName = "angelhuffman", Gender = PersonGender.Female,
                     Emails = new List<string> { "Angel@example.com" },
                     AddressInfo = new List<Location>
@@ -925,10 +885,10 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 },
                 new Person()
                 {
-                    FirstName = "Laurel", 
+                    FirstName = "Laurel",
                     LastName = "Osborn",
-                    UserName = "laurelosborn", 
-                    Gender = PersonGender.Female, 
+                    UserName = "laurelosborn",
+                    Gender = PersonGender.Female,
                     Emails = new List<string> { "Laurel@example.com", "Laurel@contoso.com" },
                     AddressInfo = new List<Location>
                     {
@@ -963,7 +923,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                     FirstName = "Sandy",
                     LastName = "Osborn",
                     UserName = "sandyosborn",
-                    Gender = PersonGender.Female, 
+                    Gender = PersonGender.Female,
                     Emails = new List<string> { "Sandy@example.com", "Sandy@contoso.com" },
                     AddressInfo = new List<Location>
                     {
@@ -1028,11 +988,11 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                         }
                     }
                 },
-                new Person()
+                new Manager()
                 {
                     FirstName = "Genevieve",
                     LastName = "Reeves",
-                    UserName = "genevievereeves", 
+                    UserName = "genevievereeves",
                     Gender = PersonGender.Female,
                     Emails = new List<string> { "Genevieve@example.com", "Genevieve@contoso.com" },
                     AddressInfo = new List<Location>
@@ -1063,9 +1023,9 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                         }
                     }
                 },
-                new Person()
+                new Employee()
                 {
-                    FirstName = "Krista", 
+                    FirstName = "Krista",
                     LastName = "Kemp",
                     UserName = "kristakemp",
                     Gender = PersonGender.Female,
@@ -1106,6 +1066,10 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                     People.Single(p => p.UserName == "ronaldmundy"),
                     People.Single(p => p.UserName == "javieralfred")
                 };
+
+            People.Single(p => p.UserName == "russellwhyte").BestFriend=
+                People.Single(p => p.UserName == "scottketchum");
+
             People.Single(p => p.UserName == "scottketchum").Friends = new Collection<Person>()
                 {
                     People.Single(p => p.UserName == "russellwhyte"),
@@ -1199,7 +1163,6 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 UserName = "aprilcline",
                 Gender = PersonGender.Female,
                 Emails = new List<string> { "April@example.com", "April@contoso.com" },
-                
                 AddressInfo = new List<Location>
                 {
                     new Location()
@@ -1215,7 +1178,6 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 },
                 Trips = new List<Trip>
                 {
-                    
                     new Trip()
                     {
                         TripId = 101,
@@ -1402,10 +1364,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
             };
 
             Me.Friends = People;
-            
             #endregion Me
-
-
         }
     }
 }

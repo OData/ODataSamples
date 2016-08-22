@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
 // Licensed under the MIT License.  See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+
 namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
 {
-    public class City
+    public class Manager : Person
     {
-        public string Name { get; set; }
+        public virtual ICollection<Person> DirectReports { get; set; }
 
-        public string CountryRegion { get; set; }
+        public long Budget { get; set; }
 
-        public string Region { get; set; }
+        public Location BossOffice { get; set; }
     }
 }

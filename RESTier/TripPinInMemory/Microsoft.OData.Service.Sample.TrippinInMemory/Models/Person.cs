@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.OData.Builder;
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
 {
@@ -12,6 +13,15 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
         Female,
         Unknow
     }
+
+    public enum Feature
+    {
+        Feature1,
+        Feature2,
+        Feature3,
+        Feature4
+    }
+
     public class Person
     {
         [Key]
@@ -23,6 +33,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
         [MaxLength(26), MinLength(1)]
         public string LastName { get; set; }
 
+        public string MiddleName { get; set; }
+
         public PersonGender Gender { get; set; }
 
         public long? Age { get; set; }
@@ -31,10 +43,17 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
 
         public ICollection<Location> AddressInfo { get; set; }
 
+        public Location HomeAddress { get; set; }
+
+        [AutoExpand]
         public virtual ICollection<Person> Friends { get; set; }
+
+        public Person BestFriend { get; set; }
 
         public virtual ICollection<Trip> Trips { get; set; }
 
-        public long Concurrency { get; set; }
+        public Feature FavoriteFeature { get; set; }
+
+        public virtual ICollection<Feature> Features { get; set; }
     }
 }

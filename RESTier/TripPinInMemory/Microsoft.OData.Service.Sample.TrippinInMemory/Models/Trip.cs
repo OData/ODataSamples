@@ -40,6 +40,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 EndsAt = this.EndsAt,
                 Tags = null,
             };
+
             if (this.Tags != null)
             {
                 newTrip.Tags = new Collection<string>();
@@ -49,11 +50,13 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                 }
             }
 
+            newTrip.PlanItems = new List<PlanItem>();
             foreach (var planItem in this.PlanItems)
             {
                 newTrip.PlanItems.Add(planItem.Clone() as PlanItem);
             }
+
             return newTrip;
         }
-    } 
+    }
 };
