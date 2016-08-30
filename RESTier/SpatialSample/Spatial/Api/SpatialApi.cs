@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
 // Licensed under the MIT License.  See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.OData.Builder;
@@ -16,9 +18,9 @@ namespace Microsoft.OData.Service.Sample.Spatial.Api
 {
     public class SpatialApi : EntityFrameworkApi<SpatialModel>
     {
-        protected override IServiceCollection ConfigureApi(IServiceCollection services)
+        protected static new IServiceCollection ConfigureApi(Type apType, IServiceCollection services)
         {
-            return base.ConfigureApi(services)
+            return EntityFrameworkApi<SpatialModel>.ConfigureApi(apType, services)
                 .AddService<IModelBuilder, SpatialModelExtender>();
         }
 
@@ -42,6 +44,10 @@ namespace Microsoft.OData.Service.Sample.Spatial.Api
                 person.Ignore(t => t.LastName);
                 return Task.FromResult(builder.GetEdmModel());
             }
+        }
+
+        public SpatialApi(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
         }
     }
 }

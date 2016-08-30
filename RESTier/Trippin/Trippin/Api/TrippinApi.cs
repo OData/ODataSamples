@@ -8,11 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.OData.Query;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OData.Core;
 using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Library;
-using Microsoft.OData.Edm.Library.Annotations;
-using Microsoft.OData.Edm.Library.Values;
+using Microsoft.OData.Edm.Vocabularies;
 using Microsoft.OData.Service.Sample.Trippin.Models;
 using Microsoft.OData.Service.Sample.Trippin.Submit;
 using Microsoft.Restier.Core;
@@ -25,8 +22,9 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
 {
     public class TrippinApi : EntityFrameworkApi<TrippinModel>
     {
-        public new TrippinModel Context { get { return DbContext; } }
+        public TrippinModel ModelContext { get { return DbContext; } }
 
+        [Resource]
         public Person Me
         {
             get
@@ -40,12 +38,11 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
 
         private IQueryable<Person> PeopleWithFriends
         {
-            get { return Context.People.Include("Friends"); }
+            get { return ModelContext.People.Include("Friends"); }
         }
 
         /// <summary>
         /// Implements an action import.
-        /// TODO: This method is only for building the model.
         /// </summary>
         [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", HasSideEffects = true)]
         public void ResetDataSource()
@@ -148,7 +145,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
             return false;
         }
 
-        protected override IServiceCollection ConfigureApi(IServiceCollection services)
+        protected static new IServiceCollection ConfigureApi(Type apiType, IServiceCollection services)
         {
             // Add customized OData validation settings 
             Func<IServiceProvider, ODataValidationSettings> validationSettingFactory = (sp) => new ODataValidationSettings
@@ -157,7 +154,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
                 MaxExpansionDepth = 3
             };
 
-            return base.ConfigureApi(services)
+            return EntityFrameworkApi<TrippinModel>.ConfigureApi(apiType, services)
                 .AddSingleton<ODataPayloadValueConverter, CustomizedPayloadValueConverter>()
                 .AddSingleton<ODataValidationSettings>(validationSettingFactory)
                 .AddService<IChangeSetItemFilter, CustomizedSubmitProcessor>()
@@ -178,13 +175,17 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
                 var trackGuidProperty = tripType.DeclaredProperties.Single(prop => prop.Name == "TrackGuid");
                 var timeStampValueProp= model.EntityContainer.FindEntitySet("Airlines").EntityType().FindProperty("TimeStampValue");
                 var term = new EdmTerm("Org.OData.Core.V1", "Computed", EdmPrimitiveTypeKind.Boolean);
-                var anno1 = new EdmAnnotation(trackGuidProperty, term, new EdmBooleanConstant(true));
-                var anno2 = new EdmAnnotation(timeStampValueProp, term, new EdmBooleanConstant(true));
+                var anno1 = new EdmVocabularyAnnotation(trackGuidProperty, term, new EdmBooleanConstant(true));
+                var anno2 = new EdmVocabularyAnnotation(timeStampValueProp, term, new EdmBooleanConstant(true));
                 ((EdmModel)model).SetVocabularyAnnotation(anno1);
                 ((EdmModel)model).SetVocabularyAnnotation(anno2);
 
                 return model;
             }
+        }
+
+        public TrippinApi(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
         }
     }
 }

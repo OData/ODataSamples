@@ -21,7 +21,7 @@ namespace Microsoft.OData.Service.Sample.Spatial2.Formatters
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRestierSerializerProvider" /> class.
         /// </summary>
-        public CustomizedSerializerProvider()
+        public CustomizedSerializerProvider(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             this.primitiveSerializer = new CustomizedPrimitiveSerializer();
         }
@@ -29,12 +29,10 @@ namespace Microsoft.OData.Service.Sample.Spatial2.Formatters
         /// <summary>
         /// Gets the serializer for the given result type.
         /// </summary>
-        /// <param name="model">The EDM model.</param>
         /// <param name="type">The type of result to serialize.</param>
         /// <param name="request">The HTTP request.</param>
         /// <returns>The serializer instance.</returns>
         public override ODataSerializer GetODataPayloadSerializer(
-            IEdmModel model,
             Type type,
             HttpRequestMessage request)
         {
@@ -45,7 +43,7 @@ namespace Microsoft.OData.Service.Sample.Spatial2.Formatters
             }
             else
             {
-                serializer = base.GetODataPayloadSerializer(model, type, request);
+                serializer = base.GetODataPayloadSerializer(type, request);
             }
 
             return serializer;

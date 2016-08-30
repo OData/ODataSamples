@@ -3,7 +3,6 @@
 
 using System.Data.Entity.Spatial;
 using System.Web.OData.Formatter.Serialization;
-using Microsoft.OData.Core;
 using Microsoft.OData.Edm;
 using Microsoft.Restier.Providers.EntityFramework;
 using Microsoft.Restier.Publishers.OData.Formatter;

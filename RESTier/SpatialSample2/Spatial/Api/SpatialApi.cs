@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
 // Licensed under the MIT License.  See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.OData;
 using System.Web.OData.Formatter.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Library;
 using Microsoft.OData.Service.Sample.Spatial2.Formatters;
 using Microsoft.OData.Service.Sample.Spatial2.Models;
 using Microsoft.Restier.Core;
@@ -18,9 +18,9 @@ namespace Microsoft.OData.Service.Sample.Spatial2.Api
 {
     public class SpatialApi : EntityFrameworkApi<SpatialModel>
     {
-        protected override IServiceCollection ConfigureApi(IServiceCollection services)
+        protected static new IServiceCollection ConfigureApi(Type apiType, IServiceCollection services)
         {
-            return base.ConfigureApi(services)
+            return EntityFrameworkApi<SpatialModel>.ConfigureApi(apiType, services)
                 .AddService<IModelBuilder, SpatialModelExtender>()
                 .AddSingleton<ODataSerializerProvider, CustomizedSerializerProvider>();
         }
@@ -57,6 +57,10 @@ namespace Microsoft.OData.Service.Sample.Spatial2.Api
 
                 return model;
             }
+        }
+
+        public SpatialApi(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
         }
     }
 }

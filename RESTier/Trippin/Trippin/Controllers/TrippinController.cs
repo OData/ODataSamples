@@ -9,57 +9,23 @@ using System.Web.Http;
 using System.Web.OData;
 using System.Web.OData.Extensions;
 using System.Web.OData.Routing;
-using Microsoft.OData.Edm.Library;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OData.Edm;
 using Microsoft.OData.Service.Sample.Trippin.Api;
 using Microsoft.OData.Service.Sample.Trippin.Models;
+using Microsoft.Restier.Core;
 
 namespace Microsoft.OData.Service.Sample.Trippin.Controllers
 {
     public class TrippinController : ODataController
     {
-        private TrippinApi api;
-
-        private TrippinApi Api
-        {
-            get
-            {
-                if (api == null)
-                {
-                    api = new TrippinApi();
-                }
-
-                return api;
-            }
-        }
-
         private TrippinModel DbContext
         {
             get
             {
-                return Api.Context;
+                var api = (TrippinApi)this.Request.GetRequestContainer().GetService<ApiBase>();
+                return api.ModelContext;
             }
-        }
-
-        /// <summary>
-        /// TODO: This method is for actual executing.
-        /// </summary>
-        [ODataRoute("ResetDataSource")]
-        public void ResetDataSource()
-        {
-            TrippinModel.ResetDataSource();
-        }
-
-        [ODataRoute("CleanUpExpiredTrips")]
-        public void CleanUpExpiredTrips()
-        {
-            Api.CleanUpExpiredTrips();
-        }
-
-        [ODataRoute("Trips({key})/Microsoft.OData.Service.Sample.Trippin.Models.EndTrip")]
-        public IHttpActionResult EndTrip(int key)
-        {
-            var trip = DbContext.Trips.SingleOrDefault(t => t.TripId == key);
-            return Ok(Api.EndTrip(trip));
         }
 
         private bool PeopleExists(int key)
@@ -75,26 +41,6 @@ namespace Microsoft.OData.Service.Sample.Trippin.Controllers
             var requestUri = Request.RequestUri.ToString();
             var serviceRootUri = requestUri.Substring(0, requestUri.IndexOf(prefixName, StringComparison.InvariantCultureIgnoreCase) + prefixName.Length);
             return serviceRootUri;
-        }
-
-        [ODataRoute("People({key})/Microsoft.OData.Service.Sample.Trippin.Models.GetNumberOfFriends")]
-        public IHttpActionResult GetNumberOfFriends([FromODataUri]int key)
-        {
-            var person = DbContext.People.SingleOrDefault(p => p.PersonId == key);
-            return Ok(Api.GetNumberOfFriends(person));
-        }
-
-        [ODataRoute("GetPersonWithMostFriends")]
-        public IHttpActionResult GetPersonWithMostFriends()
-        {
-            return Ok(Api.GetPersonWithMostFriends());
-        }
-
-        [EnableQuery]
-        [ODataRoute("GetPeopleWithFriendsAtLeast(n={n})")]
-        public IHttpActionResult GetPeopleWithFriendsAtLeast(int n)
-        {
-            return Ok(Api.GetPeopleWithFriendsAtLeast(n));
         }
 
         [HttpPut]
@@ -467,23 +413,6 @@ namespace Microsoft.OData.Service.Sample.Trippin.Controllers
             DbContext.SaveChanges();
 
             return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        /// <summary>
-        /// Disposes the API and the controller.
-        /// </summary>
-        /// <param name="disposing">Indicates whether disposing is happening.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (this.api != null)
-                {
-                    this.api.Dispose();
-                }
-            }
-
-            base.Dispose(disposing);
         }
     }
 }
