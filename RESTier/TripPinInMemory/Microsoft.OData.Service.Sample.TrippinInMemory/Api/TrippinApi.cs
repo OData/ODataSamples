@@ -26,7 +26,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
     {
         private IDataStoreManager<string, TripPinDataSource> DataStoreManager
         {
-            get { return base.Context.GetApiService<IDataStoreManager<string, TripPinDataSource>>(); }
+            get { return this.GetApiService<IDataStoreManager<string, TripPinDataSource>>(); }
         }
 
         private string Key
@@ -34,8 +34,13 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             get { return InMemoryProviderUtils.GetSessionId(); }
         }
 
+        public TrippinApi(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+        }
+
         #region Entity Set
 
+        [Resource]
         public IQueryable<Person> People
         {
             get
@@ -50,6 +55,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             }
         }
 
+        [Resource]
         public IQueryable<Person> NewComePeople
         {
             get
@@ -64,6 +70,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             }
         }
 
+        [Resource]
         public Person Me
         {
             get
@@ -78,6 +85,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             }
         }
 
+        [Resource]
         public IQueryable<Airline> Airlines
         {
             get
@@ -92,6 +100,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             }
         }
 
+        [Resource]
         public IQueryable<Airport> Airports
         {
             get
@@ -332,7 +341,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
 
         #endregion
 
-        protected override IServiceCollection ConfigureApi(IServiceCollection services)
+        public static new IServiceCollection ConfigureApi(Type apiType, IServiceCollection services)
         {
             Func<IServiceProvider, IDataStoreManager<string, TripPinDataSource>> defaultDataStoreManager =
                 sp => new DefaultDataStoreManager<string, TripPinDataSource>()
@@ -345,7 +354,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             services.AddService<IChangeSetInitializer>((sp, next) => new ChangeSetInitializer<TripPinDataSource>());
             services.AddService<ISubmitExecutor>((sp, next) => new SubmitExecutor());
             services.AddSingleton(defaultDataStoreManager);
-            return base.ConfigureApi(services);
+            return ApiBase.ConfigureApi(apiType, services);
         }
 
         private class ModelBuilder : IModelBuilder
