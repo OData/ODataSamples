@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.OData.Extensions;
 using AdventureWorksLTSample.Models;
 using Microsoft.Restier.Providers.EntityFramework;
 using Microsoft.Restier.Publishers.OData.Batch;
@@ -20,6 +21,8 @@ namespace AdventureWorksLTSample
 
         public static async void RegisterAdventureWorks(HttpConfiguration config, HttpServer server)
         {
+            // enable query options for all properties
+            config.Filter().Expand().Select().OrderBy().MaxTop(null).Count();
             await config.MapRestierRoute<EntityFrameworkApi<AdventureWorksContext>>(
                 "AdventureWorksLT",
                 "api/AdventureWorksLT",
