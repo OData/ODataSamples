@@ -12,7 +12,7 @@ This protects against attacks like the following:  http://www.contoso.com/..%2F.
 But, this causes the Web API OData stack to return a 404 error (Not Found). 
 
 As a workaround you could override the Parse method of DefaultODataPathHandler to escape the slash and backslash in string literals 
-before actually parsing them. This sample shows this apporach. 
+before actually parsing them. This sample shows this approach. 
 
 This sample is provided as part of the OData WebApi sample repository at
 https://github.com/OData/ODataSamples
