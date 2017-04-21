@@ -19,7 +19,7 @@
             return propertyValue;
         }
 
-        public static IHttpActionResult GetOKHttpActionResult(ODataController controller, object propertyValue)
+        public static IHttpActionResult GetOKHttpActionResult(ODataController controller, object propertyValue, bool returnRaw=false)
         {
             var okMethod = default(MethodInfo);
             var methods = controller.GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic);
@@ -34,7 +34,11 @@
 
             okMethod = okMethod.MakeGenericMethod(propertyValue.GetType());
             var returnValue = okMethod.Invoke(controller, new object[] { propertyValue });
-            return (IHttpActionResult)returnValue;
+            return returnRaw 
+                    ? 
+                    (IHttpActionResult)propertyValue
+                    :
+                    (IHttpActionResult)returnValue;
         }
     }
 }
