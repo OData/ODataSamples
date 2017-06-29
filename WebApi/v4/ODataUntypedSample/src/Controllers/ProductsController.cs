@@ -5,8 +5,10 @@ using System.Web.OData.Extensions;
 using System.Web.OData.Query;
 using System.Web.OData.Routing;
 using Microsoft.OData.Edm;
+#if WEBAPIODATA_6X
+#else
 using Microsoft.OData.Edm.Library;
-
+#endif
 namespace ODataUntypedSample.Controllers
 {
     public class ProductsController : ODataController
@@ -38,7 +40,11 @@ namespace ODataUntypedSample.Controllers
 
             IEdmCollectionType collectionType = edmType as IEdmCollectionType;
             IEdmEntityType entityType = collectionType.ElementType.Definition as IEdmEntityType;
+#if WEBAPIODATA_6X
+            IEdmModel model = Request.GetModel();
+#else
             IEdmModel model = Request.ODataProperties().Model;
+#endif
 
             ODataQueryContext queryContext = new ODataQueryContext(model, entityType, path);
             ODataQueryOptions queryOptions = new ODataQueryOptions(queryContext, Request);

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataUntypedSample", "ODataUntypedSample\ODataUntypedSample.csproj", "{5C2B08D2-3C98-4DB2-BD8B-CAEE9DA7405D}"
 EndProject
@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CF4CC4
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataUntypedSample6.x", "ODataUntypedSample6.x\ODataUntypedSample6.x.csproj", "{952680EE-40F6-4B97-9E50-2943FB25DC73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{5C2B08D2-3C98-4DB2-BD8B-CAEE9DA7405D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C2B08D2-3C98-4DB2-BD8B-CAEE9DA7405D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C2B08D2-3C98-4DB2-BD8B-CAEE9DA7405D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{952680EE-40F6-4B97-9E50-2943FB25DC73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952680EE-40F6-4B97-9E50-2943FB25DC73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952680EE-40F6-4B97-9E50-2943FB25DC73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952680EE-40F6-4B97-9E50-2943FB25DC73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

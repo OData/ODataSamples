@@ -4,17 +4,27 @@ using System.Text;
 using System.Web.Http;
 using System.Web.OData.Extensions;
 using Microsoft.OData.Edm;
+#if WEBAPIODATA_6X
+#else
 using Microsoft.OData.Edm.Library;
+#endif
 using Microsoft.Owin.Hosting;
 using Newtonsoft.Json;
 using Owin;
+using System.Xml;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace ODataUntypedSample
 {
     public class ODataUntypedSample
     {
         private static HttpClient client = new HttpClient();
+#if WEBAPIODATA_6X
+        private const string ServiceUrl = "http://localhost:54321";
+#else
         private const string ServiceUrl = "http://localhost:12345";
+#endif
         public static IEdmModel Model = GetEdmModel();
 
         public static void Main(string[] args)
@@ -33,6 +43,9 @@ namespace ODataUntypedSample
         public static void Configuration(IAppBuilder builder)
         {
             HttpConfiguration configuration = new HttpConfiguration();
+#if WEBAPIODATA_6X
+            configuration.Count().Filter().OrderBy().Expand().MaxTop(null);
+#endif
             configuration.MapODataServiceRoute("odata", "odata", Model);
             builder.UseWebApi(configuration);
         }
@@ -40,7 +53,7 @@ namespace ODataUntypedSample
         public static IEdmModel GetEdmModel()
         {
             EdmModel model = new EdmModel();
-            
+
             // Create and add product entity type.
             EdmEntityType product = new EdmEntityType("NS", "Product");
             product.AddKeys(product.AddStructuralProperty("Id", EdmPrimitiveTypeKind.Int32));
@@ -142,10 +155,53 @@ namespace ODataUntypedSample
             Console.WriteLine("Response:");
             Console.WriteLine(response);
 
+#if WEBAPIODATA_6X
+            if (response.Content != null)
+            {
+                string payload = response.Content.ReadAsStringAsync().Result;
+
+                if (response.Content.Headers.ContentType.MediaType.Contains("xml"))
+                {
+                    Console.WriteLine(FormatXml(payload));
+                }
+                else if (response.Content.Headers.ContentType.MediaType.Contains("json"))
+                {
+                    JObject jobj = JObject.Parse(payload);
+                    Console.WriteLine(jobj);
+                }
+            }
+#else
             if (response.Content != null)
             {
                 Console.WriteLine(response.Content.ReadAsStringAsync().Result);
             }
+#endif
+        }
+
+        private static string FormatXml(string source)
+        {
+            StringBuilder sb = new StringBuilder();
+            XmlTextWriter writer = null;
+
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(source);
+
+                writer = new XmlTextWriter(new StringWriter(sb));
+                writer.Formatting = System.Xml.Formatting.Indented;
+
+                doc.WriteTo(writer);
+            }
+            finally
+            {
+                if (writer != null)
+                {
+                    writer.Close();
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }
