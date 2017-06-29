@@ -1067,7 +1067,6 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                     People.Single(p => p.UserName == "ronaldmundy"),
                     People.Single(p => p.UserName == "javieralfred")
                 };
-
             People.Single(p => p.UserName == "russellwhyte").BestFriend=
                 People.Single(p => p.UserName == "scottketchum");
 
@@ -1076,84 +1075,141 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                     People.Single(p => p.UserName == "russellwhyte"),
                     People.Single(p => p.UserName == "ronaldmundy")
                 };
+            People.Single(p => p.UserName == "scottketchum").BestFriend =
+                    People.Single(p => p.UserName == "russellwhyte");
+
             People.Single(p => p.UserName == "ronaldmundy").Friends = new Collection<Person>()
                 {
                     People.Single(p => p.UserName == "russellwhyte"),
                     People.Single(p => p.UserName == "scottketchum")
                 };
+            People.Single(p => p.UserName == "ronaldmundy").BestFriend =
+                    People.Single(p => p.UserName == "scottketchum");
+
             People.Single(p => p.UserName == "javieralfred").Friends = new Collection<Person>()
                 {
                     People.Single(p => p.UserName == "willieashmore"),
                     People.Single(p => p.UserName == "vincentcalabrese")
                 };
+            People.Single(p => p.UserName == "javieralfred").BestFriend =
+                    People.Single(p => p.UserName == "vincentcalabrese");
+
             People.Single(p => p.UserName == "willieashmore").Friends = new Collection<Person>()
                 {
                     People.Single(p => p.UserName == "javieralfred"),
                     People.Single(p => p.UserName == "vincentcalabrese")
                 };
+            People.Single(p => p.UserName == "willieashmore").BestFriend =
+                    People.Single(p => p.UserName == "vincentcalabrese");
+
             People.Single(p => p.UserName == "vincentcalabrese").Friends = new Collection<Person>()
                 {
                     People.Single(p => p.UserName == "javieralfred"),
                     People.Single(p => p.UserName == "willieashmore")
                 };
+            People.Single(p => p.UserName == "vincentcalabrese").BestFriend =
+                    People.Single(p => p.UserName == "javieralfred");
+
             People.Single(p => p.UserName == "clydeguess").Friends = new Collection<Person>()
                 {
                     People.Single(p => p.UserName == "keithpinckney")
                 };
+            People.Single(p => p.UserName == "clydeguess").BestFriend =
+                    People.Single(p => p.UserName == "keithpinckney");
+
             People.Single(p => p.UserName == "keithpinckney").Friends = new Collection<Person>()
                 {
                     People.Single(p => p.UserName == "clydeguess"),
                     People.Single(p => p.UserName == "marshallgaray")
                 };
+            People.Single(p => p.UserName == "keithpinckney").BestFriend =
+                    People.Single(p => p.UserName == "clydeguess");
+
             People.Single(p => p.UserName == "marshallgaray").Friends = new Collection<Person>()
                 {
                     People.Single(p => p.UserName == "keithpinckney")
                 };
+            People.Single(p => p.UserName == "marshallgaray").BestFriend =
+                    People.Single(p => p.UserName == "keithpinckney");
+
             People.Single(p => p.UserName == "ryantheriault").Friends = new Collection<Person>()
             {
                 People.Single(p=>p.UserName == "elainestewart")
             };
+            People.Single(p => p.UserName == "ryantheriault").BestFriend =
+                    People.Single(p => p.UserName == "elainestewart");
+
             People.Single(p => p.UserName == "elainestewart").Friends = new Collection<Person>()
             {
                 People.Single(p => p.UserName == "ryantheriault")
             };
+            People.Single(p => p.UserName == "elainestewart").BestFriend =
+                    People.Single(p => p.UserName == "ryantheriault");
+
             People.Single(p => p.UserName == "salliesampson").Friends = new Collection<Person>()
             {
                 People.Single(p => p.UserName == "jonirosales")
             };
+            People.Single(p => p.UserName == "salliesampson").BestFriend =
+                    People.Single(p => p.UserName == "jonirosales");
+
             People.Single(p => p.UserName == "jonirosales").Friends = new Collection<Person>()
             {
                 People.Single(p => p.UserName == "salliesampson")
             };
+            People.Single(p => p.UserName == "jonirosales").BestFriend =
+                    People.Single(p => p.UserName == "salliesampson");
+
             People.Single(p => p.UserName == "georginabarlow").Friends = new Collection<Person>()
             {
                 People.Single(p => p.UserName == "angelhuffman")
             };
+            People.Single(p => p.UserName == "georginabarlow").BestFriend =
+                    People.Single(p => p.UserName == "angelhuffman");
+
             People.Single(p => p.UserName == "angelhuffman").Friends = new Collection<Person>()
             {
                 People.Single(p => p.UserName == "georginabarlow")
             };
+            People.Single(p => p.UserName == "angelhuffman").BestFriend =
+                    People.Single(p => p.UserName == "georginabarlow");
+
             People.Single(p => p.UserName == "laurelosborn").Friends = new Collection<Person>()
             {
                 People.Single(p => p.UserName == "sandyosborn")
             };
+            People.Single(p => p.UserName == "laurelosborn").BestFriend =
+                    People.Single(p => p.UserName == "sandyosborn");
+
             People.Single(p => p.UserName == "sandyosborn").Friends = new Collection<Person>()
             {
                 People.Single(p => p.UserName == "laurelosborn")
             };
+            People.Single(p => p.UserName == "sandyosborn").BestFriend =
+                    People.Single(p => p.UserName == "laurelosborn");
+
             People.Single(p => p.UserName == "ursulabright").Friends = new Collection<Person>()
             {
                 People.Single(p => p.UserName == "genevievereeves"),
                 People.Single(p => p.UserName == "kristakemp")
             };
+            People.Single(p => p.UserName == "ursulabright").BestFriend =
+                    People.Single(p => p.UserName == "kristakemp");
+
             People.Single(p => p.UserName == "genevievereeves").Friends = new Collection<Person>()
             {
                 People.Single(p => p.UserName == "ursulabright")
             };
+            People.Single(p => p.UserName == "genevievereeves").BestFriend =
+                    People.Single(p => p.UserName == "ursulabright");
+
             People.Single(p => p.UserName == "kristakemp").Friends = new Collection<Person>()
             {
                 People.Single(p => p.UserName == "ursulabright")
             };
+            People.Single(p => p.UserName == "kristakemp").BestFriend =
+                    People.Single(p => p.UserName == "ursulabright");
+
             #endregion
 
             #region Me
@@ -1365,6 +1421,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
             };
 
             Me.Friends = People;
+            Me.BestFriend = People.FirstOrDefault();
             #endregion Me
         }
     }

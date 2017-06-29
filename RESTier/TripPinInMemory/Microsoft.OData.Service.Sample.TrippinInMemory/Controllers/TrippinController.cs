@@ -9,6 +9,12 @@ using System.Web.OData.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Service.Sample.TrippinInMemory.Api;
 using Microsoft.Restier.Core;
+using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
+using System;
+using System.Net.Http;
+using System.Web.Http.Routing;
+using Microsoft.OData.UriParser;
+using System.Collections.Generic;
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory.Controllers
 {
@@ -48,6 +54,291 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Controllers
             {
                 return NotFound();
             }
+        }
+
+        /// <summary>
+        /// Add a trip to Me.
+        /// </summary>
+        /// <param name="trip">The trip to add</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        [HttpPost]
+        [ODataRoute("Me/Trips")]
+        public IHttpActionResult AddTripToMe([FromBody]Trip trip)
+        {
+            return AddTrip(Api.Me, trip);
+        }
+
+        /// <summary>
+        /// Add a trip to a person.
+        /// </summary>
+        /// <param name="key">Key of people entity set, parsed from uri.</param>
+        /// <param name="trip">The trip to add.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        [HttpPost]
+        [ODataRoute("People({key})/Trips")]
+        [ODataRoute("People/{key}/Trips")]
+        public IHttpActionResult AddTripToPerson([FromODataUri]string key, [FromBody]Trip trip)
+        {
+            var person = Api.People.Where(p => p.UserName == key).FirstOrDefault();
+            return AddTrip(person, trip);
+        }
+
+        /// <summary>
+        /// Delete a trip from Me.
+        /// </summary>
+        /// <param name="tripId">The id of the trip to delete</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        [HttpDelete]
+        [ODataRoute("Me/Trips/{TripId}")]
+        public IHttpActionResult DeleteTripFromMe([FromODataUri]int tripId)
+        {
+            return DeleteTrip(Api.Me, tripId);
+        }
+
+        /// <summary>
+        /// Delete a trip from a person.
+        /// </summary>
+        /// <param name="key">Key of people entity set, parsed from uri.</param>
+        /// <param name="tripId">The id of the trip to delete.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        [HttpDelete]
+        [ODataRoute("People({key})/Trips/{TripId}")]
+        [ODataRoute("People/{key}/Trips/{TripId}")]
+        public IHttpActionResult DeleteTripFromPerson([FromODataUri]string key, [FromODataUri]int tripId)
+        {
+            var person = Api.People.Single(p => p.UserName == key);
+            return DeleteTrip(person, tripId);
+        }
+
+        /// <summary>
+        /// Add a Friend to Me.
+        /// </summary>
+        /// <param name="uri">The ref of the friend to add</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        [HttpPost]
+        [ODataRoute("Me/Friends/$ref")]
+        public IHttpActionResult AddFriendToMe([FromBody]Uri uri)
+        {
+            return AddFriend(Api.Me, uri);
+        }
+
+        /// <summary>
+        /// Add a trip to a person.
+        /// </summary>
+        /// <param name="key">Key of people entity set, parsed from uri.</param>
+        /// <param name="uri">The ref of the friend to add.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        [HttpPost]
+        [ODataRoute("People({key})/Friends/$ref")]
+        [ODataRoute("People/{key}/Friends/$ref")]
+        public IHttpActionResult AddFriendToPerson([FromODataUri]string key, [FromBody]Uri uri)
+        {
+            var person = Api.People.Where(p => p.UserName == key).FirstOrDefault();
+            return AddFriend(person, uri);
+        }
+
+        /// <summary>
+        /// Delete a Friend from Me.
+        /// </summary>
+        /// <param name="id">The id of the friend to delete</param>
+        /// <param name="friend">The friend to add.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        [HttpPost]
+        [ODataRoute("Me/Friends")]
+        public IHttpActionResult AddNewFriendToMe([FromBody]Person friend)
+        {
+            return AddNewFriend(Api.Me, friend);
+        }
+
+        /// <summary>
+        /// Add a friend to a person.
+        /// </summary>
+        /// <param name="key">Key of people entity set, parsed from uri.</param>
+        /// <param name="friend">The friend to add.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        [HttpPost]
+        [ODataRoute("People({key})/Friends")]
+        public IHttpActionResult AddNewFriendToPerson([FromODataUri]string key, [FromBody]Person friend)
+        {
+            var person = Api.People.Where(p => p.UserName == key).FirstOrDefault();
+            return AddNewFriend(person, friend);
+        }
+
+        ///TODO: doesn't get called
+        /// <summary>
+        /// Remove a friend from Me.
+        /// </summary>
+        /// <param name="friendId">The id of the friend to remove</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        [HttpDelete]
+        [ODataRoute("Me/Friends/$ref?$id={friendId}")]
+        public IHttpActionResult RemoveFriendFromMe([FromODataUri]string friendId)
+        {
+            return RemoveFriend(Api.Me, friendId);
+        }
+
+        ///TODO: doesn't get called
+        ////// <summary>
+        /// Delete a friend from a person.
+        /// </summary>
+        /// <param name="key">Key of people entity set, parsed from uri.</param>
+        /// <param name="friendId">The id of the friend to remove</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        [HttpDelete]
+        [ODataRoute("People({key})/Friends/$ref?$id={friendId}")]
+        [ODataRoute("People/{key}/Friends/$ref?$id={friendId}")]
+        public IHttpActionResult RemoveFriendFromPerson([FromODataUri]string key, [FromODataUri]string friendId)
+        {
+            var person = Api.People.Single(p => p.UserName == key);
+            return RemoveFriend(person, friendId);
+        }
+
+        /// <summary>
+        /// Add a trip to a person.
+        /// </summary>
+        /// <param name="person">Person to add the trip to.</param>
+        /// <param name="trip">The trip to add.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        private IHttpActionResult AddTrip(Person person, Trip trip)
+        {
+            if (person != null && trip != null)
+            {
+                if (person.Trips.Any(t => t.TripId == trip.TripId))
+                {
+                    return StatusCode(System.Net.HttpStatusCode.Conflict);
+                }
+                person.Trips.Add(trip);
+                return StatusCode(System.Net.HttpStatusCode.Created);
+            }
+
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Delete a trip from a person.
+        /// </summary>
+        /// <param name="key">Key of people entity set, parsed from uri.</param>
+        /// <param name="tripId">The id of the trip to delete.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        private IHttpActionResult DeleteTrip(Person person, int tripId)
+        {
+            if (person != null)
+            {
+                var trip = person.Trips.Where(t => t.TripId == tripId).FirstOrDefault();
+                if (trip != null)
+                {
+                    person.Trips.Remove(trip);
+                }
+
+                return StatusCode(System.Net.HttpStatusCode.NoContent);
+            }
+
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Add a friend to a person.
+        /// </summary>
+        /// <param name="person">Person to add the trip to.</param>
+        /// <param name="friend">The ref of the friend to add.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        private IHttpActionResult AddFriend(Person person, Uri friendRef)
+        {
+            if (person != null)
+            {
+                var friendId = GetKeyFromUri<string>(Request, friendRef, Api.ServiceProvider);
+                var friend = Api.People.Where(f => f.UserName == friendId).FirstOrDefault();
+                if (friend != null)
+                {
+                    person.Friends.Add(friend);
+                    return Ok(friend);
+                }
+            }
+
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Add a new friend to a person.
+        /// </summary>
+        /// <param name="person">Person to add the trip to.</param>
+        /// <param name="friend">The friend to add.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        private IHttpActionResult AddNewFriend(Person person, Person friend)
+        {
+            if (person != null && friend != null)
+            {
+                if(Api.People.Any(f => f.UserName == friend.UserName))
+                {
+                    return StatusCode(System.Net.HttpStatusCode.Conflict);
+                }
+                person.Friends.Add(friend);
+                var datasource = Api.DataStoreManager.GetDataStoreInstance(Restier.Providers.InMemory.Utils.InMemoryProviderUtils.GetSessionId());
+                if (datasource != null)
+                {
+                    datasource.People.Add(person);
+                }
+
+                return StatusCode(System.Net.HttpStatusCode.Created);
+            }
+
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Remove a friend from a person.
+        /// </summary>
+        /// <param name="key">Key of people entity set, parsed from uri.</param>
+        /// <param name="friendRef">The ref of the friend to delete.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        private IHttpActionResult RemoveFriend(Person person, string friendRef)
+        {
+            if (person != null)
+            {
+                var friendId = GetKeyFromUri<string>(Request, new Uri(friendRef), Api.ServiceProvider);
+                var friend = person.Friends.Where(f => f.UserName == friendId).FirstOrDefault();
+                if (friend != null)
+                {
+                    person.Friends.Remove(friend);
+                }
+
+                return StatusCode(System.Net.HttpStatusCode.NoContent);
+            }
+
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Get the key value from a URI.
+        /// </summary>
+        /// <param name="request">Request message.</param>
+        /// <param name="uri">The uri to return.</param>
+        /// <returns><see cref="IHttpActionResult"></returns>
+        private static TKey GetKeyFromUri<TKey>(HttpRequestMessage request, Uri uri, IServiceProvider api)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
+            }
+
+            var urlHelper = request.GetUrlHelper() ?? new UrlHelper(request);
+
+            string serviceRoot = urlHelper.CreateODataLink(
+                request.ODataProperties().RouteName,
+                request.GetPathHandler(), new List<ODataPathSegment>());
+
+            var odataPath = request.GetPathHandler().Parse(
+                TrippinApi.RemoveSessionIdFromUri(new Uri(serviceRoot)).AbsoluteUri, TrippinApi.RemoveSessionIdFromUri(uri).LocalPath, api);
+                
+            var keySegment = odataPath.Segments.OfType<KeySegment>().FirstOrDefault();
+            if (keySegment == null)
+            {
+                throw new InvalidOperationException("The link does not contain a key.");
+            }
+
+            // Note: assumes a single key value
+            var value = keySegment.Keys.FirstOrDefault().Value;
+            return (TKey)value;
         }
     }
 }

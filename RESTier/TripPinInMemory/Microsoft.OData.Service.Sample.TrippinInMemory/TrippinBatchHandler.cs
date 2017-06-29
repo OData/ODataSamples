@@ -30,7 +30,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory
                 OperationRequestItem operation = requestItem as OperationRequestItem;
                 if (operation != null)
                 {
-                    operation.Request.RequestUri = RemoveSessionIdFromUri(operation.Request.RequestUri);
+                    operation.Request.RequestUri = Api.TrippinApi.RemoveSessionIdFromUri(operation.Request.RequestUri);
                 }
                 else
                 {
@@ -39,27 +39,13 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory
                     {
                         foreach (HttpRequestMessage changesetOperation in changeset.Requests)
                         {
-                            changesetOperation.RequestUri = RemoveSessionIdFromUri(changesetOperation.RequestUri);
+                            changesetOperation.RequestUri = Api.TrippinApi.RemoveSessionIdFromUri(changesetOperation.RequestUri);
                         }
                     }
                 }
             }
 
             return requests;
-        }
-
-        private static Uri RemoveSessionIdFromUri(Uri fullUri)
-        {
-            string key = default(string);
-            var match = Regex.Match(fullUri.AbsolutePath, @"/\(S\((\w+)\)\)");
-            if (match.Success)
-            {
-                key = match.Groups[1].Value;
-            }
-
-            return new Uri(
-                   new Uri(fullUri.AbsoluteUri),
-                   fullUri.AbsolutePath.Replace("/(S(" + key + "))", ""));
         }
     }
 }

@@ -19,12 +19,14 @@ using Microsoft.Restier.Providers.InMemory.Submit;
 using Microsoft.Restier.Providers.InMemory.Utils;
 using Microsoft.Restier.Publishers.OData.Model;
 using Microsoft.Spatial;
+using System.Web.OData.Query;
+using System.Text.RegularExpressions;
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
 {
     public class TrippinApi : ApiBase
     {
-        private IDataStoreManager<string, TripPinDataSource> DataStoreManager
+        internal IDataStoreManager<string, TripPinDataSource> DataStoreManager
         {
             get { return this.GetApiService<IDataStoreManager<string, TripPinDataSource>>(); }
         }
@@ -37,6 +39,21 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
         public TrippinApi(IServiceProvider serviceProvider) : base(serviceProvider)
         {
         }
+
+        internal static Uri RemoveSessionIdFromUri(Uri fullUri)
+        {
+            string key = default(string);
+            var match = Regex.Match(fullUri.AbsolutePath, @"/\(S\((\w+)\)\)");
+            if (match.Success)
+            {
+                key = match.Groups[1].Value;
+            }
+
+            return new Uri(
+                   new Uri(fullUri.AbsoluteUri),
+                   fullUri.PathAndQuery.Replace("/(S(" + key + "))", ""));
+        }
+
 
         #region Entity Set
 
@@ -350,6 +367,13 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
                     MaxDataStoreInstanceLifeTime = new TimeSpan(0, 30, 0)
                 };
 
+            Func<IServiceProvider, ODataValidationSettings> validationSettingFactory = sp => new ODataValidationSettings
+            {
+                MaxAnyAllExpressionDepth = 4,
+                MaxExpansionDepth = 4
+            };
+
+            services.AddSingleton<ODataValidationSettings>(validationSettingFactory);
             services.AddService<IModelBuilder>((sp, next) => new ModelBuilder());
             services.AddService<IChangeSetInitializer>((sp, next) => new ChangeSetInitializer<TripPinDataSource>());
             services.AddService<ISubmitExecutor>((sp, next) => new SubmitExecutor());
