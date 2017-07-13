@@ -138,9 +138,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Controllers
         }
 
         /// <summary>
-        /// Delete a Friend from Me.
+        /// Add a new Friend for Me.
         /// </summary>
-        /// <param name="id">The id of the friend to delete</param>
         /// <param name="friend">The friend to add.</param>
         /// <returns><see cref="IHttpActionResult"></returns>
         [HttpPost]
@@ -164,31 +163,32 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Controllers
             return AddNewFriend(person, friend);
         }
 
-        ///TODO: doesn't get called
         /// <summary>
         /// Remove a friend from Me.
         /// </summary>
         /// <param name="friendId">The id of the friend to remove</param>
         /// <returns><see cref="IHttpActionResult"></returns>
         [HttpDelete]
-        [ODataRoute("Me/Friends/$ref?$id={friendId}")]
-        public IHttpActionResult RemoveFriendFromMe([FromODataUri]string friendId)
+        [ODataRoute("Me/Friends/$ref")]
+        public IHttpActionResult RemoveFriendFromMe()
         {
+            string friendId = Request.GetQueryNameValuePairs().Where(k => k.Key == "id").FirstOrDefault().Value;
             return RemoveFriend(Api.Me, friendId);
         }
 
-        ///TODO: doesn't get called
-        ////// <summary>
+        /// TODO: doesn't get called
+        /// <summary>
         /// Delete a friend from a person.
         /// </summary>
-        /// <param name="key">Key of people entity set, parsed from uri.</param>
-        /// <param name="friendId">The id of the friend to remove</param>
-        /// <returns><see cref="IHttpActionResult"></returns>
+        /// <param name = "key" > Key of people entity set, parsed from uri.</param>
+        /// <param name = "friendId" > The id of the friend to remove</param>
+        /// <returns><see cref = "IHttpActionResult" ></ returns >
         [HttpDelete]
-        [ODataRoute("People({key})/Friends/$ref?$id={friendId}")]
-        [ODataRoute("People/{key}/Friends/$ref?$id={friendId}")]
-        public IHttpActionResult RemoveFriendFromPerson([FromODataUri]string key, [FromODataUri]string friendId)
+        [ODataRoute("People({key})/Friends/$ref")]
+        [ODataRoute("People/{key}/Friends/$ref")]
+        public IHttpActionResult RemoveFriendFromPerson([FromODataUri]string key)
         {
+            string friendId = Request.GetQueryNameValuePairs().Where(k => k.Key == "id").FirstOrDefault().Value;
             var person = Api.People.Single(p => p.UserName == key);
             return RemoveFriend(person, friendId);
         }
@@ -293,6 +293,11 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Controllers
         /// <returns><see cref="IHttpActionResult"></returns>
         private IHttpActionResult RemoveFriend(Person person, string friendRef)
         {
+            if (String.IsNullOrEmpty(friendRef))
+            {
+                return StatusCode(System.Net.HttpStatusCode.BadRequest);
+            }
+
             if (person != null)
             {
                 var friendId = GetKeyFromUri<string>(Request, new Uri(friendRef), Api.ServiceProvider);
