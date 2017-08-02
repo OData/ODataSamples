@@ -56,7 +56,6 @@ namespace ODataUntypedSample.Controllers
 
         public IEdmEntityObject GetProduct(int key)
         {
-            object id;
             IEdmEntityObject product = Products.Single(p => HasId(p, key));
 
             return product;
@@ -64,7 +63,6 @@ namespace ODataUntypedSample.Controllers
 
         public IEdmEntityObject GetCategoryFromProduct(int key)
         {
-            object id;
             IEdmEntityObject product = Products.Single(p => HasId(p, key));
 
             object category;
