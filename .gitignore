@@ -43,6 +43,7 @@ _[Ss]cripts
 .builds
 *.dotCover
 packages/
+project.lock.json
 # Visual C++ cache files
 ipch/
 *.aps
