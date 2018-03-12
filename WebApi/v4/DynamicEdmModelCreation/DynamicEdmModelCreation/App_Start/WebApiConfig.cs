@@ -1,17 +1,17 @@
-﻿using System.Web.Http;
-using System.Web.OData.Extensions;
-
-namespace DynamicEdmModelCreation
+﻿namespace DynamicEdmModelCreation
 {
-    public static class WebApiConfig
-    {
-        public static void Register(HttpConfiguration config)
-        {
-            DynamicModelHelper.CustomMapODataServiceRoute(
-                config.Routes,
-                "odata",
-                "odata");
-            config.AddODataQueryFilter();
-        }
-    }
+	using System.Web.Http;
+	using System.Web.OData.Extensions;
+
+	public static class WebApiConfig
+	{
+		public static void Register(HttpConfiguration config)
+		{
+			config.EnableDependencyInjection();
+
+			config.CustomMapODataServiceRoute("odata", "odata");
+
+			config.AddODataQueryFilter();
+		}
+	}
 }

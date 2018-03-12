@@ -1,79 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Routing;
-using System.Web.OData.Routing;
-
-namespace DynamicEdmModelCreation
+﻿namespace DynamicEdmModelCreation
 {
-    public class CustomODataRoute : ODataRoute
-    {
-        private static readonly string _escapedHashMark = Uri.HexEscape('#');
-        private static readonly string _escapedQuestionMark = Uri.HexEscape('?');
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Net.Http;
+	using System.Web.Http;
+	using System.Web.Http.Routing;
+	using System.Web.OData.Routing;
 
-        private bool _canGenerateDirectLink;
+	public class CustomODataRoute : ODataRoute
+	{
+		private static readonly string escapedHashMark = Uri.HexEscape('#');
+		private static readonly string escapedQuestionMark = Uri.HexEscape('?');
 
-        public CustomODataRoute(string routePrefix, ODataPathRouteConstraint pathConstraint)
-            : base(routePrefix, pathConstraint)
-        {
-            _canGenerateDirectLink = routePrefix != null && RoutePrefix.IndexOf('{') == -1;
-        }
+		private readonly bool canGenerateDirectLink;
 
-        public override IHttpVirtualPathData GetVirtualPath(
-            HttpRequestMessage request,
-            IDictionary<string, object> values)
-        {
-            if (values == null || !values.Keys.Contains(HttpRoute.HttpRouteKey, StringComparer.OrdinalIgnoreCase))
-            {
-                return null;
-            }
+		public CustomODataRoute(string routePrefix, ODataPathRouteConstraint pathConstraint)
+			: base(routePrefix, pathConstraint)
+		{
+			this.canGenerateDirectLink = routePrefix != null && this.RoutePrefix.IndexOf('{') == -1;
+		}
 
-            object odataPathValue;
-            if (!values.TryGetValue(ODataRouteConstants.ODataPath, out odataPathValue))
-            {
-                return null;
-            }
+		public override IHttpVirtualPathData GetVirtualPath(HttpRequestMessage request, IDictionary<string, object> values)
+		{
+			if (values == null || !values.Keys.Contains(HttpRouteKey, StringComparer.OrdinalIgnoreCase))
+			{
+				return null;
+			}
 
-            string odataPath = odataPathValue as string;
-            if (odataPath != null)
-            {
-                return GenerateLinkDirectly(request, odataPath) ?? base.GetVirtualPath(request, values);
-            }
+			if (!values.TryGetValue(ODataRouteConstants.ODataPath, out object odataPathValue))
+			{
+				return null;
+			}
 
-            return null;
-        }
+			if (odataPathValue is string odataPath)
+			{
+				return this.GenerateLinkDirectly(request, odataPath) ?? base.GetVirtualPath(request, values);
+			}
 
-        internal HttpVirtualPathData GenerateLinkDirectly(HttpRequestMessage request, string odataPath)
-        {
-            HttpConfiguration configuration = request.GetConfiguration();
-            if (configuration == null || !_canGenerateDirectLink)
-            {
-                return null;
-            }
+			return null;
+		}
 
-            string dataSource = request.Properties[Constants.ODataDataSource] as string;
-            string link = CombinePathSegments(RoutePrefix, dataSource);
-            link = CombinePathSegments(link, odataPath);
-            link = UriEncode(link);
+		private HttpVirtualPathData GenerateLinkDirectly(HttpRequestMessage request, string odataPath)
+		{
+			HttpConfiguration configuration = request.GetConfiguration();
+			if (configuration == null || !this.canGenerateDirectLink)
+			{
+				return null;
+			}
 
-            return new HttpVirtualPathData(this, link);
-        }
+			string dataSource = request.Properties[Constants.ODataDataSource] as string;
+			string link = CombinePathSegments(this.RoutePrefix, dataSource);
+			link = CombinePathSegments(link, odataPath);
+			link = UriEncode(link);
 
-        private static string CombinePathSegments(string routePrefix, string odataPath)
-        {
-            return string.IsNullOrEmpty(routePrefix)
-                ? odataPath
-                : (string.IsNullOrEmpty(odataPath) ? routePrefix : routePrefix + '/' + odataPath);
-        }
+			return new HttpVirtualPathData(this, link);
+		}
 
-        private static string UriEncode(string str)
-        {
-            string escape = Uri.EscapeUriString(str);
-            escape = escape.Replace("#", _escapedHashMark);
-            escape = escape.Replace("?", _escapedQuestionMark);
-            return escape;
-        }
-    }
+		private static string CombinePathSegments(string routePrefix, string odataPath)
+		{
+			return string.IsNullOrEmpty(routePrefix)
+				? odataPath
+				: (string.IsNullOrEmpty(odataPath) ? routePrefix : routePrefix + '/' + odataPath);
+		}
+
+		private static string UriEncode(string str)
+		{
+			string escape = Uri.EscapeUriString(str);
+			escape = escape.Replace("#", escapedHashMark);
+			escape = escape.Replace("?", escapedQuestionMark);
+			return escape;
+		}
+	}
 }
