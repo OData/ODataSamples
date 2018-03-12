@@ -1,4 +1,7 @@
-﻿namespace DynamicEdmModelCreation
+﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Licensed under the MIT License.  See License.txt in the project root for license information.
+
+namespace DynamicEdmModelCreation
 {
 	using System;
 	using System.Collections.Generic;
@@ -12,6 +15,7 @@
 	using Microsoft.Extensions.DependencyInjection;
 	using Microsoft.OData;
 
+	// based on: https://github.com/OData/WebApi/blob/master/src/System.Web.OData/OData/Routing/ODataPathRouteConstraint.cs
 	public class CustomODataPathRouteConstraint : ODataPathRouteConstraint
 	{
 		// "%2F"
