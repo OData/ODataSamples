@@ -1,6 +1,7 @@
 [Bb]in
 [Oo]bj
 [Tt]est[Rr]esults
+.vs
 *.suo
 *.user
 *.[Cc]ache
