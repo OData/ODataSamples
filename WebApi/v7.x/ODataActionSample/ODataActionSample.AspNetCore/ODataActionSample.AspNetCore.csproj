@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Scripts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Scripts\jquery-2.1.0-vsdoc.js" />
+    <None Include="wwwroot\Scripts\jquery-2.1.0.js" />
+    <None Include="wwwroot\Scripts\jquery-2.1.0.min.js" />
+    <None Include="wwwroot\Scripts\jquery-2.1.0.min.map" />
+    <None Include="wwwroot\Scripts\knockout-3.0.0.debug.js" />
+    <None Include="wwwroot\Scripts\knockout-3.0.0.js" />
+    <None Include="wwwroot\Scripts\movies.js" />
+    <None Include="wwwroot\Scripts\_references.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.0.0-beta4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ODataActionSample.Model\ODataActionSample.Models.csproj" />
+  </ItemGroup>
+
+</Project>
