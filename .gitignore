@@ -118,3 +118,4 @@ pip-log.txt
 # DB files
 *.mdf
 *.ldf
+.vs

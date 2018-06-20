@@ -1,17 +1,16 @@
-﻿using System.Web.OData;
-using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Library;
-
-namespace DynamicEdmModelCreation.DataSource
+﻿namespace DynamicEdmModelCreation.DataSource
 {
-    internal interface IDataSource
-    {
-        void GetModel(EdmModel model, EdmEntityContainer container);
+	using System.Web.OData;
+	using Microsoft.OData.Edm;
 
-        void Get(IEdmEntityTypeReference entityType, EdmEntityObjectCollection collection);
+	internal interface IDataSource
+	{
+		void GetModel(EdmModel model, EdmEntityContainer container);
 
-        void Get(string key, EdmEntityObject entity);
+		void Get(IEdmEntityTypeReference entityType, EdmEntityObjectCollection collection);
 
-        object GetProperty(string property, EdmEntityObject entity);
-    }
+		void Get(string key, EdmEntityObject entity);
+
+		object GetProperty(string property, EdmEntityObject entity);
+	}
 }

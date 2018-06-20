@@ -1,39 +1,37 @@
-﻿using System.Linq;
-using System.Net.Http;
-using System.Web.Http.Controllers;
-using System.Web.OData.Routing;
-using System.Web.OData.Routing.Conventions;
-
-namespace DynamicEdmModelCreation
+﻿namespace DynamicEdmModelCreation
 {
-    public class MatchAllRoutingConvention : IODataRoutingConvention
-    {
-        public string SelectAction(
-            ODataPath odataPath,
-            HttpControllerContext controllerContext,
-            ILookup<string, HttpActionDescriptor> actionMap)
-        {
-            if (odataPath.PathTemplate == "~/entityset/key/navigation")
-            {
-                if (controllerContext.Request.Method == HttpMethod.Get)
-                {
-                    NavigationPathSegment navigationPathSegment = (NavigationPathSegment)odataPath.Segments.Last();
+	using System.Linq;
+	using System.Net.Http;
+	using System.Web.Http.Controllers;
+	using System.Web.OData.Routing;
+	using System.Web.OData.Routing.Conventions;
+	using Microsoft.OData.UriParser;
+	using ODataPath = System.Web.OData.Routing.ODataPath;
 
-                    controllerContext.RouteData.Values["navigation"] = navigationPathSegment.NavigationProperty.Name;
+	public class MatchAllRoutingConvention : IODataRoutingConvention
+	{
+		public string SelectAction(ODataPath odataPath, HttpControllerContext controllerContext, ILookup<string, HttpActionDescriptor> actionMap)
+		{
+			if (odataPath.PathTemplate == "~/entityset/key/navigation")
+			{
+				if (controllerContext.Request.Method == HttpMethod.Get)
+				{
+					NavigationPropertySegment navigationPropertySegment = (NavigationPropertySegment)odataPath.Segments.Last();
+					controllerContext.RouteData.Values["navigation"] = navigationPropertySegment.NavigationProperty.Name;
 
-                    KeyValuePathSegment keyValueSegment = (KeyValuePathSegment)odataPath.Segments[1];
-                    controllerContext.RouteData.Values[ODataRouteConstants.Key] = keyValueSegment.Value;
+					KeySegment keySegment = (KeySegment)odataPath.Segments[1];
+					controllerContext.RouteData.Values[ODataRouteConstants.Key] = keySegment.Keys.First().Value;
 
-                    return "GetNavigation";
-                }
-            }
+					return "GetNavigation";
+				}
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        public string SelectController(ODataPath odataPath, HttpRequestMessage request)
-        {
-            return (odataPath.Segments.FirstOrDefault() is EntitySetPathSegment) ? "HandleAll" : null;
-        }
-    }
+		public string SelectController(ODataPath odataPath, HttpRequestMessage request)
+		{
+			return (odataPath.Segments.FirstOrDefault() is EntitySetSegment) ? "HandleAll" : null;
+		}
+	}
 }

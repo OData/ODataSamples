@@ -1,86 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web.Http;
-using System.Web.OData.Batch;
-using System.Web.OData.Routing;
-using System.Web.OData.Routing.Conventions;
-using DynamicEdmModelCreation.DataSource;
-using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Library;
-
-namespace DynamicEdmModelCreation
+﻿namespace DynamicEdmModelCreation
 {
-    public static class DynamicModelHelper
-    {
-        public static ODataRoute CustomMapODataServiceRoute(
-            HttpRouteCollection routes,
-            string routeName,
-            string routePrefix)
-        {
-            IList<IODataRoutingConvention> routingConventions = ODataRoutingConventions.CreateDefault();
-            routingConventions.Insert(0, new MatchAllRoutingConvention());
-            return CustomMapODataServiceRoute(
-                routes,
-                routeName,
-                routePrefix,
-                GetModelFuncFromRequest(),
-                new DefaultODataPathHandler(),
-                routingConventions,
-                batchHandler: null);
-        }
+	using System.Collections.Generic;
+	using System.Web.Http;
+	using System.Web.OData.Routing;
+	using System.Web.OData.Routing.Conventions;
+	using DynamicEdmModelCreation.DataSource;
+	using Microsoft.OData.Edm;
+	using System.Linq;
+	using System.Web.OData.Extensions;
+	using Microsoft.Extensions.DependencyInjection;
+	using Microsoft.OData;
+	using ServiceLifetime = Microsoft.OData.ServiceLifetime;
 
-        private static ODataRoute CustomMapODataServiceRoute(
-            HttpRouteCollection routes,
-            string routeName,
-            string routePrefix,
-            Func<HttpRequestMessage, IEdmModel> modelProvider,
-            IODataPathHandler pathHandler,
-            IEnumerable<IODataRoutingConvention> routingConventions,
-            ODataBatchHandler batchHandler)
-        {
-            if (!string.IsNullOrEmpty(routePrefix))
-            {
-                int prefixLastIndex = routePrefix.Length - 1;
-                if (routePrefix[prefixLastIndex] == '/')
-                {
-                    routePrefix = routePrefix.Substring(0, routePrefix.Length - 1);
-                }
-            }
 
-            if (batchHandler != null)
-            {
-                batchHandler.ODataRouteName = routeName;
-                string batchTemplate = string.IsNullOrEmpty(routePrefix)
-                    ? ODataRouteConstants.Batch
-                    : routePrefix + '/' + ODataRouteConstants.Batch;
-                routes.MapHttpBatchRoute(routeName + "Batch", batchTemplate, batchHandler);
-            }
+	public static class DynamicModelHelper
+	{
+		public static ODataRoute CustomMapODataServiceRoute(this HttpConfiguration configuration, string routeName, string routePrefix)
+		{
+			ODataRoute route = configuration.MapODataServiceRoute(routeName, routePrefix, builder =>
+			{
+				// Get the model from the datasource of the current request: model-per-pequest.
+				builder.AddService<IEdmModel>(ServiceLifetime.Scoped, sp =>
+				{
+					IHttpRequestMessageProvider requestMessageProvider = sp.GetRequiredService<IHttpRequestMessageProvider>();
+					string dataSource = requestMessageProvider.Request.Properties[Constants.ODataDataSource] as string;
+					IEdmModel model = DataSourceProvider.GetEdmModel(dataSource);
+					return model;
+				});
 
-            CustomODataPathRouteConstraint routeConstraint = new CustomODataPathRouteConstraint(
-                pathHandler,
-                modelProvider,
-                routeName,
-                routingConventions);
-            CustomODataRoute odataRoute = new CustomODataRoute(routePrefix, routeConstraint);
-            routes.Add(routeName, odataRoute);
+				// Create a request provider for every request. This is a workaround for the missing HttpContext of a self-hosted webapi.
+				builder.AddService<IHttpRequestMessageProvider>(ServiceLifetime.Scoped, sp => new HttpRequestMessageProvider());
 
-            return odataRoute;
-        }
-    
-        private static Func<HttpRequestMessage, IEdmModel> GetModelFuncFromRequest()
-        {
-            return request =>
-            {
-                string odataPath = request.Properties[Constants.CustomODataPath] as string ?? string.Empty;
-                string[] segments = odataPath.Split('/');
-                string dataSource = segments[0];
-                request.Properties[Constants.ODataDataSource] = dataSource;
-                IEdmModel model = DataSourceProvider.GetEdmModel(dataSource);
-                request.Properties[Constants.CustomODataPath] = string.Join("/", segments, 1, segments.Length - 1);
-                return model;
-            };
-        }
-    }
+				// The routing conventions are registered as singleton.
+				builder.AddService<IEnumerable<IODataRoutingConvention>>(ServiceLifetime.Singleton, sp =>
+				{
+					IList<IODataRoutingConvention> routingConventions = ODataRoutingConventions.CreateDefault();
+					routingConventions.Insert(0, new MatchAllRoutingConvention());
+					return routingConventions.ToList().AsEnumerable();
+				});
+			});
+
+			CustomODataRoute odataRoute = new CustomODataRoute(route.RoutePrefix, new CustomODataPathRouteConstraint(routeName));
+			configuration.Routes.Remove(routeName);
+			configuration.Routes.Add(routeName, odataRoute);
+
+			return odataRoute;
+		}
+	}
 }
