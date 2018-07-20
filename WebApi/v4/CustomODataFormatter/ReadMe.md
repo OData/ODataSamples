@@ -19,17 +19,15 @@ serializer provider and uses those formatters in the configuration.
 ------------------
 This sample includes two versions： 
 
-|
-|--|- AspNetClassic
-   |
-   |- AspNetCore   
+* AspNetClassic : For .NET Framework version
+* AspNetCore : For .NET Core version
 
 ## AspNetClassic
 
 It's .NET Framework Console application depending on `Microsoft.AspNet.OData` nuget package.
 When it runs, you can get the following output:
 
-```cmd
+```json
 StatusCode: 200, ReasonPhrase: 'OK', Version: 1.1, Content: System.Net.Http.StreamContent, Headers:
 {
   OData-Version: 4.0
@@ -38,6 +36,7 @@ StatusCode: 200, ReasonPhrase: 'OK', Version: 1.1, Content: System.Net.Http.Stre
   Content-Length: 448
   Content-Type: application/json; odata.metadata=minimal
 }
+
 {"@odata.context":"http://localhost:9000/odata/$metadata#Documents","value":[{"@org.northwind.search.score":0.77235521784627592,"ID":0,"Name":"ReadMe.txt","Content":"Lorem ipsum dolor cat amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut "},{"@org.northwind.search.score":0.69241623798963436,"ID":1,"Name":"Another.txt","Content":"labore cat dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco "}]}
 ```
 Be noted: the score value maybe vary at your side.
@@ -46,7 +45,7 @@ Be noted: the score value maybe vary at your side.
 ## AspNetCore
 
 It's an ASP.NET Core Web Application depending on `Microsoft.AspNetCore.OData` nuget package.
-When it runs, you can use any client tool (for example POSTMAN) to file request:
+When it runs, you can use any client tool (for example `POSTMAN`) to file request:
 
 ```C#
 GET http://localhost:5000/odata/Documents?search=cat
