@@ -27,7 +27,7 @@ This sample includes two versions：
 It's .NET Framework Console application depending on `Microsoft.AspNet.OData` nuget package.
 When it runs, you can get the following output:
 
-```json
+```C#
 StatusCode: 200, ReasonPhrase: 'OK', Version: 1.1, Content: System.Net.Http.StreamContent, Headers:
 {
   OData-Version: 4.0
