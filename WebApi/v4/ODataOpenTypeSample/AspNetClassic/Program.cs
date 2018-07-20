@@ -1,23 +1,24 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Licensed under the MIT License.  See License.txt in the project root for license information.
+
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
-using System.Web.OData.Builder;
-using System.Web.OData.Extensions;
-using Microsoft.OData.Edm;
+using Microsoft.AspNet.OData.Extensions;
 using Microsoft.Owin.Hosting;
 using Newtonsoft.Json.Linq;
 using Owin;
 
 namespace ODataOpenTypeSample
 {
-    public class Program
+    class Program
     {
         private static readonly string _baseAddress = string.Format("http://{0}:12345", Environment.MachineName);
         private static readonly HttpClient _httpClient = new HttpClient();
         private static readonly string _namespace = typeof(Account).Namespace;
 
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
             _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             using (WebApp.Start(_baseAddress, Configuration))
@@ -69,7 +70,7 @@ namespace ODataOpenTypeSample
         public static void Configuration(IAppBuilder builder)
         {
             HttpConfiguration config = new HttpConfiguration();
-            config.MapODataServiceRoute(routeName: "OData", routePrefix: "odata", model: GetModel());
+            config.MapODataServiceRoute(routeName: "OData", routePrefix: "odata", model: EdmModelBuilder.GetModel());
             builder.UseWebApi(config);
         }
 
@@ -163,18 +164,6 @@ namespace ODataOpenTypeSample
             HttpResponseMessage response = _httpClient.GetAsync(requestUri).Result;
             response.EnsureSuccessStatusCode();
             return response;
-        }
-
-        private static IEdmModel GetModel()
-        {
-            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-            builder.EntitySet<Account>("Accounts");
-            builder.EnumType<Gender>();
-
-            builder.Namespace = typeof(Account).Namespace;
-
-            var edmModel = builder.GetEdmModel();
-            return edmModel;
         }
 
         private static void Comment(string message)
