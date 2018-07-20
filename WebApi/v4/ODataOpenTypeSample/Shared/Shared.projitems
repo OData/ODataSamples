@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>b12cdbfd-9038-4be7-af06-9c12b97eb32a</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Account.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Address.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EdmModelBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gender.cs" />
+  </ItemGroup>
+</Project>
