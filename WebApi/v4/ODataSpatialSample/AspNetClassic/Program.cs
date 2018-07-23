@@ -1,17 +1,14 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Licensed under the MIT License.  See License.txt in the project root for license information.
+
+using System;
 using System.Data.Entity.Spatial;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.OData.Extensions;
-using Microsoft.OData.Core;
-using Microsoft.OData.Core.UriParser;
+using Microsoft.AspNet.OData.Extensions;
+using Microsoft.OData;
 using Microsoft.Spatial;
 using ODataSpatialSample.Models;
 
@@ -61,7 +58,7 @@ namespace ODataSpatialSample
         {
             Console.WriteLine("\n**********************************\n[Request]: POST " + requestUri);
 
-        const string payload = @"{
+            const string payload = @"{
   ""Location"":{
     ""type"":""Point"",""coordinates"":[
       2.0,2.0,2.0,2.0
@@ -120,7 +117,7 @@ namespace ODataSpatialSample
                 return;
             }
 
-            string[] names = {"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"};
+            string[] names = { "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune" };
 
             string[] lineStrings =
             {
@@ -135,9 +132,9 @@ namespace ODataSpatialSample
             var customers = Enumerable.Range(1, 7).Select(e => new Customer
             {
                 Id = e,
-                Name = names[e-1],
+                Name = names[e - 1],
                 DbLocation = DbGeography.FromText(String.Format("POINT({0} {1} {2} {3})", e, e, e, e)),
-                DbLineString = DbGeography.FromText(lineStrings[e-1])
+                DbLineString = DbGeography.FromText(lineStrings[e - 1])
             });
 
             foreach (var customer in customers)
