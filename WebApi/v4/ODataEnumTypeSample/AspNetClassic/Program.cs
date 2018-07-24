@@ -1,15 +1,18 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Licensed under the MIT License.  See License.txt in the project root for license information.
+
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
-using System.Web.OData.Extensions;
+using Microsoft.AspNet.OData.Extensions;
 using Microsoft.Owin.Hosting;
 using Newtonsoft.Json.Linq;
 using Owin;
 
 namespace ODataEnumTypeSample
 {
-    public class Program
+    class Program
     {
         private static readonly string _baseAddress = "http://localhost:12345";
         private static readonly HttpClient _httpClient = new HttpClient();
@@ -49,6 +52,7 @@ namespace ODataEnumTypeSample
         {
             HttpConfiguration config = new HttpConfiguration();
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
+            config.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
             config.MapODataServiceRoute(routeName: "OData", routePrefix: "odata", model: ODataModels.GetModel());
             builder.UseWebApi(config);
         }

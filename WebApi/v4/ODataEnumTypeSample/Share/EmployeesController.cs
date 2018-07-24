@@ -1,9 +1,21 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
+// Licensed under the MIT License.  See License.txt in the project root for license information.
+
+#if NETCOREAPP2_1
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Routing;
+using Microsoft.AspNetCore.Mvc;
+#else
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using System.Web.OData;
-using System.Web.OData.Routing;
+using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Routing;
+#endif
 
 namespace ODataEnumTypeSample
 {
@@ -23,27 +35,52 @@ namespace ODataEnumTypeSample
         }
 
         [EnableQuery(PageSize = 10, MaxExpansionDepth = 5)]
-        public IHttpActionResult Get()
+#if NETCOREAPP2_1
+        public IActionResult
+#else
+        public IHttpActionResult
+#endif
+            Get()
         {
             return Ok(_employees.AsQueryable());
         }
 
-        public IHttpActionResult Get(int key)
+#if NETCOREAPP2_1
+        public IActionResult 
+#else
+        public IHttpActionResult 
+#endif
+            Get(int key)
         {
             return Ok(_employees.Single(e => e.ID == key));
         }
 
-        public IHttpActionResult GetAccessLevelFromEmployee(int key)
+#if NETCOREAPP2_1
+        public IActionResult 
+#else
+        public IHttpActionResult 
+#endif
+            GetAccessLevelFromEmployee(int key)
         {
             return Ok(_employees.Single(e => e.ID == key).AccessLevel);
         }
 
-        public IHttpActionResult GetNameFromEmployee(int key)
+#if NETCOREAPP2_1
+        public IActionResult 
+#else
+        public IHttpActionResult 
+#endif
+            GetNameFromEmployee(int key)
         {
             return Ok(_employees.Single(e => e.ID == key).Name);
         }
 
-        public IHttpActionResult Post(Employee employee)
+#if NETCOREAPP2_1
+        public IActionResult 
+#else
+        public IHttpActionResult 
+#endif
+            Post(Employee employee)
         {
             employee.ID = _employees.Count + 1;
             _employees.Add(employee);
@@ -53,7 +90,12 @@ namespace ODataEnumTypeSample
 
         [HttpPost]
         [ODataRoute("Employees({key})/ODataEnumTypeSample.AddAccessLevel")]
-        public IHttpActionResult AddAccessLevel(int key, ODataActionParameters parameters)
+#if NETCOREAPP2_1
+        public IActionResult 
+#else
+        public IHttpActionResult 
+#endif
+            AddAccessLevel(int key, ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
             {
@@ -75,7 +117,12 @@ namespace ODataEnumTypeSample
 
         [HttpGet]
         [ODataRoute("HasAccessLevel(ID={id},AccessLevel={accessLevel})")]
-        public IHttpActionResult HasAccessLevel([FromODataUri] int id, [FromODataUri] AccessLevel accessLevel)
+#if NETCOREAPP2_1
+        public IActionResult 
+#else
+        public IHttpActionResult 
+#endif
+            HasAccessLevel([FromODataUri] int id, [FromODataUri] AccessLevel accessLevel)
         {
             if (!ModelState.IsValid)
             {
