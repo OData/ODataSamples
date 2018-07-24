@@ -1,33 +1,48 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataEnumTypeSample", "ODataEnumTypeSample\ODataEnumTypeSample.csproj", "{D25E2E3B-EF9D-4FE3-8BF5-9B3D3954C506}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNetCore", "AspNetCore", "{F7DD5110-333D-4220-89F8-70EAAB19AAEE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{14AB6462-1548-4192-AE84-49C2A7257234}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNetClassic", "AspNetClassic", "{2935BD2E-A852-4698-9C8F-E5703FF60BBD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3CB2CF3D-4009-44AE-ABF6-2AC9BA5A7FD6}"
-	ProjectSection(SolutionItems) = preProject
-		ReadMe.txt = ReadMe.txt
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataEnumTypeSample", "AspNetClassic\ODataEnumTypeSample.csproj", "{BD0E8FA7-89B2-433E-B8BC-8915A37F9517}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{DF7B7207-24AA-42F8-BA93-A50FFAF51209}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Share", "Share\Share.shproj", "{854FFE80-97A1-43BB-95A9-3D065BFDB11E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ODataEnumTypeSample", "AspNetCore\ODataEnumTypeSample.csproj", "{2E0857BD-BF12-41A9-B3E5-1E8E00AB3824}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Share\Share.projitems*{854ffe80-97a1-43bb-95a9-3d065bfdb11e}*SharedItemsImports = 13
+		Share\Share.projitems*{bd0e8fa7-89b2-433e-b8bc-8915a37f9517}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D25E2E3B-EF9D-4FE3-8BF5-9B3D3954C506}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D25E2E3B-EF9D-4FE3-8BF5-9B3D3954C506}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D25E2E3B-EF9D-4FE3-8BF5-9B3D3954C506}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D25E2E3B-EF9D-4FE3-8BF5-9B3D3954C506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD0E8FA7-89B2-433E-B8BC-8915A37F9517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD0E8FA7-89B2-433E-B8BC-8915A37F9517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD0E8FA7-89B2-433E-B8BC-8915A37F9517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD0E8FA7-89B2-433E-B8BC-8915A37F9517}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E0857BD-BF12-41A9-B3E5-1E8E00AB3824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E0857BD-BF12-41A9-B3E5-1E8E00AB3824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E0857BD-BF12-41A9-B3E5-1E8E00AB3824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E0857BD-BF12-41A9-B3E5-1E8E00AB3824}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BD0E8FA7-89B2-433E-B8BC-8915A37F9517} = {2935BD2E-A852-4698-9C8F-E5703FF60BBD}
+		{854FFE80-97A1-43BB-95A9-3D065BFDB11E} = {DF7B7207-24AA-42F8-BA93-A50FFAF51209}
+		{2E0857BD-BF12-41A9-B3E5-1E8E00AB3824} = {F7DD5110-333D-4220-89F8-70EAAB19AAEE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7EB546A5-E224-498C-B838-609680EDDBD3}
 	EndGlobalSection
 EndGlobal
