@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomODataFormatter", "CustomODataFormatter\CustomODataFormatter.csproj", "{7102DD67-A44E-4405-8E13-9FAFDDA1D160}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7102DD67-A44E-4405-8E13-9FAFDDA1D160}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7102DD67-A44E-4405-8E13-9FAFDDA1D160}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7102DD67-A44E-4405-8E13-9FAFDDA1D160}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7102DD67-A44E-4405-8E13-9FAFDDA1D160}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {414DE386-629F-4F48-8994-B9B7F75C60D9}
+	EndGlobalSection
+EndGlobal
