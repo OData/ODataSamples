@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataEnumTypeSample", "ODataEnumTypeSample\ODataEnumTypeSample.csproj", "{BD0E8FA7-89B2-433E-B8BC-8915A37F9517}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BD0E8FA7-89B2-433E-B8BC-8915A37F9517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD0E8FA7-89B2-433E-B8BC-8915A37F9517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD0E8FA7-89B2-433E-B8BC-8915A37F9517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD0E8FA7-89B2-433E-B8BC-8915A37F9517}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7EB546A5-E224-498C-B838-609680EDDBD3}
+	EndGlobalSection
+EndGlobal
