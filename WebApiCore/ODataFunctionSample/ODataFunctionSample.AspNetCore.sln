@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ODataFunctionSample.AspNetCore", "ODataFunctionSample.AspNetCore\ODataFunctionSample.AspNetCore.csproj", "{33C50395-A4E5-4B94-8682-B844C31B6930}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataFunctionSample.AspNetCore.Tests", "ODataFunctionSample.AspNetCore.Tests\ODataFunctionSample.AspNetCore.Tests.csproj", "{8EB25A77-4940-4546-BE3B-06B08D5C7086}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33C50395-A4E5-4B94-8682-B844C31B6930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C50395-A4E5-4B94-8682-B844C31B6930}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C50395-A4E5-4B94-8682-B844C31B6930}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C50395-A4E5-4B94-8682-B844C31B6930}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EB25A77-4940-4546-BE3B-06B08D5C7086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EB25A77-4940-4546-BE3B-06B08D5C7086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EB25A77-4940-4546-BE3B-06B08D5C7086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EB25A77-4940-4546-BE3B-06B08D5C7086}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F7A82C2A-86B3-4BD7-A15B-8B78645C1901}
+	EndGlobalSection
+EndGlobal
