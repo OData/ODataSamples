@@ -28,8 +28,4 @@
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.0.0-beta4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ODataActionSample.Model\ODataActionSample.Models.csproj" />
-  </ItemGroup>
-
 </Project>
