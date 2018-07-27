@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSingletonSample", "ODataSingletonSample\ODataSingletonSample.csproj", "{40C32375-2ED6-42AE-A7A1-064BA1836273}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataSingletonSample.Client", "ODataSingletonSample.Client\ODataSingletonSample.Client.csproj", "{94E07DB7-A29C-4646-9358-C9AFD555D16D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40C32375-2ED6-42AE-A7A1-064BA1836273}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40C32375-2ED6-42AE-A7A1-064BA1836273}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40C32375-2ED6-42AE-A7A1-064BA1836273}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40C32375-2ED6-42AE-A7A1-064BA1836273}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94E07DB7-A29C-4646-9358-C9AFD555D16D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94E07DB7-A29C-4646-9358-C9AFD555D16D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94E07DB7-A29C-4646-9358-C9AFD555D16D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94E07DB7-A29C-4646-9358-C9AFD555D16D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92E746F4-832C-4B57-A391-0CD4076090A8}
+	EndGlobalSection
+EndGlobal
