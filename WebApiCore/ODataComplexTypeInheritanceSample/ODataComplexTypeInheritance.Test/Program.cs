@@ -27,7 +27,7 @@ namespace ODataComplexTypeInheritanceSample.Test
             requestUri = _baseAddress + "/odata/$metadata";
             Comment("GET " + requestUri);
             response = Get(requestUri);
-            Comment(response, true);
+            Comment(response);
 
             // The property DefaultShape in Windows is declared as Shape, and in the instance Windows(1)
             // it is actually a Ploygon.
@@ -152,30 +152,11 @@ namespace ODataComplexTypeInheritanceSample.Test
             Console.WriteLine(message);
         }
 
-        private static void Comment(HttpResponseMessage response, bool metadataResponse = false)
+        private static void Comment(HttpResponseMessage response)
         {
             Console.WriteLine(response);
-            if (metadataResponse)
-            {
-                string content = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(content);
-            }
-            else
-            {
-                string result = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(result);
-            }
+            string result = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine(result);
         }
     }
-/*
-    public static class HttpContentExtensions
-    {
-        public static async Task<T> ReadAsJsonAsync<T>(this HttpContent content)
-        {
-            string json = await content.ReadAsStringAsync();
-            T value = JsonConvert.DeserializeObject<T>(json);
-            return value;
-        }
-    }
-*/
 }
