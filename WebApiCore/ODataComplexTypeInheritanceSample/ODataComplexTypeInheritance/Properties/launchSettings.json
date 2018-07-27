@@ -1,0 +1,30 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:18655",
+      "sslPort": 44304
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "odata/$metadata",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "ODataComplexTypeInheritance": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "odata/$metadata",
+      "applicationUrl": "https://localhost:44304;http://localhost:18655",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
