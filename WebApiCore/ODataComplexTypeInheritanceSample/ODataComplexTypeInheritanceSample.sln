@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataComplexTypeInheritance", "ODataComplexTypeInheritance\ODataComplexTypeInheritance.csproj", "{ADBE47C7-7A10-49CF-B57D-1D8746A98451}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataComplexTypeInheritance.Test", "ODataComplexTypeInheritance.Test\ODataComplexTypeInheritance.Test.csproj", "{84AF02E6-82BD-41CE-8961-611F3F5B40CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADBE47C7-7A10-49CF-B57D-1D8746A98451}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADBE47C7-7A10-49CF-B57D-1D8746A98451}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADBE47C7-7A10-49CF-B57D-1D8746A98451}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADBE47C7-7A10-49CF-B57D-1D8746A98451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84AF02E6-82BD-41CE-8961-611F3F5B40CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84AF02E6-82BD-41CE-8961-611F3F5B40CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84AF02E6-82BD-41CE-8961-611F3F5B40CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84AF02E6-82BD-41CE-8961-611F3F5B40CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1E9CE22E-A5E4-46F8-B7B0-5049289155BB}
+	EndGlobalSection
+EndGlobal
