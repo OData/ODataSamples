@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generation date: 7/30/2018 10:38:54 PM
+// Generation date: 7/31/2018 5:08:54 PM
 namespace ODataBatchSample.Client.ODataBatchSample.Models
 {
     /// <summary>
