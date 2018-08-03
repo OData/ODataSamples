@@ -1,19 +1,23 @@
-﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
-// Licensed under the MIT License.  See License.txt in the project root for license information.
-
-using Microsoft.AspNet.OData.Batch;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OData.Edm;
-using ODataBatchSample.Models;
+using ODataModelAliasingSample.AspNetCore.Model;
 
-namespace ODataBatchSample
+namespace ODataModelAliasingSample
 {
     public class Startup
     {
@@ -29,9 +33,9 @@ namespace ODataBatchSample
         {
             services.AddOData();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            services.AddDbContext<CustomersContext>(options
-                => options.UseSqlServer(Configuration.GetConnectionString("BatchCustomerContext")));
+            services.AddDbContext<CustomersContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("ModelAliasingCustomerContext")));
+            Thread.Sleep(15 * 1000);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,19 +51,23 @@ namespace ODataBatchSample
             }
 
             app.UseHttpsRedirection();
-
-            app.UseODataBatching();
             app.UseMvc(routeBuilder =>
             {
-                routeBuilder.MapODataServiceRoute("odata", "odata", GetModel(), new DefaultODataBatchHandler());
+                routeBuilder.Select().Filter().Expand().OrderBy().MaxTop(100).Count();
+                routeBuilder.MapODataServiceRoute("odata", "odata", GetEdmModel());
             });
         }
 
-        private static IEdmModel GetModel()
+        // Builds the EDM model for the OData service.
+        private static IEdmModel GetEdmModel()
         {
             ODataModelBuilder builder = new ODataConventionModelBuilder();
-            builder.ContainerName = "CustomersContext";
-            builder.EntitySet<Customer>("Customers");
+            EntitySetConfiguration<CustomerDto> customers = builder.EntitySet<CustomerDto>("Customers");
+            customers.EntityType.HasKey(entity => entity.Id);
+
+            EntitySetConfiguration<OrderDto> orders = builder.EntitySet<OrderDto>("Orders");
+            orders.EntityType.Name = "Order";
+            orders.EntityType.Property(p => p.Total).Name = "Check";
             return builder.GetEdmModel();
         }
     }

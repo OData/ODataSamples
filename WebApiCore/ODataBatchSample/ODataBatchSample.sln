@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ODataBatchSample.AspNetCore
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataBatchSample.Client", "ODataBatchSample.Client\ODataBatchSample.Client.csproj", "{265775BD-8576-4EF6-8417-BB29A0078AEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataJsonBatchSample.Client", "ODataJsonBatchSample.Client\ODataJsonBatchSample.Client.csproj", "{F14A29E4-C543-47AC-A6B9-D0D0AFBB3A47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataJsonBatchSample.AspNetCore.Client", "ODataJsonBatchSample.Client\ODataJsonBatchSample.AspNetCore.Client.csproj", "{F14A29E4-C543-47AC-A6B9-D0D0AFBB3A47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

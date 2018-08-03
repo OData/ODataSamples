@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataModelAliasingSample.AspNetCore", "ODataModelAliasingSample\ODataModelAliasingSample.AspNetCore.csproj", "{875554A0-32BA-4C0F-81D2-17B48605AB97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataModelAliasingSample.Client", "ODataModelAliasingSample.Client\ODataModelAliasingSample.Client.csproj", "{3A57B5EA-B269-4D4F-B7B3-419D795796DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{875554A0-32BA-4C0F-81D2-17B48605AB97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{875554A0-32BA-4C0F-81D2-17B48605AB97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{875554A0-32BA-4C0F-81D2-17B48605AB97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{875554A0-32BA-4C0F-81D2-17B48605AB97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A57B5EA-B269-4D4F-B7B3-419D795796DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A57B5EA-B269-4D4F-B7B3-419D795796DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A57B5EA-B269-4D4F-B7B3-419D795796DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A57B5EA-B269-4D4F-B7B3-419D795796DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A5988F4-1FA6-4C8B-A965-4DF779C7CD26}
+	EndGlobalSection
+EndGlobal
