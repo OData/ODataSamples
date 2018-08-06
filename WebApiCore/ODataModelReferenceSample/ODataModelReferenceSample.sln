@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleService1.AspNetCore", "SampleService1\SampleService1.AspNetCore.csproj", "{52DD8ED8-323C-4586-9462-52F4D97CB9A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleService2.AspNetCore", "SampleService2\SampleService2.AspNetCore.csproj", "{048E0F67-4061-49E0-B2FD-1A388E28E857}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52DD8ED8-323C-4586-9462-52F4D97CB9A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52DD8ED8-323C-4586-9462-52F4D97CB9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52DD8ED8-323C-4586-9462-52F4D97CB9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52DD8ED8-323C-4586-9462-52F4D97CB9A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{048E0F67-4061-49E0-B2FD-1A388E28E857}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{048E0F67-4061-49E0-B2FD-1A388E28E857}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{048E0F67-4061-49E0-B2FD-1A388E28E857}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{048E0F67-4061-49E0-B2FD-1A388E28E857}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B0D3D47E-04C4-480C-A7D8-0E4B19AF0F06}
+	EndGlobalSection
+EndGlobal
