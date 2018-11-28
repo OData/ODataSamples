@@ -123,5 +123,16 @@ namespace ODataComplexTypeInheritanceSample
             int count = window.OptionalShapes.Count;
             return Ok(count);
         }
+
+        public IActionResult PostToOptionalShapes(int key, [FromBody] Shape newShape)
+        {
+            Window window = _windows.FirstOrDefault(e => e.Id == key);
+            if (window == null)
+            {
+                return NotFound();
+            }
+            window.OptionalShapes.Add(newShape);
+            return Updated(window);
+        }
     }
 }
