@@ -17,10 +17,10 @@ namespace ODataComplexTypeInheritanceSample
 
         public WindowsController()
         {
-            Polygon triagle = new Polygon() { HasBorder = true, Vertexes = new List<Point>() };
-            triagle.Vertexes.Add(new Point() { X = 1, Y = 2 });
-            triagle.Vertexes.Add(new Point() { X = 2, Y = 3 });
-            triagle.Vertexes.Add(new Point() { X = 4, Y = 8 });
+            Polygon triangle = new Polygon() { HasBorder = true, Vertexes = new List<Point>() };
+            triangle.Vertexes.Add(new Point() { X = 1, Y = 2 });
+            triangle.Vertexes.Add(new Point() { X = 2, Y = 3 });
+            triangle.Vertexes.Add(new Point() { X = 4, Y = 8 });
 
             Polygon rectangle = new Polygon() { HasBorder = true, Vertexes = new List<Point>() };
             rectangle.Vertexes.Add(new Point() { X = 0, Y = 0 });
@@ -49,7 +49,7 @@ namespace ODataComplexTypeInheritanceSample
                 Parent = dashboardWindow,
             };
 
-            popupWindow.OptionalShapes.Add(triagle);
+            popupWindow.OptionalShapes.Add(triangle);
             popupWindow.OptionalShapes.Add(circle);
             _windows.Add(popupWindow);
 
@@ -62,7 +62,7 @@ namespace ODataComplexTypeInheritanceSample
                 Parent = popupWindow,
             };
 
-            anotherPopupWindow.OptionalShapes.Add(triagle);
+            anotherPopupWindow.OptionalShapes.Add(triangle);
             anotherPopupWindow.OptionalShapes.Add(circle);
             _windows.Add(anotherPopupWindow);
         }
