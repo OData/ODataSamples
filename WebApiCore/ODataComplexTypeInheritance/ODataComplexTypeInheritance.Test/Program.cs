@@ -15,6 +15,48 @@ namespace ODataComplexTypeInheritanceSample.Test
         // namespace string for the CLR types in the models.
         private static readonly string _namespace = "ODataComplexTypeInheritanceSample.Models";
 
+        private const string _shapeObjectForAction = @"
+{
+    'shape':
+    {
+        '@odata.type':'#ODataComplexTypeInheritanceSample.Models.Polygon',
+        'HasBorder':true,
+        'Vertexes':[
+            {
+              'X':0,'Y':0
+            },
+            {
+              'X':2,'Y':0
+            },
+            {
+              'X':2,'Y':2
+            },
+            {
+              'X':0,'Y':2
+            }
+        ]
+    }
+}";
+        private const string _shapeObjectForPost = @"
+{
+
+    '@odata.type':'#ODataComplexTypeInheritanceSample.Models.Polygon',
+    'HasBorder':true,
+    'Vertexes':[
+        {
+          'X':0,'Y':0
+        },
+        {
+          'X':2,'Y':0
+        },
+        {
+          'X':2,'Y':2
+        },
+        {
+          'X':0,'Y':2
+        }
+    ]
+}";
         static void Main(string[] args)
         {
             Console.WriteLine("Listening on " + _baseAddress);
@@ -53,7 +95,13 @@ namespace ODataComplexTypeInheritanceSample.Test
             // Action that takes in a base complex type
             requestUri = _baseAddress + "/odata/Windows(1)/AddOptionalShape";
             Comment("POST " + requestUri);
-            response = ActionCall(requestUri);
+            response = ActionCall(requestUri, _shapeObjectForAction);
+            Comment(response);
+
+            // Post request that add a base complex type to a collection
+            requestUri = _baseAddress + "/odata/Windows(1)/OptionalShapes";
+            Comment("POST " + requestUri);
+            response = ActionCall(requestUri, _shapeObjectForPost);
             Comment(response);
 
             // This method illustrate how to add an entity which contains derived complex type.
@@ -114,30 +162,8 @@ namespace ODataComplexTypeInheritanceSample.Test
             return response;
         }
 
-        private static HttpResponseMessage ActionCall(string requestUri)
+        private static HttpResponseMessage ActionCall(string requestUri, string content)
         {
-            string content = @"
-{
-    'shape':
-    {
-        '@odata.type':'#ODataComplexTypeInheritanceSample.Models.Polygon',
-        'HasBorder':true,
-        'Vertexes':[
-            {
-              'X':0,'Y':0
-            },
-            {
-              'X':2,'Y':0
-            },
-            {
-              'X':2,'Y':2
-            },
-            {
-              'X':0,'Y':2
-            }
-        ]
-    }
-}";
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, requestUri);
             request.Content = new StringContent(content);
             request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");

@@ -7,6 +7,7 @@ It illustrates the complex type inheritance requests, such as:
 2. Function that returns a base complex type
 3. Action that takes in a base complex type
 4. Add an entity which contains derived complex type instance
+5. Add a member of base complex type to a collection.
 
 This sample consists of two projects, one for the service and another for the client.
 To exercise the sample, first start the service in ODataComplexTypeInheritance project. 
