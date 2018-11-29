@@ -72,7 +72,7 @@ namespace ODataComplexTypeInheritanceSample.Test
             Comment(response);
 
             // The property DefaultShape in Windows is declared as Shape, and in the instance Windows(1)
-            // it is actually a Ploygon.
+            // it is actually a Polygon.
             // The property OptionalShapes is a collection of Shape, in the instance the 3 types of Shape
             // are included.
             requestUri = _baseAddress + "/odata/Windows(1)";
