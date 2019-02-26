@@ -1,6 +1,7 @@
 ﻿namespace ODataSamples.WebApiService
 {
     using System.Web.Http;
+    using System.Web.Http.Cors;
     using System.Web.OData;
     using System.Web.OData.Batch;
     using System.Web.OData.Builder;
@@ -15,6 +16,7 @@
         {
             config.MessageHandlers.Add(new ETagMessageHandler());
             config.MapODataServiceRoute("odata", null, GetEdmModel(), new DefaultODataBatchHandler(GlobalConfiguration.DefaultServer));
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
             config.EnsureInitialized();
         }
 
