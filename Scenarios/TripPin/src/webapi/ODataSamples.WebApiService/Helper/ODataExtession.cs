@@ -3,10 +3,12 @@
     using System;
     using System.Linq;
     using System.Net.Http;
+    using System.Web.Http;
     using System.Web.Http.Routing;
-    using System.Web.OData.Extensions;
-    using System.Web.OData.Routing;
-    using Microsoft.OData.Core.UriParser;
+    using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Routing;
+    using Microsoft.OData;
+    using Microsoft.OData.UriParser;
 
     public static class ODataExtession
     {
@@ -16,7 +18,7 @@
         /// <param name="request">The request instance in current context</param>
         /// <param name="uri">OData uri</param>
         /// <returns>The parsed odata path</returns>
-        public static ODataPath CreateODataPath(this HttpRequestMessage request, Uri uri)
+        public static Microsoft.AspNet.OData.Routing.ODataPath CreateODataPath(this HttpRequestMessage request, Uri uri)
         {
             if (uri == null)
             {
@@ -24,6 +26,8 @@
             }
 
             var newRequest = new HttpRequestMessage(HttpMethod.Get, uri);
+            newRequest.SetConfiguration(request.GetConfiguration());
+            
             var route = request.GetRouteData().Route;
 
             var newRoute = new HttpRoute(
@@ -58,13 +62,13 @@
 
             //get the odata path Ex: ~/entityset/key/$links/navigation
             var odataPath = request.CreateODataPath(uri);
-            var keySegment = odataPath.Segments.OfType<KeyValuePathSegment>().LastOrDefault();
+            var keySegment = odataPath.Segments.OfType<KeySegment>().LastOrDefault();
             if (keySegment == null)
             {
                 throw new InvalidOperationException("The link does not contain a key.");
             }
 
-            var value = ODataUriUtils.ConvertFromUriLiteral(keySegment.Value, Microsoft.OData.Core.ODataVersion.V4);
+            var value = keySegment.Keys.First().Value;
             return (TKey)value;
         }
     }

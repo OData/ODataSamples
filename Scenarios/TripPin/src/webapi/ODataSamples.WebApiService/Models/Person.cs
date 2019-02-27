@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Web.OData.Builder;
+    using Microsoft.AspNet.OData.Builder;
 
     public class Person //TODO: [tiano] open type
     {

@@ -3,8 +3,8 @@
     using System.Linq;
     using System.Reflection;
     using System.Web.Http;
-    using System.Web.OData;
-    using System.Web.OData.Routing;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Routing;
     using ODataSamples.WebApiService.DataSource;
     using ODataSamples.WebApiService.Helper;
     using ODataSamples.WebApiService.Models;

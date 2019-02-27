@@ -6,8 +6,8 @@
     using System.Reflection;
     using System.Web;
     using System.Web.Http;
-    using System.Web.OData;
-    using System.Web.OData.Routing;
+    using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Routing;
     using Microsoft.Spatial;
     using ODataSamples.WebApiService.DataSource;
     using ODataSamples.WebApiService.Helper;

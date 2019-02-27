@@ -1072,7 +1072,7 @@ namespace ODataSamples.WebApiService.DataSource
                 {
                     CustomerId = e,
                     Name = names[e - 1],
-                    FavoriateColors = colors[e - 1],
+                    FavoriteColors = colors[e - 1],
                     Addresses = addresses[e - 1],
                     Email = names[e - 1] + "@microsoft.com",
                     Token = tokens[e - 1],

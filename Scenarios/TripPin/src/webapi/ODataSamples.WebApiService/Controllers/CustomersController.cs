@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using System.Web.OData;
+using Microsoft.AspNet.OData;
 using ODataSamples.WebApiService.DataSource;
 using ODataSamples.WebApiService.Models;
 
@@ -26,7 +26,7 @@ namespace ODataSamples.WebApiService.Controllers
                 return NotFound();
             }
 
-            return Ok(customer.FavoriateColors);
+            return Ok(customer.FavoriteColors);
         }
     }
 
