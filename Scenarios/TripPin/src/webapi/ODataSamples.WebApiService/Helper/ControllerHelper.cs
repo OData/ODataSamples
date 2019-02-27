@@ -3,7 +3,7 @@
     using System.Reflection;
     using System.Web;
     using System.Web.Http;
-    using System.Web.OData;
+    using Microsoft.AspNet.OData;
 
     public static class ControllerHelper
     {
