@@ -19,7 +19,7 @@ public static class WebApiConfig
       config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     }
 }
-
+```
 However, there are some other scenarios which require runtime EDM model binding, e.g.:
 1. Multi-tenant OData service: One-model per tenant
 2. Hundreds of models, want to delay load as many as possible in WebApiConfig
