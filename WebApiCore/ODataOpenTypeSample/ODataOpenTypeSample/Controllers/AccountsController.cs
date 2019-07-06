@@ -68,7 +68,7 @@ namespace ODataOpenTypeSample
         }
 
         [HttpPut]
-        public IActionResult Put(int key, Account account)
+        public IActionResult Put(int key, [FromBody] Account account)
         {
             if (key != account.Id)
             {
@@ -98,7 +98,7 @@ namespace ODataOpenTypeSample
         }
 
         [HttpPost]
-        public IActionResult Post(Account account)
+        public IActionResult Post([FromBody] Account account)
         {
             account.Id = Accounts.Count + 1;
             Accounts.Add(account);
