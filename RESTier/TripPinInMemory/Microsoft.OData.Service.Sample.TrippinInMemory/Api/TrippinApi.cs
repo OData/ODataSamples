@@ -5,22 +5,22 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.OData.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNet.OData.Builder;
 using Microsoft.OData.Edm;
 using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
+using Microsoft.Restier.AspNet.Model;
 using Microsoft.Restier.Core;
 using Microsoft.Restier.Core.Model;
 using Microsoft.Restier.Core.Submit;
 using Microsoft.Restier.Providers.InMemory.DataStoreManager;
 using Microsoft.Restier.Providers.InMemory.Submit;
 using Microsoft.Restier.Providers.InMemory.Utils;
-using Microsoft.Restier.Publishers.OData.Model;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.Spatial;
-using System.Web.OData.Query;
-using System.Text.RegularExpressions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
 {

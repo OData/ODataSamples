@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.OData;
+using Microsoft.AspNet.OData;
 using Microsoft.Restier.Core;
 using Microsoft.Restier.Core.Submit;
 using Microsoft.Restier.Providers.InMemory.DataStoreManager;
@@ -45,11 +45,11 @@ namespace Microsoft.Restier.Providers.InMemory.Submit
                     resourceType = dataModificationItem.ActualResourceType;
                 }
 
-                var operation = dataModificationItem.DataModificationItemAction;
+                var operation = dataModificationItem.EntitySetOperation;
                 object resource = null;
                 switch (operation)
                 {
-                    case DataModificationItemAction.Insert:
+                    case RestierEntitySetOperation.Insert:
                         // Here we create a instance of entity, parameters are from the request.
                         // Known issues: not support odata.id
                         resource = Activator.CreateInstance(resourceType);
@@ -66,7 +66,7 @@ namespace Microsoft.Restier.Providers.InMemory.Submit
                             entitySetPropForInsert.PropertyType.GetMethod("Add").Invoke(originSet, new[] {resource});
                         }
                         break;
-                    case DataModificationItemAction.Update:
+                    case RestierEntitySetOperation.Update:
                         resource = FindResource(dataSource, context, dataModificationItem, cancellationToken);
                         dataModificationItem.Resource = resource;
 
@@ -76,7 +76,7 @@ namespace Microsoft.Restier.Providers.InMemory.Submit
                             SetValues(resource, resourceType, dataModificationItem.LocalValues);
                         }
                         break;
-                    case DataModificationItemAction.Remove:
+                    case RestierEntitySetOperation.Delete:
                         resource = FindResource(dataSource, context, dataModificationItem, cancellationToken);
                         dataModificationItem.Resource = resource;
 
@@ -93,7 +93,7 @@ namespace Microsoft.Restier.Providers.InMemory.Submit
                             }
                         }
                         break;
-                    case DataModificationItemAction.Undefined:
+                    default:
                         throw new NotImplementedException();
                 }
             }

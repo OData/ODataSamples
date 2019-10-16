@@ -299,7 +299,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "Happy honeymoon trip",
                             Tags = new List<string>{"Travel", "honeymoon"},
                             StartsAt = new DateTime(2014, 2, 1),
-                            EndsAt = new DateTime(2014, 2, 4)
+                            EndsAt = new DateTime(2014, 2, 4),
+                            PlanItems = new List<PlanItem>(),
                         }
                     },
                     Features = new List<Feature>
@@ -478,8 +479,9 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "Gradution trip with friends",
                             Tags = new List<string>{"Travel"},
                             StartsAt = new DateTimeOffset(new DateTime(2013, 5, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2013, 5, 8))
-                        }
+                            EndsAt = new DateTimeOffset(new DateTime(2013, 5, 8)),
+                            PlanItems = new List<PlanItem>(),
+                       }
                     }
                 },
                 new Person()
@@ -513,7 +515,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "Trip from Shanghai to Beijing",
                             Tags = new List<string>{"Travel", "Beijing"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 2, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 2, 4))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 2, 4)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -536,7 +539,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is my first business trip",
                             Tags = new List<string>{"business", "first"},
                             StartsAt = new DateTime(2014, 2, 1),
-                            EndsAt = new DateTime(2014, 2, 4)
+                            EndsAt = new DateTime(2014, 2, 4),
+                            PlanItems = new List<PlanItem>(),
                         },
                         new Trip()
                         {
@@ -547,7 +551,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "The trip is currently in plan.",
                             Tags = new List<string>{"Travel", "plan"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 2, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 2, 4))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 2, 4)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -582,7 +587,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "Gradution trip with friends",
                             Tags = new List<string>{"Travel"},
                             StartsAt = new DateTimeOffset(new DateTime(2013, 5, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2013, 5, 8))
+                            EndsAt = new DateTimeOffset(new DateTime(2013, 5, 8)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -626,7 +632,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -661,7 +668,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -696,7 +704,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -731,7 +740,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -776,7 +786,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -811,7 +822,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -846,7 +858,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -880,7 +893,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a DIY trip",
                             Tags = new List<string>{"Travel", "DIY"},
                             StartsAt = new DateTimeOffset(new DateTime(2011, 2, 11)),
-                            EndsAt = new DateTimeOffset(new DateTime(2011, 2, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2011, 2, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -915,7 +929,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -950,7 +965,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -985,7 +1001,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -1020,7 +1037,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 },
@@ -1055,7 +1073,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
                             Description = "This is a 2 weeks study trip",
                             Tags = new List<string>{"study"},
                             StartsAt = new DateTimeOffset(new DateTime(2014, 1, 1)),
-                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14))
+                            EndsAt = new DateTimeOffset(new DateTime(2014, 1, 14)),
+                            PlanItems = new List<PlanItem>(),
                         }
                     }
                 }

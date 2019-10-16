@@ -8,11 +8,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.OData.Batch;
+using Microsoft.AspNet.OData.Batch;
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory
 {
-    public class TrippinBatchHandler : Microsoft.Restier.Publishers.OData.Batch.RestierBatchHandler
+    public class TrippinBatchHandler : Microsoft.Restier.AspNet.Batch.RestierBatchHandler
     {
         public TrippinBatchHandler(HttpServer httpServer)
             : base(httpServer)

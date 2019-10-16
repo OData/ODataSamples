@@ -3,9 +3,9 @@
 
 using System.Linq;
 using System.Web.Http;
-using System.Web.OData;
-using System.Web.OData.Extensions;
-using System.Web.OData.Routing;
+using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Extensions;
+using Microsoft.AspNet.OData.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Service.Sample.TrippinInMemory.Api;
 using Microsoft.Restier.Core;
@@ -42,9 +42,11 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Controllers
         /// <param name="name">The value of last name to be updated.</param>
         /// <returns><see cref="IHttpActionResult"></returns>
         [HttpPut]
+        [HttpPatch]
         [ODataRoute("People({key})/LastName")]
         public IHttpActionResult UpdatePersonLastName([FromODataUri]string key, [FromBody] string name)
         {
+            var method = this.Request.Method;
             var person = Api.People.Single(p => p.UserName == key);
             if (Api.UpdatePersonLastName(person, name))
             {
