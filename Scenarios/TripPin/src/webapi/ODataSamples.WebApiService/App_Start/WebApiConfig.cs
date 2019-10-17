@@ -6,15 +6,19 @@
     using Microsoft.AspNet.OData.Batch;
     using Microsoft.AspNet.OData.Builder;
     using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNet.OData.Routing;
+    using Microsoft.OData;
     using Microsoft.OData.Edm;
     using ODataSamples.WebApiService.Models;
 
     public static class WebApiConfig
     {
+        public static IEdmModel Model = GetEdmModel();
+
         public static void Register(HttpConfiguration config)
         {
             config.MessageHandlers.Add(new ETagMessageHandler());
-            config.MapODataServiceRoute("odata", null, GetEdmModel(), new DefaultODataBatchHandler(GlobalConfiguration.DefaultServer));
+            config.MapODataServiceRoute("odata", null, Model, new DefaultODataBatchHandler(GlobalConfiguration.DefaultServer)).Constraints.Remove(ODataRouteConstants.VersionConstraintName);
             config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
             config.EnsureInitialized();
         }

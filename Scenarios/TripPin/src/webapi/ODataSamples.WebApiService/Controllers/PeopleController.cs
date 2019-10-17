@@ -9,8 +9,11 @@
     using System.Web;
     using System.Web.Http;
     using Microsoft.AspNet.OData;
+    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNet.OData.Query;
     using Microsoft.AspNet.OData.Routing;
+    using Microsoft.OData;
+    using Microsoft.OData.UriParser;
     using ODataSamples.WebApiService.DataSource;
     using ODataSamples.WebApiService.Helper;
     using ODataSamples.WebApiService.Models;
@@ -20,11 +23,45 @@
         #region Person Operation
 
         // GET odata/People
-        [EnableQuery(PageSize = Utility.DefaultPageSize)]
-        public IHttpActionResult Get()
+        //[EnableQuery(PageSize = Utility.DefaultPageSize)]
+        public IHttpActionResult Get(ODataQueryOptions<Person> queryOptions)
         {
-            return Ok(TripPinSvcDataSource.Instance.People.AsQueryable());
+            // generate IQueryable for results
+            IQueryable<Person> results = TripPinSvcDataSource.Instance.People.AsQueryable();
+
+            // apply standard query options to the IQueryable
+            queryOptions.ApplyTo(results);
+
+            // get the original request uri and parse the $search clause
+            var parser = new ODataUriParser(WebApiConfig.Model, new Uri("http://" + Request.RequestUri.Authority), Request.RequestUri);
+            var searchClause = parser.ParseSearch();
+
+            // apply the $search clause to the IQueryable
+            if (searchClause != null)
+            {
+                results = applySearch(results, searchClause.Expression);
+            }
+
+            return Ok(results);
         }
+
+        private IQueryable<Person> applySearch(IQueryable<Person> query, SingleValueNode expression)
+        {
+            switch (expression.Kind)
+            {
+                case QueryNodeKind.SearchTerm:
+                    query = query.Where(p => p.LastName.Contains(((SearchTermNode)expression).Text));
+                    break;
+                case QueryNodeKind.BinaryOperator:
+                    BinaryOperatorNode binaryOperator = expression as BinaryOperatorNode;
+                    break;
+                default:
+                    break;
+            }
+
+            return query;
+        }
+
 
         // GET odata/People('key')
         [EnableQuery]

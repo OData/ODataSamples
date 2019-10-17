@@ -275,7 +275,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
         /// <summary>
         ///     Unbound action, reset datasource.
         /// </summary>
-        [Operation(HasSideEffects = true)]
+        [Operation(OperationType = OperationType.Action)]
         public void ResetDataSource()
         {
             DataStoreManager.ResetDataStoreInstance(Key);
@@ -301,7 +301,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             }
         }
 
-        [Operation(IsBound = true, HasSideEffects = true)]
+        [Operation(IsBound = true, OperationType = OperationType.Action)]
         public void ShareTrip(Person personInstance, string userName, int tripId)
         {
             if (personInstance == null)
@@ -358,30 +358,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
 
         #endregion
 
-        public static new IServiceCollection ConfigureApi(Type apiType, IServiceCollection services)
-        {
-            Func<IServiceProvider, IDataStoreManager<string, TripPinDataSource>> defaultDataStoreManager =
-                sp => new DefaultDataStoreManager<string, TripPinDataSource>()
-                {
-                    MaxDataStoreInstanceCapacity = 1000,
-                    MaxDataStoreInstanceLifeTime = new TimeSpan(0, 30, 0)
-                };
-
-            Func<IServiceProvider, ODataValidationSettings> validationSettingFactory = sp => new ODataValidationSettings
-            {
-                MaxAnyAllExpressionDepth = 4,
-                MaxExpansionDepth = 4
-            };
-
-            services.AddSingleton<ODataValidationSettings>(validationSettingFactory);
-            services.AddService<IModelBuilder>((sp, next) => new ModelBuilder());
-            services.AddService<IChangeSetInitializer>((sp, next) => new ChangeSetInitializer<TripPinDataSource>());
-            services.AddService<ISubmitExecutor>((sp, next) => new SubmitExecutor());
-            services.AddSingleton(defaultDataStoreManager);
-            return ApiBase.ConfigureApi(apiType, services);
-        }
-
-        private class ModelBuilder : IModelBuilder
+        internal class ModelBuilder : IModelBuilder
         {
             public Task<IEdmModel> GetModelAsync(ModelContext context, CancellationToken cancellationToken)
             {
@@ -390,6 +367,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
                 modelBuilder.EntitySet<Person>("People");
                 modelBuilder.EntitySet<Airline>("Airlines");
                 modelBuilder.EntitySet<Airport>("Airports");
+                modelBuilder.Singleton<Person>("Me");
                 return Task.FromResult(modelBuilder.GetEdmModel());
             }
         }

@@ -268,7 +268,7 @@ namespace Microsoft.Restier.Providers.InMemory.Submit
 
             if (resource == null)
             {
-                throw new ResourceNotFoundException("Resource Not Found");
+                throw new Exception("Resource Not Found");
             }
 
             // This means no If-Match or If-None-Match header
