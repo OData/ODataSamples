@@ -1,11 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
 // Licensed under the MIT License.  See License.txt in the project root for license information.
 
+using System;
 using System.Web.Http;
-using System.Web.OData.Extensions;
 using Microsoft.OData.Service.Sample.Trippin.Api;
-using Microsoft.Restier.Publishers.OData.Batch;
-using Microsoft.Restier.Publishers.OData;
+using Microsoft.AspNet.OData.Query;
+using Microsoft.Restier.EntityFramework;
+using Microsoft.OData.Service.Sample.Trippin.Models;
+using Microsoft.Restier.Core.Submit;
+using Microsoft.OData.Service.Sample.Trippin.Submit;
+using Microsoft.Restier.Core.Model;
+using Microsoft.AspNet.OData.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Restier.Core;
 
 namespace Microsoft.OData.Service.Sample.Trippin
 {
@@ -13,17 +20,29 @@ namespace Microsoft.OData.Service.Sample.Trippin
     {
         public static void Register(HttpConfiguration config)
         {
-            RegisterTrippin(config, GlobalConfiguration.DefaultServer);
-        }
-
-        public static async void RegisterTrippin(
-            HttpConfiguration config, HttpServer server)
-        {
-            // enable query options for all properties
             config.Filter().Expand().Select().OrderBy().MaxTop(null).Count();
-            await config.MapRestierRoute<TrippinApi>(
-                "TrippinApi", "api/Trippin",
-                new RestierBatchHandler(server));
+
+            config.UseRestier<TrippinApi>((services) =>
+                {
+                    services.AddEF6ProviderServices<TrippinModel>();
+                    services.AddSingleton<ODataPayloadValueConverter, CustomizedPayloadValueConverter>();
+                    services.AddSingleton<ODataValidationSettings>(
+                        new ODataValidationSettings
+                        {
+                            MaxAnyAllExpressionDepth = 3,
+                            MaxExpansionDepth = 3
+                        }
+                    );
+
+                    services.AddSingleton<IChangeSetItemFilter, CustomizedSubmitProcessor>();
+                    services.AddChainedService<IModelBuilder>((sp, next) => new TrippinApi.TrippinModelExtender(next));
+                }
+            );
+
+            config.MapRestier<TrippinApi>(
+                    "TrippinApi",
+                    "",
+                    true);
         }
     }
 }

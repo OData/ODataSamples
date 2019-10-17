@@ -6,17 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.OData.Query;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Edm;
 using Microsoft.OData.Edm.Vocabularies;
 using Microsoft.OData.Service.Sample.Trippin.Models;
 using Microsoft.OData.Service.Sample.Trippin.Submit;
+using Microsoft.Restier.AspNet.Model;
 using Microsoft.Restier.Core;
 using Microsoft.Restier.Core.Model;
 using Microsoft.Restier.Core.Submit;
-using Microsoft.Restier.Providers.EntityFramework;
-using Microsoft.Restier.Publishers.OData.Model;
+using Microsoft.Restier.EntityFramework;
 
 namespace Microsoft.OData.Service.Sample.Trippin.Api
 {
@@ -44,7 +44,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// <summary>
         /// Implements an action import.
         /// </summary>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", HasSideEffects = true)]
+        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", OperationType = OperationType.Action)]
         public void ResetDataSource()
         {
             TrippinModel.ResetDataSource();
@@ -53,7 +53,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// <summary>
         /// Action import - clean up all the expired trips.
         /// </summary>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", HasSideEffects = true)]
+        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", OperationType = OperationType.Action)]
         public void CleanUpExpiredTrips()
         {
             // DO NOT ACTUALLY REMOVE THE TRIPS.
@@ -64,7 +64,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// </summary>
         /// <param name="trip">The trip to update.</param>
         /// <returns>The trip updated.</returns>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", IsBound = true, HasSideEffects = true)]
+        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", IsBound = true, OperationType = OperationType.Action)]
         public Trip EndTrip(Trip trip)
         {
             // DO NOT ACTUALLY UPDATE THE TRIP.
@@ -145,40 +145,32 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
             return false;
         }
 
-        protected static new IServiceCollection ConfigureApi(Type apiType, IServiceCollection services)
+        internal class TrippinModelExtender : IModelBuilder
         {
-            // Add customized OData validation settings 
-            Func<IServiceProvider, ODataValidationSettings> validationSettingFactory = (sp) => new ODataValidationSettings
+            public IModelBuilder InnerModelBuilder { get; private set; }
+
+            public TrippinModelExtender(IModelBuilder innerHandler)
             {
-                MaxAnyAllExpressionDepth =3,
-                MaxExpansionDepth = 3
-            };
-
-            return EntityFrameworkApi<TrippinModel>.ConfigureApi(apiType, services)
-                .AddSingleton<ODataPayloadValueConverter, CustomizedPayloadValueConverter>()
-                .AddSingleton<ODataValidationSettings>(validationSettingFactory)
-                .AddService<IChangeSetItemFilter, CustomizedSubmitProcessor>()
-                .AddService<IModelBuilder, TrippinModelExtender>();
-        }
-
-
-        private class TrippinModelExtender : IModelBuilder
-        {
-            public IModelBuilder InnerHandler { get; set; }
+                this.InnerModelBuilder = innerHandler;
+            }
 
             public async Task<IEdmModel> GetModelAsync(ModelContext context, CancellationToken cancellationToken)
             {
-                var model = await InnerHandler.GetModelAsync(context, cancellationToken);
+                var model = await InnerModelBuilder.GetModelAsync(context, cancellationToken);
 
-                // Set computed annotation
-                var tripType = (EdmEntityType)model.SchemaElements.Single(e => e.Name == "Trip");
-                var trackGuidProperty = tripType.DeclaredProperties.Single(prop => prop.Name == "TrackGuid");
-                var timeStampValueProp= model.EntityContainer.FindEntitySet("Airlines").EntityType().FindProperty("TimeStampValue");
-                var term = new EdmTerm("Org.OData.Core.V1", "Computed", EdmPrimitiveTypeKind.Boolean);
-                var anno1 = new EdmVocabularyAnnotation(trackGuidProperty, term, new EdmBooleanConstant(true));
-                var anno2 = new EdmVocabularyAnnotation(timeStampValueProp, term, new EdmBooleanConstant(true));
-                ((EdmModel)model).SetVocabularyAnnotation(anno1);
-                ((EdmModel)model).SetVocabularyAnnotation(anno2);
+                // Issue (todo): model returned by EFModelProducer.GetModelAsync is always null; how do we extend?
+                if (model != null)
+                {
+                    // Set computed annotation
+                    var tripType = (EdmEntityType)model.SchemaElements.Single(e => e.Name == "Trip");
+                    var trackGuidProperty = tripType.DeclaredProperties.Single(prop => prop.Name == "TrackGuid");
+                    var timeStampValueProp = model.EntityContainer.FindEntitySet("Airlines").EntityType().FindProperty("TimeStampValue");
+                    var term = new EdmTerm("Org.OData.Core.V1", "Computed", EdmPrimitiveTypeKind.Boolean);
+                    var anno1 = new EdmVocabularyAnnotation(trackGuidProperty, term, new EdmBooleanConstant(true));
+                    var anno2 = new EdmVocabularyAnnotation(timeStampValueProp, term, new EdmBooleanConstant(true));
+                    ((EdmModel)model).SetVocabularyAnnotation(anno1);
+                    ((EdmModel)model).SetVocabularyAnnotation(anno2);
+                }
 
                 return model;
             }
