@@ -13,6 +13,7 @@ using Microsoft.Restier.Core.Model;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Restier.Core;
+using Microsoft.Restier.AspNet;
 
 namespace Microsoft.OData.Service.Sample.Trippin
 {
@@ -33,8 +34,8 @@ namespace Microsoft.OData.Service.Sample.Trippin
                             MaxExpansionDepth = 3
                         }
                     );
-
                     services.AddSingleton<IChangeSetItemFilter, CustomizedSubmitProcessor>();
+                    services.AddRestierDefaultServices<TrippinApi>();
                     services.AddChainedService<IModelBuilder>((sp, next) => new TrippinApi.TrippinModelExtender(next));
                 }
             );
