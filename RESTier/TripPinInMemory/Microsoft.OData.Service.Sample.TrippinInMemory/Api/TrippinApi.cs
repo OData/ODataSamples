@@ -21,6 +21,7 @@ using Microsoft.Restier.Providers.InMemory.Utils;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.Spatial;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OData.Edm.Csdl;
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
 {

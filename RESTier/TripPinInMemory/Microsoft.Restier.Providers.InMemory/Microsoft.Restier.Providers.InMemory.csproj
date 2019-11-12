@@ -56,10 +56,10 @@
       <HintPath>..\packages\Microsoft.OData.Edm.7.6.1\lib\portable-net45+win8+wpa81\Microsoft.OData.Edm.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Restier.AspNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bd2d67c4036fede0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Restier.AspNet.1.0.0-CI-20191005-040300\lib\net472\Microsoft.Restier.AspNet.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Restier.AspNet.1.0.0-rc1.20191105.1\lib\net472\Microsoft.Restier.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Restier.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bd2d67c4036fede0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Restier.Core.1.0.0-CI-20191005-040300\lib\net462\Microsoft.Restier.Core.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Restier.Core.1.0.0-rc1.20191105.1\lib\net472\Microsoft.Restier.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Restier.EntityFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bd2d67c4036fede0, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Restier.EntityFramework.1.0.0-CI-20191005-040300\lib\net472\Microsoft.Restier.EntityFramework.dll</HintPath>
