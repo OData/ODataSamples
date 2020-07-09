@@ -53,7 +53,7 @@ namespace ODataService.Controllers
         /// <param name="productFamily"></param>
         [AcceptVerbs("POST")]
         [ODataRoute("ProductFamilies")]
-        public async Task<IActionResult> CreateProductFamily(ProductFamily productFamily)
+        public async Task<IActionResult> CreateProductFamily([FromBody] ProductFamily productFamily)
         {
             if (!ModelState.IsValid)
             {
