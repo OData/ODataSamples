@@ -161,6 +161,6 @@ Available commands:
 }
 ```
 
-## Run ODataSerivce.Client
+## Run ODataService.Client
 
 This client has some running problems.
