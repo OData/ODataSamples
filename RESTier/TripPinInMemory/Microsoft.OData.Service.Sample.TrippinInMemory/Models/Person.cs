@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNet.OData.Builder;
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
 {
@@ -11,7 +10,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
     {
         Male,
         Female,
-        Unknow
+        Unknown
     }
 
     public enum Feature

@@ -14,14 +14,11 @@ using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
 using Microsoft.Restier.AspNet.Model;
 using Microsoft.Restier.Core;
 using Microsoft.Restier.Core.Model;
-using Microsoft.Restier.Core.Submit;
 using Microsoft.Restier.Providers.InMemory.DataStoreManager;
-using Microsoft.Restier.Providers.InMemory.Submit;
 using Microsoft.Restier.Providers.InMemory.Utils;
-using Microsoft.AspNet.OData.Query;
+
 using Microsoft.Spatial;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OData.Edm.Csdl;
+
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
 {
@@ -60,21 +57,6 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
 
         [Resource]
         public IQueryable<Person> People
-        {
-            get
-            {
-                var datasource = DataStoreManager.GetDataStoreInstance(Key);
-                if (datasource != null)
-                {
-                    return datasource.People.AsQueryable();
-                }
-
-                return null;
-            }
-        }
-
-        [Resource]
-        public IQueryable<Person> NewComePeople
         {
             get
             {
