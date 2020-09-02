@@ -288,8 +288,8 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
         /// <param name="person">The person to be updated.</param>
         /// <param name="lastName">The value of last name to be updated.</param>
         /// <returns>True if update successfully.</returns>
-        [Operation(IsBound = true)]
-        public bool UpdatePersonLastName(Person person, string lastName)
+        [Operation(IsBound = true, OperationType = OperationType.Action)]
+        public bool UpdateLastName(Person person, string lastName)
         {
             if (person != null)
             {

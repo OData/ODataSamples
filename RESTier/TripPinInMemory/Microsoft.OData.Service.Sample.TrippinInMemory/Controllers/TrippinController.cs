@@ -48,7 +48,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Controllers
         {
             var method = this.Request.Method;
             var person = Api.People.Single(p => p.UserName == key);
-            if (Api.UpdatePersonLastName(person, name))
+            if (Api.UpdateLastName(person, name))
             {
                 return Ok();
             }
