@@ -2,7 +2,6 @@
 // Licensed under the MIT License.  See License.txt in the project root for license information.
 
 using System;
-using System.Configuration;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using Microsoft.AspNet.OData;
@@ -11,7 +10,7 @@ using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Service.Sample.TrippinInMemory.Api;
-using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
+using Trippin;
 using Microsoft.Restier.Core;
 using Microsoft.Restier.Core.Model;
 using Microsoft.Restier.Core.Submit;

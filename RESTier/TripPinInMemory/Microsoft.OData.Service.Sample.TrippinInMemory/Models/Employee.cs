@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
+namespace Trippin
 {
     public class Employee : Person
     {

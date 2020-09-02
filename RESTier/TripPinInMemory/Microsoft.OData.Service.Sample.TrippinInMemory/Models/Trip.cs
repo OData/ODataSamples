@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
+namespace Trippin
 {
     public class Trip
     {

@@ -3,7 +3,7 @@
 
 using Microsoft.Spatial;
 
-namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
+namespace Trippin
 {
     public class Location
     {

@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.OData.Edm;
-using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
+using Trippin;
 using Microsoft.Restier.AspNet.Model;
 using Microsoft.Restier.Core;
 using Microsoft.Restier.Core.Model;
@@ -346,7 +346,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             public Task<IEdmModel> GetModelAsync(ModelContext context, CancellationToken cancellationToken)
             {
                 var modelBuilder = new ODataConventionModelBuilder();
-                modelBuilder.Namespace = "Microsoft.OData.Service.Sample.TrippinInMemory.Models";
+                modelBuilder.Namespace = "Trippin";
                 modelBuilder.EntitySet<Person>("People");
                 modelBuilder.EntitySet<Airline>("Airlines");
                 modelBuilder.EntitySet<Airport>("Airports");

@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.Spatial;
 
-namespace Microsoft.OData.Service.Sample.TrippinInMemory.Models
+namespace Trippin
 {
     public class TripPinDataSource
     {

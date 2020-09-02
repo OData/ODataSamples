@@ -9,7 +9,7 @@ using Microsoft.AspNet.OData.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Service.Sample.TrippinInMemory.Api;
 using Microsoft.Restier.Core;
-using Microsoft.OData.Service.Sample.TrippinInMemory.Models;
+using Trippin;
 using System;
 using System.Net.Http;
 using System.Web.Http.Routing;
