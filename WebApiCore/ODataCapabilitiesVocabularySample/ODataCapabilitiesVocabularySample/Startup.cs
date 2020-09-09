@@ -1,15 +1,14 @@
-﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
-// Licensed under the MIT License.  See License.txt in the project root for license information.
-
 using CapabilitiesVocabulary;
-using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
+using Microsoft.OData.ModelBuilder.Vocabularies;
+using System.Linq;
 
 namespace ODataCapabilitiesVocabularySample
 {
@@ -25,17 +24,23 @@ namespace ODataCapabilitiesVocabularySample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddOData();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseMvc(b =>
             {
@@ -88,8 +93,45 @@ namespace ODataCapabilitiesVocabularySample
         private static IEdmModel GetEdmModel()
         {
             var builder = new ODataConventionModelBuilder();
-            builder.EntitySet<Customer>("Customers");
-            builder.EntitySet<Order>("Orders");
+            var customersConfig = builder.EntitySet<Customer>("Customers");
+            var ordersConfig = builder.EntitySet<Order>("Orders");
+
+            customersConfig.HasReadRestrictions()
+                .IsReadable(true)
+                .HasPermissions(p => p.HasSchemeName("Delegated").HasScopes("Customers.ReadWrite.All", "Customers.Read.All"));
+
+            customersConfig.HasInsertRestrictions()
+                .IsInsertable(true)
+                .HasPermissions(p => p.HasSchemeName("Delegated").HasScopes("Customers.ReadWrite.All"));
+
+            customersConfig.HasUpdateRestrictions()
+                .IsUpdatable(true)
+                .IsUpsertable(true)
+                .IsDeltaUpdateSupported(true)
+                .HasPermissions(p => p.HasSchemeName("Delegated").HasScopes("Customers.ReadWrite.All"));
+
+            customersConfig.HasDeleteRestrictions()
+                .IsDeletable(true)
+                .HasPermissions(p => p.HasSchemeName("Delegated").HasScopes("Customers.ReadWrite.All"));
+
+            ordersConfig.HasReadRestrictions()
+                .IsReadable(true)
+                .HasPermissions(p => p.HasSchemeName("Delegated").HasScopes("Orders.ReadWrite.All", "Orders.Read.All"));
+
+            ordersConfig.HasInsertRestrictions()
+                .IsInsertable(true)
+                .HasPermissions(p => p.HasSchemeName("Delegated").HasScopes("Orders.ReadWrite.All"));
+
+            ordersConfig.HasUpdateRestrictions()
+                .IsUpdatable(true)
+                .IsUpsertable(true)
+                .IsDeltaUpdateSupported(true)
+                .HasPermissions(p => p.HasSchemeName("Delegated").HasScopes("Orders.ReadWrite.All"));
+
+            ordersConfig.HasDeleteRestrictions()
+                .IsDeletable(true)
+                .HasPermissions(p => p.HasSchemeName("Delegated").HasScopes("Orders.ReadWrite.All"));
+
             return builder.GetEdmModel();
         }
     }
