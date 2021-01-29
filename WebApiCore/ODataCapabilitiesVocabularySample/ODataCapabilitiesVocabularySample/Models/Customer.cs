@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNet.OData.Query;
+using Microsoft.OData.ModelBuilder;
 
 namespace CapabilitiesVocabulary
 {
