@@ -18,6 +18,19 @@ using System.Collections.Generic;
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory.Controllers
 {
+    public class CORSController : ApiController
+    {
+        /// <summary>
+        /// Support for CORS Preflight
+        /// </summary>
+        /// <returns>200 OK</returns>
+        [HttpOptions]
+        public IHttpActionResult Options()
+        {
+            return Ok();
+        }
+    }
+
     public class TrippinController : ODataController
     {
         private TrippinApi _api;

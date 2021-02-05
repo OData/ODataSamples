@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.  All rights reserved.
+﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
 // Licensed under the MIT License.  See License.txt in the project root for license information.
 
 using System;
@@ -16,6 +16,10 @@ using Microsoft.Restier.Core.Model;
 using Microsoft.Restier.Core.Submit;
 using Microsoft.Restier.Providers.InMemory.DataStoreManager;
 using Microsoft.Restier.Providers.InMemory.Submit;
+using System.Configuration;
+using System.Web.Http.Routing;
+using System.Net.Http;
+using System.Collections.Generic;
 
 namespace Microsoft.OData.Service.Sample.TrippinInMemory
 {
@@ -29,14 +33,15 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory
             config.MessageHandlers.Add(new ETagMessageHandler());
             config.SetUrlKeyDelimiter(ODataUrlKeyDelimiter.Slash);
             config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+            config.Routes.MapHttpRoute("Options", "{*OPTIONS}", new { controller = "CORS", action = "Options" }, new { Options = new myHttpRouteConstraint()});
             config.UseRestier<TrippinApi>((services) =>
             {
                 Func<IServiceProvider, IDataStoreManager<string, TripPinDataSource>> defaultDataStoreManager =
-                 sp => new DefaultDataStoreManager<string, TripPinDataSource>()
-                 {
-                     MaxDataStoreInstanceCapacity = 1000,
-                     MaxDataStoreInstanceLifeTime = new TimeSpan(0, 30, 0)
-                 };
+                sp => new DefaultDataStoreManager<string, TripPinDataSource>()
+                {
+                    MaxDataStoreInstanceCapacity = 1000,
+                    MaxDataStoreInstanceLifeTime = new TimeSpan(0, 30, 0)
+                };
 
                 Func<IServiceProvider, ODataValidationSettings> validationSettingFactory = sp => new ODataValidationSettings
                 {
@@ -50,13 +55,14 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory
                 services.AddChainedService<ISubmitExecutor>((sp, next) => new SubmitExecutor());
                 services.AddSingleton(defaultDataStoreManager);
 
-               // Add custom TrippinBatchHandler
-               ODataBatchHandler trippinBatchHandler = new TrippinBatchHandler(GlobalConfiguration.DefaultServer);
-               trippinBatchHandler.ODataRouteName = routeName;
-               services.AddSingleton(trippinBatchHandler);
+                // Add custom TrippinBatchHandler
+                ODataBatchHandler trippinBatchHandler = new TrippinBatchHandler(GlobalConfiguration.DefaultServer);
+                trippinBatchHandler.ODataRouteName = routeName;
+                services.AddSingleton(trippinBatchHandler);
             });
 
             RegisterTrippin(config, GlobalConfiguration.DefaultServer);
+            
         }
 
         public static void RegisterTrippin(
@@ -69,6 +75,13 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory
                 routeName,
                 "",
                 false); // Custom TrippinBatchHandler registered in UseRestier 
+        }
+    }
+    public class myHttpRouteConstraint : IHttpRouteConstraint
+    {
+        bool IHttpRouteConstraint.Match(HttpRequestMessage request, IHttpRoute route, string parameterName, IDictionary<string, object> values, HttpRouteDirection routeDirection)
+        {
+            return request.Method == HttpMethod.Options;
         }
     }
 }
