@@ -25,9 +25,23 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Controllers
         /// </summary>
         /// <returns>200 OK</returns>
         [HttpOptions]
-        public IHttpActionResult Options()
+        public HttpResponseMessage Options()
         {
-            return Ok();
+            // Set response OData-Version header
+            IEnumerable<string> odataVersionHeaders;
+            if (!Request.Headers.TryGetValues("OData-MaxVersion", out odataVersionHeaders))
+            {
+                Request.Headers.TryGetValues("OData-Version", out odataVersionHeaders);
+            }
+
+            string odataVersion = odataVersionHeaders == null ? "4.0" : odataVersionHeaders.FirstOrDefault();
+            HttpResponseMessage response = Request.CreateResponse();
+            response.Headers.Add("OData-Version", odataVersion);
+
+            // Set status code
+            response.StatusCode = System.Net.HttpStatusCode.OK;
+
+            return response;
         }
     }
 
