@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Http;
 using DynamicEdmModelCreation.DataSource;
 using Microsoft.AspNet.OData.Extensions;
+using Microsoft.AspNet.OData.Formatter.Serialization;
 using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNet.OData.Routing.Conventions;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,8 @@ namespace DynamicEdmModelCreation
                     routingConventions.Insert(0, new MatchAllRoutingConvention());
                     return routingConventions.ToList().AsEnumerable();
                 });
+
+                builder.AddService<ODataSerializerProvider, ExtendedODataSerializerProvider>(ServiceLifetime.Singleton);
             });
 
             CustomODataRoute odataRoute = new CustomODataRoute(route.RoutePrefix, new CustomODataPathRouteConstraint(routeName));

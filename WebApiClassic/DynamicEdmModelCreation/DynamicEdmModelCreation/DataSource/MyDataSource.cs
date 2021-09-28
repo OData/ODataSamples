@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
 // Licensed under the MIT License.  See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
 using Microsoft.AspNet.OData;
+using Microsoft.OData;
 using Microsoft.OData.Edm;
 
 namespace DynamicEdmModelCreation.DataSource
@@ -13,6 +15,7 @@ namespace DynamicEdmModelCreation.DataSource
         {
             EdmEntityType product = new EdmEntityType("ns", "Product");
             product.AddStructuralProperty("Name", EdmPrimitiveTypeKind.String);
+            product.AddStructuralProperty("Photo", EdmPrimitiveTypeKind.Stream);
             EdmStructuralProperty key = product.AddStructuralProperty("ID", EdmPrimitiveTypeKind.Int32);
             product.AddKeys(key);
             model.AddElement(product);
@@ -41,11 +44,29 @@ namespace DynamicEdmModelCreation.DataSource
             entity.TrySetPropertyValue("ID", 1);
             entity.TrySetPropertyValue("DetailInfo", CreateDetailInfo(88, "abc_detailinfo", entity.ActualEdmType));
 
+            var stream = new ODataStreamReferenceValue
+            {
+                ReadLink = new Uri("https://mysite.com/abc.jpg"),
+                EditLink = new Uri("https://mysite.com/abc.jpg?upload"),
+                ContentType = "image/jpeg",
+            };
+
+            entity.TrySetPropertyValue("Photo", stream);
+
             collection.Add(entity);
             entity = new EdmEntityObject(entityType);
             entity.TrySetPropertyValue("Name", "def");
             entity.TrySetPropertyValue("ID", 2);
             entity.TrySetPropertyValue("DetailInfo", CreateDetailInfo(99, "def_detailinfo", entity.ActualEdmType));
+
+            stream = new ODataStreamReferenceValue
+            {
+                ReadLink = new Uri("https://mysite.com/def.jpg"),
+                EditLink = new Uri("https://mysite.com/def.jpg?upload"),
+                ContentType = "image/jpeg",
+            };
+
+            entity.TrySetPropertyValue("Photo", stream);
 
             collection.Add(entity);
         }
@@ -55,6 +76,16 @@ namespace DynamicEdmModelCreation.DataSource
             entity.TrySetPropertyValue("Name", "abc");
             entity.TrySetPropertyValue("ID", int.Parse(key));
             entity.TrySetPropertyValue("DetailInfo", CreateDetailInfo(88, "abc_detailinfo", entity.ActualEdmType));
+
+            var stream = new ODataStreamReferenceValue
+            {
+                ReadLink = new Uri("https://mysite.com/abc.jpg"),
+                EditLink = new Uri("https://mysite.com/abc.jpg?upload"),
+                ContentType = "image/jpeg",
+            };
+
+            entity.TrySetPropertyValue("Photo", stream);
+
         }
 
         public object GetProperty(string property, EdmEntityObject entity)
