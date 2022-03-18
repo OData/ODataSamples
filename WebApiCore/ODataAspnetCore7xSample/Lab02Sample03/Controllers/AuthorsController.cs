@@ -11,20 +11,26 @@ namespace Lab02Sample03.Controllers
         #region CRUD operations
         // Get ~/Authors
         [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All, MaxTop = 1, PageSize = 100, MaxExpansionDepth = 5)]
-        public IQueryable<Author> Get()
+        public IActionResult Get()
         {
-            return DataSource.Instance.Authors.AsQueryable<Author>();
+            return Ok(DataSource.Instance.Authors);
         }
 
-        // GET ~/Authors(1)
+        // GET ~/Authors(10001)
         [EnableQuery]
-        public SingleResult<Author> Get(int key)
+        public IActionResult Get(int key)
         {
-            IQueryable<Author> result = DataSource.Instance.Authors.AsQueryable<Author>().Where(a => a.ID == key);
-            return SingleResult.Create(result);
+            var author = DataSource.Instance.Authors.FirstOrDefault(a => a.ID == key);
+
+            if (author == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(author);
         }
 
-        // PUT ~/Authors(1)
+        // PUT ~/Authors(10001)
         [EnableQuery]
         public IActionResult Put(int key, [FromBody] Author Author)
         {
@@ -33,16 +39,17 @@ namespace Lab02Sample03.Controllers
                 return BadRequest(ModelState);
             }
 
-            var entity = DataSource.Instance.Authors.Where(a => a.ID == key);
-            if (entity == null)
+            var author = DataSource.Instance.Authors.FirstOrDefault(a => a.ID == key);
+
+            if (author == null)
             {
                 return NotFound();
             }
 
-            return Ok(entity);
+            return Ok(author);
         }
 
-        // PATCH ~/Authors(1)
+        // PATCH ~/Authors(10001)
         [EnableQuery]
         public IActionResult Patch([FromODataUri] int key, Delta<Author> delta)
         {
@@ -51,26 +58,28 @@ namespace Lab02Sample03.Controllers
                 return BadRequest(ModelState);
             }
 
-            var Author = DataSource.Instance.Authors.Where(a => a.ID == key);
-            if (Author == null)
+            var author = DataSource.Instance.Authors.FirstOrDefault(a => a.ID == key);
+
+            if (author == null)
             {
                 return NotFound();
             }
 
-            return Ok(Author);
+            return Ok(author);
         }
 
-        // DELETE ~/Authors(1)
+        // DELETE ~/Authors(10001)
         [EnableQuery]
         public IActionResult Delete(int key)
         {
-            var Author = DataSource.Instance.Authors.Where(a => a.ID == key);
-            if (Author == null)
+            var author = DataSource.Instance.Authors.FirstOrDefault(a => a.ID == key);
+
+            if (author == null)
             {
                 return NotFound();
             }
 
-            return Ok(Author);
+            return Ok(author);
         }
         #endregion
     }

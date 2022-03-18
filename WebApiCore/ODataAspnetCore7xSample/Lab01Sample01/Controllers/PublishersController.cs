@@ -11,20 +11,26 @@ namespace Lab01Sample01.Controllers
         #region CRUD operations
         // Get ~/Publishers
         [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All, MaxTop = 1, PageSize = 100, MaxExpansionDepth = 5)]
-        public IQueryable<Publisher> Get()
+        public IActionResult Get()
         {
-            return DataSource.Instance.Publishers.AsQueryable<Publisher>();
+            return Ok(DataSource.Instance.Publishers);
         }
 
-        // GET ~/Publishers(1)
+        // GET ~/Publishers(1001)
         [EnableQuery]
-        public SingleResult<Publisher> Get(int key)
+        public IActionResult Get(int key)
         {
-            IQueryable<Publisher> result = DataSource.Instance.Publishers.AsQueryable<Publisher>().Where(p => p.ID == key);
-            return SingleResult.Create(result);
+            var publisher = DataSource.Instance.Publishers.FirstOrDefault(p => p.ID == key);
+
+            if (publisher == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(publisher);
         }
 
-        // PUT ~/Publishers(1)
+        // PUT ~/Publishers(1001)
         [EnableQuery]
         public IActionResult Put(int key, [FromBody] Publisher Publisher)
         {
@@ -33,16 +39,17 @@ namespace Lab01Sample01.Controllers
                 return BadRequest(ModelState);
             }
 
-            var entity = DataSource.Instance.Publishers.Where(p => p.ID == key);
-            if (entity == null)
+            var publisher = DataSource.Instance.Publishers.FirstOrDefault(p => p.ID == key);
+
+            if (publisher == null)
             {
                 return NotFound();
             }
 
-            return Ok(entity);
+            return Ok(publisher);
         }
 
-        // PATCH ~/Publishers(1)
+        // PATCH ~/Publishers(1001)
         [EnableQuery]
         public IActionResult Patch([FromODataUri] int key, Delta<Publisher> delta)
         {
@@ -51,26 +58,27 @@ namespace Lab01Sample01.Controllers
                 return BadRequest(ModelState);
             }
 
-            var Publisher = DataSource.Instance.Publishers.Where(p => p.ID == key);
-            if (Publisher == null)
+            var publisher = DataSource.Instance.Publishers.FirstOrDefault(p => p.ID == key);
+
+            if (publisher == null)
             {
                 return NotFound();
             }
 
-            return Ok(Publisher);
+            return Ok(publisher);
         }
 
-        // DELETE ~/Publishers(1)
+        // DELETE ~/Publishers(1001)
         [EnableQuery]
         public IActionResult Delete(int key)
         {
-            var Publisher = DataSource.Instance.Publishers.Where(p => p.ID == key);
-            if (Publisher == null)
+            var publisher = DataSource.Instance.Publishers.FirstOrDefault(p => p.ID == key);
+            if (publisher == null)
             {
                 return NotFound();
             }
 
-            return Ok(Publisher);
+            return Ok(publisher);
         }
         #endregion
     }
