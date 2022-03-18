@@ -4,7 +4,6 @@ using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Lab01Sample01.Models;
-using Microsoft.OData;
 
 namespace Lab01Sample01.Controllers
 {
@@ -13,17 +12,22 @@ namespace Lab01Sample01.Controllers
         #region CRUD operations
         // Get ~/Books
         [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All, MaxTop = 1, PageSize = 100, MaxExpansionDepth = 5)]
-        public IQueryable<Book> Get()
+        public IActionResult Get()
         {
-            return DataSource.Instance.Books.AsQueryable<Book>();
+            return Ok(DataSource.Instance.Books);
         }
 
         // GET ~/Books(1)
         [EnableQuery]
-        public SingleResult<Book> Get(int key)
+        public IActionResult Get(int key)
         {
-            IQueryable<Book> result = DataSource.Instance.Books.AsQueryable<Book>().Where(b => b.ID == key);
-            return SingleResult.Create(result);
+            var book = DataSource.Instance.Books.FirstOrDefault(b => b.ID == key);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(book);
         }
 
         // PUT ~/Books(1)
@@ -35,7 +39,7 @@ namespace Lab01Sample01.Controllers
                 return BadRequest(ModelState);
             }
 
-            var entity = DataSource.Instance.Books.Where(b => b.ID == key);
+            var entity = DataSource.Instance.Books.Where(b => b.ID == key).FirstOrDefault();
             if (entity == null)
             {
                 return NotFound();
@@ -53,7 +57,7 @@ namespace Lab01Sample01.Controllers
                 return BadRequest(ModelState);
             }
 
-            var book = DataSource.Instance.Books.Where(b => b.ID == key);
+            var book = DataSource.Instance.Books.FirstOrDefault(b => b.ID == key);
             if (book == null)
             {
                 return NotFound();
@@ -66,7 +70,7 @@ namespace Lab01Sample01.Controllers
         [EnableQuery]
         public IActionResult Delete(int key)
         {
-            var book = DataSource.Instance.Books.Where(b => b.ID == key);
+            var book = DataSource.Instance.Books.FirstOrDefault(b => b.ID == key);
             if (book == null)
             {
                 return NotFound();
@@ -80,7 +84,13 @@ namespace Lab01Sample01.Controllers
         [EnableQuery]
         public IActionResult GetMainAuthor([FromODataUri] int key)
         {
-            var mainAuthor = DataSource.Instance.Books.Where(m => m.ID == key).Select(m => m.MainAuthor).Single();
+            var mainAuthor = DataSource.Instance.Books.Where(m => m.ID == key).Select(m => m.MainAuthor).FirstOrDefault();
+
+            if (mainAuthor == null)
+            {
+                return NotFound();
+            }
+
             return Ok(mainAuthor);
         }
 
@@ -89,8 +99,8 @@ namespace Lab01Sample01.Controllers
         [EnableQuery]
         public IActionResult GetAuthors([FromODataUri] int key)
         {
-            var result = DataSource.Instance.Books.AsQueryable<Book>().Where(b => b.ID == key).Select(b => b.Authors);
-            return Ok(result);
+            var authors = DataSource.Instance.Books.AsQueryable<Book>().Where(b => b.ID == key).Select(b => b.Authors);
+            return Ok(authors);
         }
         #endregion
 
@@ -110,8 +120,14 @@ namespace Lab01Sample01.Controllers
         [ODataRoute("Books({bookId})/Translators({TranslatorID})")]
         public IActionResult GetSingleTranslator(int bookId, int translatorId)
         {
-            var translators = DataSource.Instance.Books.Single(b => b.ID == bookId).Translators;
-            var translator = translators.Single(t => t.TranslatorID == translatorId);
+            var translators = DataSource.Instance.Books.FirstOrDefault(b => b.ID == bookId).Translators;
+            var translator = translators.FirstOrDefault(t => t.TranslatorID == translatorId);
+
+            if (translator == null)
+            {
+                return NotFound();
+            }
+
             return Ok(translator);
         }
 
