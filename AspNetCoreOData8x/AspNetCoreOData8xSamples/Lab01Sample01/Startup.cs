@@ -24,6 +24,7 @@ namespace Lab01Sample01
             services.AddControllers().AddOData(opt =>
             {
                 opt.AddRouteComponents("odata", GetEdmModel()).Count().Filter().Expand().Select().OrderBy().SetMaxTop(5);
+                opt.RouteOptions.EnableControllerNameCaseInsensitive = true;
             });
         }
 
@@ -41,9 +42,9 @@ namespace Lab01Sample01
         private static IEdmModel GetEdmModel()
         {
             var builder = new ODataConventionModelBuilder();
-            builder.EntitySet<Book>("Books");
-            builder.EntitySet<Author>("Authors");
-            builder.EntitySet<Publisher>("Publishers");
+            builder.EntitySet<Book>("books");
+            builder.EntitySet<Author>("authors");
+            builder.EntitySet<Publisher>("publishers");
             var model = builder.GetEdmModel();
             return model;
         }
