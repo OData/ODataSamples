@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Lab01Sample01.Models
 {
-    [DataContract]
+    [DataContract(Name = "author")]
     public class Author
     {
         [DataMember(Name = "id")]

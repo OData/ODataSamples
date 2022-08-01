@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Lab01Sample02.Models
 {
     [ComplexType]
-    [DataContract]
+    [DataContract(Name = "address")]
     public class Address
     {
         [DataMember(Name = "town")]

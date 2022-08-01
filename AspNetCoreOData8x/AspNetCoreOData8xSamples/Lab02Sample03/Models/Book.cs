@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Lab02Sample03.Models
 {
-    [DataContract]
+    [DataContract(Name = "book")]
     public class Book
     {
         [DataMember(Name = "id")]
@@ -34,7 +34,7 @@ namespace Lab02Sample03.Models
         public IList<Translator> Translators { get; set; }
     }
 
-    [DataContract]
+    [DataContract(Name = "bookRating")]
     public class BookRating
     {
         [DataMember(Name = "id")]
@@ -47,7 +47,7 @@ namespace Lab02Sample03.Models
         public int BookID { get; set; }
     }
 
-    [DataContract]
+    [DataContract(Name = "translator")]
     public class Translator
     {
         [DataMember(Name = "translatorId")]
