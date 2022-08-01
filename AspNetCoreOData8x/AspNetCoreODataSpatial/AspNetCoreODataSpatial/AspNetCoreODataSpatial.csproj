@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>AspNetCoreODataSpatial</AssemblyName>
+    <RootNamespace>AspNetCoreODataSpatial</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.22" />
+    <PackageReference Include="NetTopologySuite" Version="2.4.0" />
+  </ItemGroup>
+
+
+</Project>
