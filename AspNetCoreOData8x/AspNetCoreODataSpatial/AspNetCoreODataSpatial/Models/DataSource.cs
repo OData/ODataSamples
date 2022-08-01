@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NetTopologySuite.Geometries;
 
-namespace GeometryWebAPI.Models
+namespace AspNetCoreODataSpatial.Models
 {
     public class DataSource
     {

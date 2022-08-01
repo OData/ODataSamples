@@ -7,7 +7,7 @@ using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using Geometry = NetTopologySuite.Geometries.Geometry;
 
-namespace GeometryWebAPI.CustomBinders
+namespace AspNetCoreODataSpatial.CustomBinders
 {
     public class CustomFilterBinder : FilterBinder
     {

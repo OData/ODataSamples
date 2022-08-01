@@ -1,6 +1,6 @@
 using System.Linq;
-using GeometryWebAPI.CustomBinders;
-using GeometryWebAPI.Models;
+using AspNetCoreODataSpatial.CustomBinders;
+using AspNetCoreODataSpatial.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.OData;
@@ -13,7 +13,7 @@ using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using NetTopologySuite.Geometries;
 
-namespace GeometryWebAPI
+namespace AspNetCoreODataSpatial
 {
     public class Startup
     {

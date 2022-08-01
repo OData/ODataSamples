@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace GeometryWebAPI.Models
+namespace AspNetCoreODataSpatial.Models
 {
     public class CustomerContext : DbContext
     {

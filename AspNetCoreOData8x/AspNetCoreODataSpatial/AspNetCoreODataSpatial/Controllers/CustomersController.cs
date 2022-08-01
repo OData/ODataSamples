@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using GeometryWebAPI.Models;
+using AspNetCoreODataSpatial.Models;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using NetTopologySuite.Geometries;
 
-namespace GeometryWebAPI.Controllers
+namespace AspNetCoreODataSpatial.Controllers
 {
     public class CustomersController : ODataController
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Spatial;
 using NetTopologySuite.Geometries;
 
-namespace GeometryWebAPI.Models
+namespace AspNetCoreODataSpatial.Models
 {
     public class GeographyPointWrapper
     {
