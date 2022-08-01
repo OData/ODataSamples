@@ -32,6 +32,20 @@ namespace Lab01Sample01.Controllers
             return Ok(publisher);
         }
 
+        // POST ~/Publishers
+        [EnableQuery]
+        public IActionResult Post([FromBody] Publisher publisher)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            DataSource.Instance.Publishers.Add(publisher);
+
+            return Created(publisher);
+        }
+
         // PUT ~/Publishers(1001)
         [EnableQuery]
         public IActionResult Put(int key, [FromBody] Publisher Publisher)

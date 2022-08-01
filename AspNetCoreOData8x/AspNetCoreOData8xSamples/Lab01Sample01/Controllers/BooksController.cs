@@ -31,6 +31,20 @@ namespace Lab01Sample01.Controllers
             return Ok(book);
         }
 
+        // POST ~/Books
+        [EnableQuery]
+        public IActionResult Post([FromBody] Book book)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            DataSource.Instance.Books.Add(book);
+
+            return Created(book);
+        }
+
         // PUT ~/Books(1)
         [EnableQuery]
         public IActionResult Put(int key, [FromBody] Book book)

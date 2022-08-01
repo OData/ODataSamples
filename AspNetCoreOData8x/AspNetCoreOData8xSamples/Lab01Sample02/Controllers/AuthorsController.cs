@@ -32,6 +32,20 @@ namespace Lab01Sample02.Controllers
             return Ok(author);
         }
 
+        // POST ~/Authors
+        [EnableQuery]
+        public IActionResult Post([FromBody] Author author)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            DataSource.Instance.Authors.Add(author);
+
+            return Created(author);
+        }
+
         // PUT ~/Authors(10001)
         [EnableQuery]
         public IActionResult Put(int key, [FromBody] Author Author)
