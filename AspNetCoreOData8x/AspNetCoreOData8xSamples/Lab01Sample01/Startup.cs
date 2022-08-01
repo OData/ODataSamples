@@ -2,7 +2,6 @@ using Lab01Sample01.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.OData;
-using Microsoft.AspNetCore.OData.Batch;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Edm;
@@ -22,17 +21,9 @@ namespace Lab01Sample01
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            var defaultBatchHandler = new DefaultODataBatchHandler();
-            defaultBatchHandler.MessageQuotas.MaxNestingDepth = 2;
-            defaultBatchHandler.MessageQuotas.MaxOperationsPerChangeset = 10;
-
             services.AddControllers().AddOData(opt =>
             {
-                opt.AddRouteComponents("odata", GetEdmModel(), defaultBatchHandler).Count().Filter().Expand().Select().OrderBy().SetMaxTop(5);
-                //opt.RouteOptions.EnableNonParenthesisForEmptyParameterFunction = true;
-                //opt.RouteOptions.EnableKeyInParenthesis = true;
-                //opt.UrlKeyDelimiter = Microsoft.OData.ODataUrlKeyDelimiter.Parentheses;
+                opt.AddRouteComponents("odata", GetEdmModel()).Count().Filter().Expand().Select().OrderBy().SetMaxTop(5);
             });
         }
 
