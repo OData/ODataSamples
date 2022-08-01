@@ -22,7 +22,6 @@ namespace Lab01Sample02
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             var defaultBatchHandler = new DefaultODataBatchHandler();
             defaultBatchHandler.MessageQuotas.MaxNestingDepth = 2;
             defaultBatchHandler.MessageQuotas.MaxOperationsPerChangeset = 10;
