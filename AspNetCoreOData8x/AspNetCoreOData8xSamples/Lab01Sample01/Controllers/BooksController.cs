@@ -97,6 +97,7 @@ namespace Lab01Sample01.Controllers
 
         #region Non-Contained Navigation
         [EnableQuery]
+        [HttpGet("odata/Books({key})/MainAuthor")]
         public IActionResult GetMainAuthor([FromODataUri] int key)
         {
             var mainAuthor = DataSource.Instance.Books.Where(m => m.ID == key).Select(m => m.MainAuthor).FirstOrDefault();
@@ -112,6 +113,7 @@ namespace Lab01Sample01.Controllers
         // GET ~/Books(1)/Authors
         // Authors is a navigation property.
         [EnableQuery]
+        [HttpGet("odata/Books({key})/Authors")]
         public IActionResult GetAuthors([FromODataUri] int key)
         {
             var authors = DataSource.Instance.Books.AsQueryable<Book>().Where(b => b.ID == key).Select(b => b.Authors);
@@ -124,6 +126,7 @@ namespace Lab01Sample01.Controllers
 
         // GET ~/Books(1)/Translators
         [EnableQuery]
+        [HttpGet("odata/Books({key})/Translators")]
         public IActionResult GetTranslators(int key)
         {
             var translators = DataSource.Instance.Books.Single(b => b.ID == key).Translators;
