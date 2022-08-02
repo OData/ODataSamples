@@ -8,7 +8,7 @@ namespace Lab01Sample01.Models
     public class Book
     {
         [DataMember(Name = "id")]
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         [DataMember(Name = "isbn")]
         public string Isbn { get; set; }
@@ -38,7 +38,7 @@ namespace Lab01Sample01.Models
     public class Translator
     {
         [DataMember(Name = "translatorId")]
-        public int TranslatorID { get; set; }
+        public string TranslatorID { get; set; }
 
         [DataMember(Name = "translatorName")]
         public string TranslatorName { get; set; }

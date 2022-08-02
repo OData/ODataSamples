@@ -18,9 +18,9 @@ namespace Lab01Sample01.Controllers
             return Ok(DataSource.Instance.Authors);
         }
 
-        // GET ~/Authors(10001)
+        // GET ~/Authors('10001')
         [EnableQuery]
-        public IActionResult Get(int key)
+        public IActionResult Get(string key)
         {
             var author = DataSource.Instance.Authors.FirstOrDefault(a => a.ID == key);
 
@@ -46,9 +46,9 @@ namespace Lab01Sample01.Controllers
             return Created(author);
         }
 
-        // PUT ~/Authors(10001)
+        // PUT ~/Authors('10001')
         [EnableQuery]
-        public IActionResult Put(int key, [FromBody] Author Author)
+        public IActionResult Put(string key, [FromBody] Author Author)
         {
             if (!ModelState.IsValid)
             {
@@ -65,9 +65,9 @@ namespace Lab01Sample01.Controllers
             return Ok(author);
         }
 
-        // PATCH ~/Authors(10001)
+        // PATCH ~/Authors('10001')
         [EnableQuery]
-        public IActionResult Patch([FromODataUri] int key, Delta<Author> delta)
+        public IActionResult Patch([FromODataUri] string key, Delta<Author> delta)
         {
             if (!ModelState.IsValid)
             {
@@ -84,9 +84,9 @@ namespace Lab01Sample01.Controllers
             return Ok(author);
         }
 
-        // DELETE ~/Authors(10001)
+        // DELETE ~/Authors('10001')
         [EnableQuery]
-        public IActionResult Delete(int key)
+        public IActionResult Delete(string key)
         {
             var author = DataSource.Instance.Authors.FirstOrDefault(a => a.ID == key);
 

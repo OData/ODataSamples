@@ -55,7 +55,7 @@ namespace Lab02Sample03
             builder.Function("returnAllForKidsBooks").ReturnsFromEntitySet<Book>("books");
             builder.EntityType<Book>().Collection
                 .Function("mostRecent")
-                .Returns<int>();
+                .Returns<string>();
             builder.EntityType<Book>()
                 .Action("rate")
                 .Parameter<int>("rating");

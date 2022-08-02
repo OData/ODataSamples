@@ -19,9 +19,9 @@ namespace Lab02Sample03.Controllers
             return Ok(DataSource.Instance.Books);
         }
 
-        // GET ~/Books(1)
+        // GET ~/Books('1')
         [EnableQuery]
-        public IActionResult Get(int key)
+        public IActionResult Get(string key)
         {
             var book = DataSource.Instance.Books.FirstOrDefault(b => b.ID == key);
             if (book == null)
@@ -46,9 +46,9 @@ namespace Lab02Sample03.Controllers
             return Created(book);
         }
 
-        // PUT ~/Books(1)
+        // PUT ~/Books('1')
         [EnableQuery]
-        public IActionResult Put(int key, [FromBody] Book book)
+        public IActionResult Put(string key, [FromBody] Book book)
         {
             if (!ModelState.IsValid)
             {
@@ -64,9 +64,9 @@ namespace Lab02Sample03.Controllers
             return Ok(entity);
         }
 
-        // PATCH ~/Books(1)
+        // PATCH ~/Books('1')
         [EnableQuery]
-        public IActionResult Patch([FromODataUri] int key, Delta<Book> delta)
+        public IActionResult Patch([FromODataUri] string key, Delta<Book> delta)
         {
             if (!ModelState.IsValid)
             {
@@ -82,9 +82,9 @@ namespace Lab02Sample03.Controllers
             return Ok(book);
         }
 
-        // DELETE ~/Books(1)
+        // DELETE ~/Books('1')
         [EnableQuery]
-        public IActionResult Delete(int key)
+        public IActionResult Delete(string key)
         {
             var book = DataSource.Instance.Books.FirstOrDefault(b => b.ID == key);
             if (book == null)
@@ -105,7 +105,7 @@ namespace Lab02Sample03.Controllers
         #region Non-Contained Navigation
         [EnableQuery]
         [HttpGet("odata/Books({key})/MainAuthor")]
-        public IActionResult GetMainAuthor([FromODataUri] int key)
+        public IActionResult GetMainAuthor([FromODataUri] string key)
         {
             var mainAuthor = DataSource.Instance.Books.Where(m => m.ID == key).Select(m => m.MainAuthor).FirstOrDefault();
 
@@ -117,11 +117,11 @@ namespace Lab02Sample03.Controllers
             return Ok(mainAuthor);
         }
 
-        // GET ~/Books(1)/Authors
+        // GET ~/Books('1')/Authors
         // Authors is a navigation property.
         [EnableQuery]
         [HttpGet("odata/Books({key})/Authors")]
-        public IActionResult GetAuthors([FromODataUri] int key)
+        public IActionResult GetAuthors([FromODataUri] string key)
         {
             var authors = DataSource.Instance.Books.AsQueryable<Book>().Where(b => b.ID == key).Select(b => b.Authors);
             return Ok(authors);
@@ -131,19 +131,19 @@ namespace Lab02Sample03.Controllers
         #region Contained Navigation
         //Contained entities don't have their own controller; the action is defined in the containing entity set controller.
 
-        // GET ~/Books(1)/Translators
+        // GET ~/Books('1')/Translators
         [EnableQuery]
         [HttpGet("odata/Books({key})/Translators")]
-        public IActionResult GetTranslators(int key)
+        public IActionResult GetTranslators(string key)
         {
             var translators = DataSource.Instance.Books.Single(b => b.ID == key).Translators;
             return Ok(translators);
         }
 
-        // GET ~/Books(1)/Translators(100001)
+        // GET ~/Books('1')/Translators('100001')
         [EnableQuery]
         [HttpGet("odata/Books({bookId})/Translators({translatorId})")]
-        public IActionResult GetSingleTranslator(int bookId, int translatorId)
+        public IActionResult GetSingleTranslator(string bookId, string translatorId)
         {
             var translators = DataSource.Instance.Books.FirstOrDefault(b => b.ID == bookId).Translators;
             var translator = translators.FirstOrDefault(t => t.TranslatorID == translatorId);
@@ -156,9 +156,9 @@ namespace Lab02Sample03.Controllers
             return Ok(translator);
         }
 
-        // PUT ~/Books(1)/Translators(100001)
+        // PUT ~/Books('1')/Translators('100001')
         [HttpPut("odata/Books({bookId})/Translators({translatorId})")]
-        public IActionResult PutToTranslator(int bookId, int translatorId, [FromBody] Translator translator)
+        public IActionResult PutToTranslator(string bookId, string translatorId, [FromBody] Translator translator)
         {
             var book = DataSource.Instance.Books.Single(b => b.ID == bookId);
             var originalTranslator = book.Translators.Single(t => t.TranslatorID == translatorId);
@@ -166,9 +166,9 @@ namespace Lab02Sample03.Controllers
             return Ok(translator);
         }
 
-        // DELETE ~/Books(1)/Translators(100001)
+        // DELETE ~/Books('1')/Translators('100001')
         [HttpDelete("odata/Books({bookId})/Translators({TranslatorID})")]
-        public IActionResult DeleteTranslatorFromBook(int bookId, int translatorId)
+        public IActionResult DeleteTranslatorFromBook(string bookId, string translatorId)
         {
             var book = DataSource.Instance.Books.Single(b => b.ID == bookId);
             var originalTranslator = book.Translators.Single(t => t.TranslatorID == translatorId);
@@ -189,22 +189,22 @@ namespace Lab02Sample03.Controllers
         [HttpGet("odata/Books/MostRecent()")]
         public IActionResult MostRecent()
         {
-            var product = DataSource.Instance.Books.Max(x => x.ID);
-            return Ok(product);
+            var maxBookId = DataSource.Instance.Books.Max(x => x.ID);
+            return Ok(maxBookId);
         }
 
-        // POST /Books(1)/Rate
+        // POST /Books('1')/Rate
         // Body has { Rating: 7 }
         // This is bound Action. The action is bound to the Books entity set.
         [HttpPost("odata/Books({key})/Rate")]
-        public IActionResult Rate([FromODataUri] int key, ODataActionParameters parameters)
+        public IActionResult Rate([FromODataUri] string key, ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            int rating = (int)parameters["Rating"];
+            int rating = (int)parameters["rating"];
 
             if (rating < 0)
             {

@@ -7,7 +7,7 @@ namespace Lab02Sample03.Models
     public class Publisher
     {
         [DataMember(Name = "id")]
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         [DataMember(Name = "publisherName")]
         public string PublisherName { get; set; }

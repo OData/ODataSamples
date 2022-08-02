@@ -7,7 +7,7 @@ namespace Lab01Sample01.Models
     public class Author
     {
         [DataMember(Name = "id")]
-        public int ID { get; set; }
+        public string ID { get; set; }
 
         [DataMember(Name = "authorName")]
         public string AuthorName { get; set; }

@@ -18,9 +18,9 @@ namespace Lab01Sample02.Controllers
             return Ok(DataSource.Instance.Publishers);
         }
 
-        // GET ~/Publishers(1001)
+        // GET ~/Publishers('1001')
         [EnableQuery]
-        public IActionResult Get(int key)
+        public IActionResult Get(string key)
         {
             var publisher = DataSource.Instance.Publishers.FirstOrDefault(p => p.ID == key);
 
@@ -46,9 +46,9 @@ namespace Lab01Sample02.Controllers
             return Created(publisher);
         }
 
-        // PUT ~/Publishers(1001)
+        // PUT ~/Publishers('1001')
         [EnableQuery]
-        public IActionResult Put(int key, [FromBody] Publisher Publisher)
+        public IActionResult Put(string key, [FromBody] Publisher Publisher)
         {
             if (!ModelState.IsValid)
             {
@@ -65,9 +65,9 @@ namespace Lab01Sample02.Controllers
             return Ok(publisher);
         }
 
-        // PATCH ~/Publishers(1001)
+        // PATCH ~/Publishers('1001')
         [EnableQuery]
-        public IActionResult Patch([FromODataUri] int key, Delta<Publisher> delta)
+        public IActionResult Patch([FromODataUri] string key, Delta<Publisher> delta)
         {
             if (!ModelState.IsValid)
             {
@@ -84,9 +84,9 @@ namespace Lab01Sample02.Controllers
             return Ok(publisher);
         }
 
-        // DELETE ~/Publishers(1001)
+        // DELETE ~/Publishers('1001')
         [EnableQuery]
-        public IActionResult Delete(int key)
+        public IActionResult Delete(string key)
         {
             var publisher = DataSource.Instance.Publishers.FirstOrDefault(p => p.ID == key);
             if (publisher == null)
