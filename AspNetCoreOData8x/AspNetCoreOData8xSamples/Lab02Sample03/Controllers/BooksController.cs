@@ -195,7 +195,7 @@ namespace Lab02Sample03.Controllers
 
         // POST /Books('1')/Rate
         // Body has { Rating: 7 }
-        // This is bound Action. The action is bound to the Books entity set.
+        // This is bound Action. The action is bound to the Book entity.
         [HttpPost("odata/Books({key})/Rate")]
         public IActionResult Rate([FromODataUri] string key, ODataActionParameters parameters)
         {
