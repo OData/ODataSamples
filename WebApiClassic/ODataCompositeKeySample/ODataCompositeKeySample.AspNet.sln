@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.32804.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataCompositeKeySample.AspNet", "ODataCompositeKeySample.AspNet\ODataCompositeKeySample.AspNet.csproj", "{25E736E6-4E85-4103-9233-93C956D81149}"
 EndProject
@@ -21,14 +21,6 @@ Global
 		{6EE70915-895F-4BA2-AA42-841151599BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EE70915-895F-4BA2-AA42-841151599BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EE70915-895F-4BA2-AA42-841151599BC8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22472AF4-6C9E-4501-8543-BC643362FC67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22472AF4-6C9E-4501-8543-BC643362FC67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22472AF4-6C9E-4501-8543-BC643362FC67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22472AF4-6C9E-4501-8543-BC643362FC67}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47E643A8-7362-408E-88D8-6F0A8538BE59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47E643A8-7362-408E-88D8-6F0A8538BE59}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47E643A8-7362-408E-88D8-6F0A8538BE59}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47E643A8-7362-408E-88D8-6F0A8538BE59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

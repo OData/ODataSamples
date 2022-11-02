@@ -4,7 +4,7 @@
 using Microsoft.OData.Client;
 using System;
 
-namespace ODataCompositeKeySample.Tests.Default
+namespace Default
 {
     public partial class Container
     {

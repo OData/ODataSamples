@@ -3,8 +3,8 @@
 
 using System;
 using System.Linq;
-using ODataCompositeKeySample.Tests.ODataCompositeKeySample.Models;
-using ODataCompositeKeySample.Tests.Default;
+using ODataCompositeKeySample.Models;
+using Default;
 
 namespace ODataCompositeKeySample.Tests
 {

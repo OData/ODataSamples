@@ -4,7 +4,9 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Web.Http;
+using System.Xml;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.Owin.Hosting;
 using Newtonsoft.Json.Linq;
@@ -20,14 +22,16 @@ namespace ODataEnumTypeSample
 
         public static void Main(string[] args)
         {
-            _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             using (WebApp.Start(_baseAddress, Configuration))
             {
                 Console.WriteLine("Listening on " + _baseAddress);
 
                 // Query the metadata
+                _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/xml"));
                 QueryMetadata();
 
+                _httpClient.DefaultRequestHeaders.Accept.Clear();
+                _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 // Query employees whose gender is Male
                 QueryEmployeesByGender(Gender.Male);
 
@@ -64,7 +68,27 @@ namespace ODataEnumTypeSample
             {
                 response.EnsureSuccessStatusCode();
                 string metadata = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine("\nThe metadata is \n {0}", metadata);
+                Console.WriteLine("\nThe metadata is: \n {0}", BeautifulXml(metadata));
+            }
+        }
+
+        private static string BeautifulXml(string xml)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            var sb = new StringBuilder();
+            var settings = new XmlWriterSettings
+            {
+                Indent = true,
+                IndentChars = @"  ",
+                NewLineChars = Environment.NewLine,
+                NewLineHandling = NewLineHandling.Replace,
+            };
+
+            using (var writer = XmlWriter.Create(sb, settings))
+            {
+                doc.Save(writer);
+                return sb.ToString();
             }
         }
 
