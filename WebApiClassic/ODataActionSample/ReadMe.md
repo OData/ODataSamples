@@ -8,10 +8,10 @@ and the user can check out or return a movie. You can also add a movie to the li
 
 Actions:
 
-Check out a movie:  /odata/Movies(1)/ODataActionsSample.Models.CheckOut
-Return a movie:     /odata/Movies(1)/ODataActionsSample.Models.Return
-Check out sevaral:  /odata/Movies/ODataActionsSample.Models.CheckOutMany
-Add a movie:        /odata/CreateMovie
+* Check out a movie:  `/odata/Movies(1)/ODataActionsSample.Models.CheckOut`
+* Return a movie:     `/odata/Movies(1)/ODataActionsSample.Models.Return`
+* Check out sevaral:  `/odata/Movies/ODataActionsSample.Models.CheckOutMany`
+* Add a movie:        `/odata/CreateMovie`
 
 These actions demonstrate several options for OData actions:
 
@@ -23,10 +23,10 @@ These actions demonstrate several options for OData actions:
 
 Actions:
 
-Check out a movie:  /odata/Movies(1)/CheckOut
-Return a movie:     /odata/Movies(1)/Return
-Check out sevaral:  /odata/Movies/CheckOutMany
-Add a movie:        /odata/CreateMovie
+* Check out a movie:  `/odata/Movies(1)/CheckOut`
+* Return a movie:     `/odata/Movies(1)/Return`
+* Check out sevaral:  `/odata/Movies/CheckOutMany`
+* Add a movie:        `/odata/CreateMovie`
 
 # Demo
 
