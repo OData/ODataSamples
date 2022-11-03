@@ -4,7 +4,9 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Web.Http;
+using System.Xml;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.Owin.Hosting;
 using Newtonsoft.Json.Linq;
@@ -14,16 +16,16 @@ namespace ODataOpenTypeSample
 {
     class Program
     {
-        private static readonly string _baseAddress = string.Format("http://{0}:12345", Environment.MachineName);
+        private static readonly string _baseAddress = "http://localhost:12345";
         private static readonly HttpClient _httpClient = new HttpClient();
-        private static readonly string _namespace = typeof(Account).Namespace;
 
         static void Main(string[] args)
         {
-            _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             using (WebApp.Start(_baseAddress, Configuration))
             {
                 Console.WriteLine("Listening on " + _baseAddress);
+
+                _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/xml"));
 
                 // The attribute OpenType is returned for the entity type Account and the complex type Address:
                 // <EntityType Name="Account" OpenType="true">
@@ -32,7 +34,10 @@ namespace ODataOpenTypeSample
                 HttpResponseMessage response = QueryMetadata();
                 string metadata = response.Content.ReadAsStringAsync().Result;
                 Comment(response.ToString());
-                Comment(metadata);
+                Comment(BeautifulXml(metadata));
+
+                _httpClient.DefaultRequestHeaders.Accept.Clear();
+                _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                 // Dynamic property values are also returned, such as: 
                 // Address.Country, Account.Emails, Account.Gender.
@@ -81,6 +86,26 @@ namespace ODataOpenTypeSample
 
             response.EnsureSuccessStatusCode();
             return response;
+        }
+
+        private static string BeautifulXml(string xml)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+            var sb = new StringBuilder();
+            var settings = new XmlWriterSettings
+            {
+                Indent = true,
+                IndentChars = @"  ",
+                NewLineChars = Environment.NewLine,
+                NewLineHandling = NewLineHandling.Replace,
+            };
+
+            using (var writer = XmlWriter.Create(sb, settings))
+            {
+                doc.Save(writer);
+                return sb.ToString();
+            }
         }
 
         public static HttpResponseMessage AddAccount()
@@ -168,6 +193,7 @@ namespace ODataOpenTypeSample
 
         private static void Comment(string message)
         {
+            Console.WriteLine();
             Console.WriteLine(message);
         }
 
