@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web.Http;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
-using ODataActionSample.Model;
+using ODataActionSample.Models;
 
 namespace ODataActionSample.AspNetFx.Controllers
 {

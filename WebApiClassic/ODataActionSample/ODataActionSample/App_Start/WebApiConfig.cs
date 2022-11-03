@@ -5,7 +5,7 @@ using System.Web.Http;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.OData.Edm;
-using ODataActionSample.Model;
+using ODataActionSample.Models;
 
 namespace ODataActionSample.AspNetFx
 {

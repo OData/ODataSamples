@@ -37,7 +37,10 @@ window.viewModel = (function () {
                 }
             })
         };
-        ajaxRequest("post", feedUrl + "/ODataActionSample.Models.CheckOutMany", data)
+
+        // IIS has the problem to use '.' in the request URI.
+        // OData supports the non-namespace action call, so, let's use the action name directly.
+        ajaxRequest("post", feedUrl + "/CheckOutMany", data)
             .done(function (result) {
                 $.each(result.value, function (index, m) {
                     keys[m.ID].update(m);
@@ -88,13 +91,13 @@ window.viewModel = (function () {
             self.dueDate(dueDate);
 
             if (data["#ODataActionSample.Models.CheckOut"]) {
-                self.checkoutUrl(data["#ODataActionSample.Models.CheckOut"].target);
+                self.checkoutUrl(data["#ODataActionSample.Models.CheckOut"].target.replace("ODataActionSample.Models.", ""));
             }
             else {
                 self.checkoutUrl(null);
             }
             if (data["#ODataActionSample.Models.Return"]) {
-                self.returnMovieUrl(data["#ODataActionSample.Models.Return"].target);
+                self.returnMovieUrl(data["#ODataActionSample.Models.Return"].target.replace("ODataActionSample.Models.", ""));
             }
             else {
                 self.returnMovieUrl(null);

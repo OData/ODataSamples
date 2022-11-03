@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace ODataActionSample.Model
+namespace ODataActionSample.Models
 {
     public class MoviesContext
     {
