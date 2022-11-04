@@ -20,10 +20,11 @@ namespace ODataCapabilitiesVocabularySample
 
         static void Main(string[] args)
         {
-            _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             using (WebApp.Start<Startup>(_baseAddress))
             {
                 Console.WriteLine("Listening on " + _baseAddress);
+
+                _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/xml"));
 
                 // Query metadata without capabilities annotation
                 Comment("GET ~/odata/non-cap/$metadata");
@@ -38,6 +39,9 @@ namespace ODataCapabilitiesVocabularySample
                 metadata = response.Content.ReadAsStringAsync().Result;
                 Comment(response.ToString());
                 Comment(PrintXML(metadata));
+
+                _httpClient.DefaultRequestHeaders.Accept.Clear();
+                _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                 // Query Customers without capabilities annotation
                 Comment("GET ~/odata/cap/Customers");

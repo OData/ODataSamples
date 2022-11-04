@@ -19,7 +19,7 @@ namespace ODataUntypedSample
     public class ODataUntypedSample
     {
         private static HttpClient client = new HttpClient();
-        private const string ServiceUrl = "http://localhost:54321";
+        private const string ServiceUrl = "http://localhost:12345";
 
         public static IEdmModel Model = GetEdmModel();
 
