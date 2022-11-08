@@ -18,7 +18,7 @@ namespace ODataOpenTypeSample
         public string Street { get; set; }
 
         // If a property of the type Dictionary<string, object> is defined, then the containing type is an open type,
-        // and the key-value pairs inside this property are called dynamic proerpties.
+        // and the key-value pairs inside this property are called dynamic properties.
         public Dictionary<string, object> DynamicProperties { get; set; }
     }
 }
