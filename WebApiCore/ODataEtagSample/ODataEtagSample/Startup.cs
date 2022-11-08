@@ -6,10 +6,10 @@ using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OData.Edm;
 using ODataEtagSample.Models;
 
@@ -32,23 +32,24 @@ namespace ODataEtagSample
         {
             services.AddDbContext<CustomersContext>(opt => opt.UseSqlServer(ConnectionString));
             services.AddOData();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRouting();
             var model = GetModel();
-            app.UseMvc(builder =>
+            app.UseEndpoints(builder =>
             {
                 builder.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
 
-                builder.MapODataServiceRoute("odata", "odata", model);
+                builder.MapODataRoute("odata", "odata", model);
             });
         }
 

@@ -4,9 +4,9 @@
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OData.Edm;
 
 namespace ODataUntypedSample
@@ -24,11 +24,11 @@ namespace ODataUntypedSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOData();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -39,9 +39,9 @@ namespace ODataUntypedSample
                 app.UseHsts();
             }
 
+            app.UseRouting();
             app.UseHttpsRedirection();
-            app.UseMvc(routeBuilder
-                => routeBuilder.MapODataServiceRoute("odata", "odata", GetModel()));
+            app.UseEndpoints(r => r.MapODataRoute("odata", "odata", GetModel()));
         }
 
         private static IEdmModel GetModel()

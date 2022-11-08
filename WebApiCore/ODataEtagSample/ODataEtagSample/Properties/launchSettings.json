@@ -9,19 +9,11 @@
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "api/values",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "ODataEtagSample": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
-      "applicationUrl": "http://localhost:5000",
+      "launchUrl": "odata/$metadata",
+      "applicationUrl": "http://localhost:5231",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -11,7 +11,8 @@ namespace ODataEtagSample.Client
 {
     class Program
     {
-        private static readonly string serverUrl = "http://localhost:5000";
+        // if you are runing the ODataETagSample using IIS, please check the port number is same as it in the brower
+        private static readonly string serverUrl = "http://localhost:5231";
 
         static void Main(string[] args)
         {
