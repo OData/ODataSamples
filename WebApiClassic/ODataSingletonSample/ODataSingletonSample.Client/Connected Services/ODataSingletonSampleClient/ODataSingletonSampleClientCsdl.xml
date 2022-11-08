@@ -1,0 +1,48 @@
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="ODataSingletonSample" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="Employee">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" />
+        <NavigationProperty Name="Company" Type="ODataSingletonSample.Company" />
+      </EntityType>
+      <EntityType Name="Company">
+        <Key>
+          <PropertyRef Name="ID" />
+        </Key>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" />
+        <Property Name="Revenue" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Category" Type="ODataSingletonSample.CompanyCategory" Nullable="false" />
+        <NavigationProperty Name="Employees" Type="Collection(ODataSingletonSample.Employee)" />
+      </EntityType>
+      <EnumType Name="CompanyCategory">
+        <Member Name="IT" Value="0" />
+        <Member Name="Communication" Value="1" />
+        <Member Name="Electronics" Value="2" />
+        <Member Name="Others" Value="3" />
+      </EnumType>
+      <Action Name="ResetDataSource" IsBound="true">
+        <Parameter Name="bindingParameter" Type="Collection(ODataSingletonSample.Employee)" />
+      </Action>
+      <Action Name="ResetDataSource" IsBound="true">
+        <Parameter Name="bindingParameter" Type="ODataSingletonSample.Company" />
+      </Action>
+      <Function Name="GetEmployeesCount" IsBound="true">
+        <Parameter Name="bindingParameter" Type="ODataSingletonSample.Company" />
+        <ReturnType Type="Edm.Int32" Nullable="false" />
+      </Function>
+      <EntityContainer Name="Container">
+        <EntitySet Name="Employees" EntityType="ODataSingletonSample.Employee">
+          <NavigationPropertyBinding Path="Company" Target="Umbrella" />
+        </EntitySet>
+        <Singleton Name="Umbrella" Type="ODataSingletonSample.Company">
+          <NavigationPropertyBinding Path="Employees" Target="Employees" />
+        </Singleton>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

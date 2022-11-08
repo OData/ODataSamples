@@ -7,7 +7,7 @@ namespace ODataReferentialConstraintSample
 {
     public class SampleContext : DbContext
     {
-        public static string ConnectionString = @"Data Source=(LocalDb)\v11.0;Integrated Security=True;Initial Catalog=ODataReferentialConstraintSample";
+        public static string ConnectionString = @"Data Source=(LocalDb)\MSSQLLocalDB;Integrated Security=True;Initial Catalog=ODataReferentialConstraintSample";
 
         public SampleContext()
             : base(ConnectionString)

@@ -4,7 +4,7 @@
 using System;
 using System.Linq;
 using Microsoft.OData.Client;
-using ODataSingletonSample.Client;
+using ODataSingletonSample;
 
 namespace SingletonClientSample.Client
 {

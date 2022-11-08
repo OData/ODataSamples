@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ODataBatchSample.Client.ODataBatchSample.Models;
-using CustomersContext = ODataBatchSample.Client.Default.CustomersContext;
+using Default;
 using Microsoft.OData.Client;
+using ODataBatchSample.Models;
 
 namespace ODataBatchSample.Client
 {

@@ -19,16 +19,16 @@ namespace ODataReferentialConstraintSample
 {
     public class Program
     {
-        private static readonly string _baseAddress = string.Format("http://{0}:12345", Environment.MachineName);
+        private static readonly string _baseAddress = "http://localhost:12345";
         private static readonly HttpClient _httpClient = new HttpClient();
 
         public static void Main(string[] args)
         {
-            _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             using (WebApp.Start(_baseAddress, Configuration))
             {
                 Console.WriteLine("Listening on " + _baseAddress);
 
+                _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/xml"));
                 // The referential constraint is present on metadata document
                 Comment("GET ~/$metadata");
                 HttpResponseMessage response = QueryMetadata();
@@ -36,6 +36,8 @@ namespace ODataReferentialConstraintSample
                 Comment(response.ToString());
                 Comment(PrintXML(metadata));
 
+                _httpClient.DefaultRequestHeaders.Accept.Clear();
+                _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 // Call an action to generate the resource.
                 Comment("POST ~/ResetDataSource");
                 response = ResetDataSource();

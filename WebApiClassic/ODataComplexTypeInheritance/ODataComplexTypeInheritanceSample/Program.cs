@@ -15,7 +15,7 @@ namespace ODataComplexTypeInheritanceSample
 {
     public class Program
     {
-        private static readonly string _baseAddress = String.Format("http://{0}:12345", Environment.MachineName);
+        private static readonly string _baseAddress = "http://localhost:12345";
         private static readonly HttpClient _httpClient = new HttpClient();
         private static readonly string _namespace = typeof(Window).Namespace;
         private const string _shapeObjectForAction = @"
@@ -62,7 +62,6 @@ namespace ODataComplexTypeInheritanceSample
 
         public static void Main(string[] args)
         {
-            _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
             using (WebApp.Start(_baseAddress, Configuration))
             {
                 Console.WriteLine("Listening on " + _baseAddress);
@@ -72,6 +71,7 @@ namespace ODataComplexTypeInheritanceSample
                 // The complex type Shape is an abstract type, in the EDM model, its IsAbstract is true.
                 // The complex type Circle and Polygon derive from Shape and
                 // the complex type Rectangle derives from Polygon.
+                _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/xml"));
                 requestUri = _baseAddress + "/odata/$metadata";
                 Comment("GET " + requestUri);
                 response = Get(requestUri);
@@ -81,6 +81,8 @@ namespace ODataComplexTypeInheritanceSample
                 // it is actually a Ploygon.
                 // The property OptionalShapes is a collection of Shape, in the instance the 3 types of Shape
                 // are included.
+                _httpClient.DefaultRequestHeaders.Accept.Clear();
+                _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 requestUri = _baseAddress + "/odata/Windows(1)";
                 Comment("GET " + requestUri);
                 response = Get(requestUri);
