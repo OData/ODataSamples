@@ -34,7 +34,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory
             config.SetUrlKeyDelimiter(ODataUrlKeyDelimiter.Slash);
             config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
             config.Routes.MapHttpRoute("Options", "{*OPTIONS}", new { controller = "CORS", action = "Options" }, new { Options = new myHttpRouteConstraint()});
-            config.UseRestier<TrippinApi>((services) =>
+            config.UseRestier((builder) =>
             {
                 Func<IServiceProvider, IDataStoreManager<string, TripPinDataSource>> defaultDataStoreManager =
                 sp => new DefaultDataStoreManager<string, TripPinDataSource>()
@@ -49,16 +49,20 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory
                     MaxExpansionDepth = 4
                 };
 
-                services.AddSingleton<ODataValidationSettings>(validationSettingFactory);
-                services.AddChainedService<IModelBuilder>((sp, next) => new TrippinApi.ModelBuilder());
-                services.AddChainedService<IChangeSetInitializer>((sp, next) => new ChangeSetInitializer<TripPinDataSource>());
-                services.AddChainedService<ISubmitExecutor>((sp, next) => new SubmitExecutor());
-                services.AddSingleton(defaultDataStoreManager);
+                builder.AddRestierApi<TrippinApi>((services) =>
+                {
+                    services.AddSingleton<ODataValidationSettings>(validationSettingFactory);
+                    services.AddChainedService<IModelBuilder>((sp, next) => new TrippinApi.ModelBuilder());
+                    services.AddChainedService<IChangeSetInitializer>((sp, next) => new ChangeSetInitializer<TripPinDataSource>());
+                    services.AddChainedService<ISubmitExecutor>((sp, next) => new SubmitExecutor());
+                    services.AddSingleton(defaultDataStoreManager);
 
-                // Add custom TrippinBatchHandler
-                ODataBatchHandler trippinBatchHandler = new TrippinBatchHandler(GlobalConfiguration.DefaultServer);
-                trippinBatchHandler.ODataRouteName = routeName;
-                services.AddSingleton(trippinBatchHandler);
+                    // Add custom TrippinBatchHandler
+                    ODataBatchHandler trippinBatchHandler = new TrippinBatchHandler(GlobalConfiguration.DefaultServer);
+                    trippinBatchHandler.ODataRouteName = routeName;
+                    services.AddSingleton(trippinBatchHandler);
+                }
+                );
             });
 
             RegisterTrippin(config, GlobalConfiguration.DefaultServer);
@@ -71,10 +75,12 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory
             // enable query options for all properties
             config.Filter().Expand().Select().OrderBy().MaxTop(null).Count();
             config.SetTimeZoneInfo(TimeZoneInfo.Utc);
-            config.MapRestier<TrippinApi>(
+            config.MapRestier((builder) =>
+            builder.MapApiRoute<TrippinApi>(
                 routeName,
                 "",
-                false); // Custom TrippinBatchHandler registered in UseRestier 
+                false) // Custom TrippinBatchHandler registered in UseRestier 
+            );
         }
     }
     public class myHttpRouteConstraint : IHttpRouteConstraint
