@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -50,10 +51,10 @@
       <HintPath>..\packages\Ben.TypeDictionary.0.1.4\lib\netstandard2.0\Ben.TypeDictionary.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.OData, Version=7.6.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.OData.7.6.1\lib\net45\Microsoft.AspNet.OData.dll</HintPath>
@@ -75,13 +76,13 @@
       <HintPath>..\packages\Microsoft.OData.Edm.7.12.5\lib\net45\Microsoft.OData.Edm.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Restier.AspNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bd2d67c4036fede0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Restier.AspNet.1.0.0-rc9.20221114.1\lib\net472\Microsoft.Restier.AspNet.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Restier.AspNet.1.0.0\lib\net472\Microsoft.Restier.AspNet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Restier.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bd2d67c4036fede0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Restier.Core.1.0.0-rc9.20221114.1\lib\net472\Microsoft.Restier.Core.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Restier.Core.1.0.0\lib\net472\Microsoft.Restier.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Restier.EntityFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bd2d67c4036fede0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Restier.EntityFramework.1.0.0-rc5.20201113.1\lib\net472\Microsoft.Restier.EntityFramework.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Restier.EntityFramework.1.0.0\lib\net472\Microsoft.Restier.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Spatial, Version=7.12.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Spatial.7.12.5\lib\net45\Microsoft.Spatial.dll</HintPath>
@@ -223,6 +224,14 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -22,28 +22,34 @@ namespace Microsoft.OData.Service.Sample.Trippin
         public static void Register(HttpConfiguration config)
         {
             config.Filter().Expand().Select().OrderBy().MaxTop(null).Count();
+            config.SetUrlKeyDelimiter(ODataUrlKeyDelimiter.Slash);
 
-            config.UseRestier<TrippinApi>((services) =>
+            config.UseRestier((builder) =>
                 {
-                    services.AddEF6ProviderServices<TrippinModel>();
-                    services.AddSingleton<ODataPayloadValueConverter, CustomizedPayloadValueConverter>();
-                    services.AddSingleton<ODataValidationSettings>(
-                        new ODataValidationSettings
-                        {
-                            MaxAnyAllExpressionDepth = 3,
-                            MaxExpansionDepth = 3
-                        }
-                    );
-                    services.AddSingleton<IChangeSetItemFilter, CustomizedSubmitProcessor>();
-                    services.AddRestierDefaultServices<TrippinApi>();
-                    services.AddChainedService<IModelBuilder>((sp, next) => new TrippinApi.TrippinModelExtender(next));
+                    builder.AddRestierApi<TrippinApi>((services) =>
+                    {
+                        services.AddEF6ProviderServices<TrippinModel>();
+                        services.AddSingleton<ODataPayloadValueConverter, CustomizedPayloadValueConverter>();
+                        services.AddSingleton<ODataValidationSettings>(
+                            new ODataValidationSettings
+                            {
+                                MaxAnyAllExpressionDepth = 3,
+                                MaxExpansionDepth = 3
+                            }
+                        );
+                        services.AddSingleton<IChangeSetItemFilter, CustomizedSubmitProcessor>();
+                        services.AddChainedService<IModelBuilder>((sp, next) => new TrippinApi.TrippinModelExtender(next));
+                    });
                 }
             );
 
-            config.MapRestier<TrippinApi>(
+            config.MapRestier((restierRouteBuilder) =>
+                {
+                    restierRouteBuilder.MapApiRoute<TrippinApi>(
                     "TrippinApi",
                     "",
                     true);
+                });
         }
     }
 }

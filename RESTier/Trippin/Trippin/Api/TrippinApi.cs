@@ -44,7 +44,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// <summary>
         /// Implements an action import.
         /// </summary>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", OperationType = OperationType.Action)]
+        [UnboundOperation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", OperationType = OperationType.Action)]
         public void ResetDataSource()
         {
             TrippinModel.ResetDataSource();
@@ -53,7 +53,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// <summary>
         /// Action import - clean up all the expired trips.
         /// </summary>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", OperationType = OperationType.Action)]
+        [UnboundOperation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", OperationType = OperationType.Action)]
         public void CleanUpExpiredTrips()
         {
             // DO NOT ACTUALLY REMOVE THE TRIPS.
@@ -64,7 +64,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// </summary>
         /// <param name="trip">The trip to update.</param>
         /// <returns>The trip updated.</returns>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", IsBound = true, OperationType = OperationType.Action)]
+        [BoundOperation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", OperationType = OperationType.Action)]
         public Trip EndTrip(Trip trip)
         {
             // DO NOT ACTUALLY UPDATE THE TRIP.
@@ -76,7 +76,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// </summary>
         /// <param name="person">The key of the binding person.</param>
         /// <returns>The number of friends of the person.</returns>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", IsBound = true)]
+        [BoundOperation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models")]
         public int GetNumberOfFriends(Person person)
         {
             if (person == null)
@@ -92,7 +92,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// Function import - gets the person with most friends.
         /// </summary>
         /// <returns>The person with most friends.</returns>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", EntitySet = "People")]
+        [UnboundOperation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", EntitySet = "People")]
         public Person GetPersonWithMostFriends()
         {
             Person result = null;
@@ -123,7 +123,7 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
         /// </summary>
         /// <param name="n">The minimum number of friends.</param>
         /// <returns>People with at least n friends.</returns>
-        [Operation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", EntitySet = "People")]
+        [UnboundOperation(Namespace = "Microsoft.OData.Service.Sample.Trippin.Models", EntitySet = "People")]
         public IEnumerable<Person> GetPeopleWithFriendsAtLeast(int n)
         {
             foreach (var person in PeopleWithFriends)
@@ -154,9 +154,9 @@ namespace Microsoft.OData.Service.Sample.Trippin.Api
                 this.InnerModelBuilder = innerHandler;
             }
 
-            public async Task<IEdmModel> GetModelAsync(ModelContext context, CancellationToken cancellationToken)
+            public IEdmModel GetModel(ModelContext context)
             {
-                var model = await InnerModelBuilder.GetModelAsync(context, cancellationToken);
+                var model = InnerModelBuilder.GetModel(context);
 
                 // Issue (todo): model returned by EFModelProducer.GetModelAsync is always null; how do we extend?
                 if (model != null)
