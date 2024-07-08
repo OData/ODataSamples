@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <AssemblyName>Microsoft.OData.Service.Ef6</AssemblyName>
+    <RootNamespace>Microsoft.OData.Service</RootNamespace>
+    <DefineConstants>$(DefineConstants);EF6Provider;EFRTM;ASTORIA_SERVER</DefineConstants>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <OutputType>Library</OutputType>
+    <ProjectGuid>{FC58BE21-1E2F-4FDE-92EC-26780655394D}</ProjectGuid>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>$(DefineConstants);EF6Provider;EFRTM;ASTORIA_SERVER</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>$(DefineConstants);EF6Provider;EFRTM;ASTORIA_SERVER</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OData.Client, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.OData.Client.6.17.0\lib\net40\Microsoft.OData.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OData.Core, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.OData.Core.6.17.0\lib\portable-net45+win+wpa81\Microsoft.OData.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OData.Edm, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.OData.Edm.6.17.0\lib\portable-net45+win+wpa81\Microsoft.OData.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Spatial, Version=6.17.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Spatial.6.17.0\lib\portable-net45+win+wpa81\Microsoft.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Microsoft.OData.Service\Caching\MetadataCache.cs">
+      <Link>Caching\MetadataCache.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Caching\ProviderMetadataCacheItem.cs">
+      <Link>Caching\ProviderMetadataCacheItem.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\ErrorHandler.cs">
+      <Link>ErrorHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Microsoft.OData.Service.cs">
+      <Link>Microsoft.OData.Service.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Parameterized.Microsoft.OData.Service.cs">
+      <Link>Parameterized.Microsoft.OData.Service.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\BaseServiceProvider.cs">
+      <Link>Providers\BaseServiceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\DbContextHelper.cs">
+      <Link>Providers\DbContextHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\EntityFrameworkDataServiceProvider.cs">
+      <Link>Providers\EntityFrameworkDataServiceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\IProviderMember.cs">
+      <Link>Providers\IProviderMember.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\IProviderMetadata.cs">
+      <Link>Providers\IProviderMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\IProviderType.cs">
+      <Link>Providers\IProviderType.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\ObjectContextMember.cs">
+      <Link>Providers\ObjectContextMember.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\ObjectContextMetadata.cs">
+      <Link>Providers\ObjectContextMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\ObjectContextServiceProvider.cs">
+      <Link>Providers\ObjectContextServiceProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\ObjectContextType.cs">
+      <Link>Providers\ObjectContextType.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\Providers\PrimitiveResourceTypeMap.cs">
+      <Link>Providers\PrimitiveResourceTypeMap.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\ReferenceEqualityComparer.cs">
+      <Link>ReferenceEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.OData.Service\XmlConstants.cs">
+      <Link>XmlConstants.cs</Link>
+    </Compile>
+    <Compile Include="Providers\EntityFrameworkDataService.cs" />
+    <Compile Include="WebUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.OData.Service\Microsoft.OData.Service.csproj">
+      <Project>{eed3355c-18ae-4cca-95bc-14c997e26c95}</Project>
+      <Name>Microsoft.OData.Service</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+</Project>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Ensures that if this file changes it forces a rebuild -->
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BuildDependsOn>
+      GenerateTextStringResources;
+      $(BuildDependsOn);
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="AfterBuild" DependsOnTargets="$(AfterBuildDependsOn)"/>
+
+  <!-- ********************************************************************************************* -->
+  <!-- *** Generate resources from .txt format resource files -->
+  <!-- ********************************************************************************************* -->
+  <PropertyGroup>
+    <GenerateTextStringResourcesDependsOn>
+      PrepareForBuild;
+      GenerateStringResources;
+    </GenerateTextStringResourcesDependsOn>
+  </PropertyGroup>
+
+  <Target Name="GenerateTextStringResources"
+          Condition="'@(TextStringResource)' != ''"
+          DependsOnTargets="$(GenerateTextStringResourcesDependsOn)"/>
+
+  <Target Name="GenerateStringResources">
+
+    <ItemGroup>
+      <EmbeddedResource Include="@(TextStringResource)" Condition="'%(TextStringResource.GenerateResource)' == 'true'">
+        <!-- "Resx" indicates it should go through GenerateResource -->
+        <Type>Resx</Type>
+        <WithCulture>false</WithCulture>
+        <ManifestResourceName>%(Filename)</ManifestResourceName>
+      </EmbeddedResource>
+    </ItemGroup>
+
+  </Target>
+
+  <!-- ********************************************************************************************* -->
+
+  <!-- Chain into the defaults from the toolset -->
+  <Import Condition="'$(DefaultCustomAfterMicrosoftCommonTargets)' != ''" Project="$(DefaultCustomAfterMicrosoftCommonTargets)" />
+</Project>
