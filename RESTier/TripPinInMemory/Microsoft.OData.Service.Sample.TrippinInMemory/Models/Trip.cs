@@ -27,6 +27,12 @@ namespace Trippin
 
         public virtual ICollection<PlanItem> PlanItems { get; set; }
 
+        public Trip()
+        {
+            Tags = new List<string>();
+            PlanItems = new List<PlanItem>();
+        }
+
         public object Clone()
         {
             Trip newTrip = new Trip()
@@ -37,23 +43,23 @@ namespace Trippin
                 Budget = this.Budget,
                 Description = this.Description,
                 StartsAt = this.StartsAt,
-                EndsAt = this.EndsAt,
-                Tags = null,
+                EndsAt = this.EndsAt
             };
 
             if (this.Tags != null)
             {
-                newTrip.Tags = new Collection<string>();
                 foreach (var tag in this.Tags)
                 {
                     newTrip.Tags.Add(tag);
                 }
             }
 
-            newTrip.PlanItems = new List<PlanItem>();
-            foreach (var planItem in this.PlanItems)
+            if (this.PlanItems != null)
             {
-                newTrip.PlanItems.Add(planItem.Clone() as PlanItem);
+                foreach (var planItem in this.PlanItems)
+                {
+                    newTrip.PlanItems.Add(planItem.Clone() as PlanItem);
+                }
             }
 
             return newTrip;

@@ -10,5 +10,10 @@ namespace Trippin
         public virtual ICollection<Person> Peers { get; set; }
 
         public long Cost { get; set; }
+
+        public Employee()
+        {
+            Peers = new List<Person>();
+        }
     }
 }
