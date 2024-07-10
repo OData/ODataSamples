@@ -599,7 +599,8 @@ namespace Trippin
                     UserName = "clydeguess",
                     Gender = PersonGender.Male,
                     HomeAddress = new Location(),
-                    Trips = new List<Trip>()
+                    Trips = new List<Trip>(),
+                    AddressInfo = new List<Location>()
                 },
                 new Person()
                 {
