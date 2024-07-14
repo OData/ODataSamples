@@ -13,14 +13,15 @@ namespace ODataWebV3.OData
     using System.ServiceModel;
     using System.ServiceModel.Web;
     using System.Spatial;
+    using System.Text;
     using System.Web;
+    using DataServiceProviderV3;
     using Microsoft.Data.Edm;
     using Microsoft.Data.Edm.Library;
     using Microsoft.Data.Edm.Library.Annotations;
     using Microsoft.Data.Edm.Library.Values;
-    using DataServiceProviderV3;
 
-    [ServiceBehavior(IncludeExceptionDetailInFaults=true)]
+    [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
     public class ODataService : DSPDataService<DSPContext>
     {
         /// <summary>
@@ -53,6 +54,11 @@ namespace ODataWebV3.OData
         /// </summary>
         private static DSPActionProvider _actionProvider;
 
+        ///<summary>
+        /// The stream provider
+        /// </summary>
+        private static InMemoryStreamProvider<ReferenceEqualityComparer> _streamProvider = new InMemoryStreamProvider<ReferenceEqualityComparer>();
+
         /// <summary>
         /// Spatial operations implementation
         /// </summary>
@@ -67,6 +73,7 @@ namespace ODataWebV3.OData
         {
             _metadata = new DSPMetadata("DemoService", "ODataDemo");
 
+            #region Complex Type
             // Address Complex Type
             ResourceType address = _metadata.AddComplexType("Address");
             _metadata.AddPrimitiveProperty(address, "Street", typeof(string));
@@ -74,39 +81,28 @@ namespace ODataWebV3.OData
             _metadata.AddPrimitiveProperty(address, "State", typeof(string));
             _metadata.AddPrimitiveProperty(address, "ZipCode", typeof(string));
             _metadata.AddPrimitiveProperty(address, "Country", typeof(string));
+            #endregion
 
-            // Product Entity TYpe
+            #region Entity type
+            // Product Entity Type
             ResourceType product = _metadata.AddEntityType("Product");
-            _metadata.AddKeyProperty(product, "ID", typeof(int));
+            _metadata.AddKeyProperty(product, "ID", typeof(Int32));
             _metadata.AddPrimitiveProperty(product, "Name", typeof(string));
             _metadata.AddPrimitiveProperty(product, "Description", typeof(string));
             _metadata.AddPrimitiveProperty(product, "ReleaseDate", typeof(DateTime));
             _metadata.AddPrimitiveProperty(product, "DiscontinuedDate", typeof(DateTime?));
-            _metadata.AddPrimitiveProperty(product, "Rating", typeof(int));
-            _metadata.AddPrimitiveProperty(product, "Price", typeof(decimal));
+            _metadata.AddPrimitiveProperty(product, "Rating", typeof(Int16));
+            _metadata.AddPrimitiveProperty(product, "Price", typeof(double));
 
-            ResourceSet products = _metadata.AddResourceSet("Products", product);
-
-            // FeaturedProduct Entity Type
-            ResourceType featuredProduct = _metadata.AddEntityType("FeaturedProduct", product);
-
-            // Advertisement Entity Type
-            ResourceType advertisement = _metadata.AddEntityType("Advertisement");
-            _metadata.AddKeyProperty(advertisement, "ID", typeof(Guid));
-            _metadata.AddPrimitiveProperty(advertisement, "Name", typeof(string));
-            _metadata.AddPrimitiveProperty(advertisement, "AirDate", typeof(DateTime));
-
-            ResourceSet advertisements = _metadata.AddResourceSet("Advertisements", advertisement);
-
-            // FeaturedProduct - Advertisement association
-            _metadata.AddNavigationProperty(featuredProduct, "Advertisement", false, advertisement, "FeaturedProduct", false);
+            //ProductDetail Entity Type
+            ResourceType productDetail = _metadata.AddEntityType("ProductDetail");
+            _metadata.AddKeyProperty(productDetail, "ProductID", typeof(Int32));
+            _metadata.AddPrimitiveProperty(productDetail, "Details", typeof(string));
 
             // Category Entity Type
-            ResourceType category = _metadata.AddEntityType("Category");
+            ResourceType category = _metadata.AddEntityType("Category", null, /* is OpenType */true);
             _metadata.AddKeyProperty(category, "ID", typeof(int));
             _metadata.AddPrimitiveProperty(category, "Name", typeof(string));
-
-            ResourceSet categories = _metadata.AddResourceSet("Categories", category);
 
             // Supplier Entity Type
             ResourceType supplier = _metadata.AddEntityType("Supplier");
@@ -116,18 +112,78 @@ namespace ODataWebV3.OData
             _metadata.AddPrimitiveProperty(supplier, "Location", typeof(GeographyPoint));
             _metadata.AddETagProperty(supplier, "Concurrency", typeof(int));
 
+            // Person Entity Type
+            ResourceType person = _metadata.AddEntityType("Person");
+            _metadata.AddKeyProperty(person, "ID", typeof(int));
+            _metadata.AddPrimitiveProperty(person, "Name", typeof(string));
+
+            // PersonDetail Entity Type
+            ResourceType personDetail = _metadata.AddEntityType("PersonDetail");
+            _metadata.AddKeyProperty(personDetail, "PersonID", typeof(Int32));
+            _metadata.AddPrimitiveProperty(personDetail, "Age", typeof(Byte));
+            _metadata.AddPrimitiveProperty(personDetail, "Gender", typeof(Boolean));
+            _metadata.AddPrimitiveProperty(personDetail, "Phone", typeof(string));
+            _metadata.AddComplexProperty(personDetail, "Address", address);
+            _metadata.AddStreamProperty(personDetail, "Photo");
+
+            // Advertisement Entity Type
+            ResourceType advertisement = _metadata.AddEntityType("Advertisement", null, /* isOpenType */false, /* isMediaLinkEntry */true);
+            _metadata.AddKeyProperty(advertisement, "ID", typeof(Guid));
+            _metadata.AddPrimitiveProperty(advertisement, "Name", typeof(string));
+            _metadata.AddPrimitiveProperty(advertisement, "AirDate", typeof(DateTime));
+            #endregion
+
+            #region Entity Set
+            ResourceSet products = _metadata.AddResourceSet("Products", product);
+            ResourceSet productDetails = _metadata.AddResourceSet("ProductDetails", productDetail);
+            ResourceSet categories = _metadata.AddResourceSet("Categories", category);
             ResourceSet suppliers = _metadata.AddResourceSet("Suppliers", supplier);
+            ResourceSet persons = _metadata.AddResourceSet("Persons", person);
+            ResourceSet personDetails = _metadata.AddResourceSet("PersonDetails", personDetail);
+            ResourceSet advertisements = _metadata.AddResourceSet("Advertisements", advertisement);
+            #endregion
+
+            #region Derived Entity Types
+            // We need to declare derived entity types after entity sets so that the resource set can
+            // be set to the same as the base type - this is necessary for declaring nav props on derived 
+            // types.
+
+            // FeaturedProduct Entity Type
+            ResourceType featuredProduct = _metadata.AddEntityType("FeaturedProduct", product);
+
+            // Customer Entity Type
+            ResourceType customer = _metadata.AddEntityType("Customer", person);
+            _metadata.AddPrimitiveProperty(customer, "TotalExpense", typeof(decimal));
+
+            // Employee Entity Type
+            ResourceType employee = _metadata.AddEntityType("Employee", person);
+            _metadata.AddPrimitiveProperty(employee, "EmployeeID", typeof(Int64));
+            _metadata.AddPrimitiveProperty(employee, "HireDate", typeof(DateTime));
+            _metadata.AddPrimitiveProperty(employee, "Salary", typeof(Single));
+            #endregion
+
+            #region Relationship
+            // Person - PersonDetail association
+            _metadata.AddNavigationProperty(person, "PersonDetail", false, personDetail, "Person", false);
 
             // Product - Categories association
-            _metadata.AddNavigationProperty(product, "Category", false, category, "Products", true);
+            _metadata.AddNavigationProperty(product, "Categories", true, category, "Products", true);
 
             // Product - Suppliers association
             _metadata.AddNavigationProperty(product, "Supplier", false, supplier, "Products", true);
 
+            // FeaturedProduct - Advertisement association
+            _metadata.AddNavigationProperty(featuredProduct, "Advertisement", false, advertisement, "FeaturedProduct", false);
+
+            // Product - ProductDetail association
+            _metadata.AddNavigationProperty(product, "ProductDetail", false, productDetail, "Product", false);
+            #endregion
+
+            #region Operations
             // GetProductsByRating Service operation
             _metadata.AddServiceOperation(new ServiceOperation(
                 "GetProductsByRating", ServiceOperationResultKind.QueryWithMultipleResults,
-                product, products, "GET", new ServiceOperationParameter[] { new ServiceOperationParameter("rating", ResourceType.GetPrimitiveResourceType(typeof(int))) }));
+                product, products, "GET", new ServiceOperationParameter[] { new ServiceOperationParameter("rating", ResourceType.GetPrimitiveResourceType(typeof(Int16))) }));
 
             // Friendly Feed Mappings:
             product.AddEntityPropertyMappingAttribute(new EntityPropertyMappingAttribute("Name", SyndicationItemProperty.Title, SyndicationTextContentKind.Plaintext, false));
@@ -142,10 +198,20 @@ namespace ODataWebV3.OData
             _actionProvider.AddServiceAction(
                 "Discount",
                 DiscountProductAction,
-                null,
+                ResourceType.GetPrimitiveResourceType(typeof(double)),
                 OperationParameterBindingKind.Always,
                 new ServiceActionParameter("product", product),
                 new ServiceActionParameter("discountPercentage", ResourceType.GetPrimitiveResourceType(typeof(int))));
+
+            // Add non-bound action IncreaseSalaries
+            _actionProvider.AddServiceAction(
+                "IncreaseSalaries",
+                IncreaseSalariesAction,
+                null,
+                OperationParameterBindingKind.Never,
+                new ServiceActionParameter("percentage", ResourceType.GetPrimitiveResourceType(typeof(int))));
+
+            #endregion
         }
 
         /// <summary>
@@ -177,21 +243,33 @@ namespace ODataWebV3.OData
         {
             DSPContext context = new DSPContext();
 
-            ResourceSet productsSet, categoriesSet, suppliersSet, advertisementSet;
+            ResourceSet productsSet, productDetailsSet, categoriesSet, suppliersSet, personsSet, personDetailsSet, advertisementSet;
             metadata.TryResolveResourceSet("Products", out productsSet);
+            metadata.TryResolveResourceSet("ProductDetails", out productDetailsSet);
             metadata.TryResolveResourceSet("Categories", out categoriesSet);
             metadata.TryResolveResourceSet("Suppliers", out suppliersSet);
+            metadata.TryResolveResourceSet("Persons", out personsSet);
+            metadata.TryResolveResourceSet("PersonDetails", out personDetailsSet);
             metadata.TryResolveResourceSet("Advertisements", out advertisementSet);
 
             ResourceType addressType;
             metadata.TryResolveResourceType(metadata.ContainerNamespace + ".Address", out addressType);
 
+            ResourceType customerType;
+            metadata.TryResolveResourceType(metadata.ContainerNamespace + ".Customer", out customerType);
+
+            ResourceType employeeType;
+            metadata.TryResolveResourceType(metadata.ContainerNamespace + ".Employee", out employeeType);
+
             ResourceType featuredProductType;
             metadata.TryResolveResourceType(metadata.ContainerNamespace + ".FeaturedProduct", out featuredProductType);
 
             IList<DSPResource> products = context.GetResourceSetEntities(productsSet.Name);
+            IList<DSPResource> productDetails = context.GetResourceSetEntities(productDetailsSet.Name);
             IList<DSPResource> categories = context.GetResourceSetEntities(categoriesSet.Name);
             IList<DSPResource> suppliers = context.GetResourceSetEntities(suppliersSet.Name);
+            IList<DSPResource> persons = context.GetResourceSetEntities(personsSet.Name);
+            IList<DSPResource> personDetails = context.GetResourceSetEntities(personDetailsSet.Name);
             IList<DSPResource> advertisements = context.GetResourceSetEntities(advertisementSet.Name);
 
             //
@@ -216,32 +294,32 @@ namespace ODataWebV3.OData
             //
             // Products
             // 
-            string[] productPropertyList = { "ID", "Name", "Description", "ReleaseDate", "DiscontinuedDate", "Rating", "Price", "Category", "Supplier" };
+            string[] productPropertyList = { "ID", "Name", "Description", "ReleaseDate", "DiscontinuedDate", "Rating", "Price", "ProductDetail", "Categories", "Supplier" };
             products.Add(CreateResourceObject(productsSet.ResourceType, productPropertyList,
-                0, "Bread", "Whole grain bread", new DateTime(1992, 1, 1), null, 4, 2.5m, null, null));
+                0, "Bread", "Whole grain bread", new DateTime(1992, 1, 1), null, (Int16)4, 2.5, null, new List<DSPResource>(), null));
             products.Add(CreateResourceObject(productsSet.ResourceType, productPropertyList,
-                1, "Milk", "Low fat milk", new DateTime(1995, 10, 1), null, 3, 3.5m, null, null));
+                1, "Milk", "Low fat milk", new DateTime(1995, 10, 1), null, (Int16)3, 3.5, null, new List<DSPResource>(), null));
             products.Add(CreateResourceObject(productsSet.ResourceType, productPropertyList,
-                2, "Vint soda", "Americana Variety - Mix of 6 flavors", new DateTime(2000, 10, 1), null, 3, 20.9m, null, null));
+                2, "Vint soda", "Americana Variety - Mix of 6 flavors", new DateTime(2000, 10, 1), null, (Int16)3, 20.9, null, new List<DSPResource>(), null));
             products.Add(CreateResourceObject(productsSet.ResourceType, productPropertyList,
-                3, "Havina Cola", "The Original Key Lime Cola", new DateTime(2005, 10, 1), new DateTime(2006, 10, 1), 3, 19.9m, null, null));
+                3, "Havina Cola", "The Original Key Lime Cola", new DateTime(2005, 10, 1), new DateTime(2006, 10, 1), (Int16)3, 19.9, null, new List<DSPResource>(), null));
             products.Add(CreateResourceObject(productsSet.ResourceType, productPropertyList,
-                4, "Fruit Punch", "Mango flavor, 8.3 Ounce Cans (Pack of 24)", new DateTime(2003, 1, 5), null, 3, 22.99m, null, null));
+                4, "Fruit Punch", "Mango flavor, 8.3 Ounce Cans (Pack of 24)", new DateTime(2003, 1, 5), null, (Int16)3, 22.99, null, new List<DSPResource>(), null));
             products.Add(CreateResourceObject(productsSet.ResourceType, productPropertyList,
-                5, "Cranberry Juice", "16-Ounce Plastic Bottles (Pack of 12)", new DateTime(2006, 8, 4), null, 3, 22.8m, null, null));
+                5, "Cranberry Juice", "16-Ounce Plastic Bottles (Pack of 12)", new DateTime(2006, 8, 4), null, (Int16)3, 22.8, null, new List<DSPResource>(), null));
             products.Add(CreateResourceObject(productsSet.ResourceType, productPropertyList,
-                6, "Pink Lemonade", "36 Ounce Cans (Pack of 3)", new DateTime(2006, 11, 5), null, 3, 18.8m, null, null));
+                6, "Pink Lemonade", "36 Ounce Cans (Pack of 3)", new DateTime(2006, 11, 5), null, (Int16)3, 18.8, null, new List<DSPResource>(), null));
             products.Add(CreateResourceObject(productsSet.ResourceType, productPropertyList,
-                7, "DVD Player", "1080P Upconversion DVD Player", new DateTime(2006, 11, 15), null, 3, 35.88m, null, null));
+                7, "DVD Player", "1080P Upconversion DVD Player", new DateTime(2006, 11, 15), null, (Int16)5, 35.88, null, new List<DSPResource>(), null));
             products.Add(CreateResourceObject(productsSet.ResourceType, productPropertyList,
-                8, "LCD HDTV", "42 inch 1080p LCD with Built-in Blu-ray Disc Player", new DateTime(2008, 5, 8), null, 3, 1088.8m, null, null));
+                8, "LCD HDTV", "42 inch 1080p LCD with Built-in Blu-ray Disc Player", new DateTime(2008, 5, 8), null, (Int16)3, 1088.8, null, new List<DSPResource>(), null));
 
             // FeaturedProducts
             string[] featuredProductPropertyList = productPropertyList;
-            products.Add(CreateResourceObject(featuredProductType, productPropertyList,
-                9, "Lemonade", "Classic, refreshing lemonade (Single bottle)", new DateTime(1970, 1, 1), null, 7, 1.01m, null, null));
-            products.Add(CreateResourceObject(featuredProductType, productPropertyList,
-                10, "Coffee", "Bulk size can of instant coffee", new DateTime(1982, 12, 31), null , 1, 6.99m, null, null));
+            products.Add(CreateResourceObject(featuredProductType, featuredProductPropertyList,
+                9, "Lemonade", "Classic, refreshing lemonade (Single bottle)", new DateTime(1970, 1, 1), null, (Int16)7, 1.01, null, new List<DSPResource>(), null));
+            products.Add(CreateResourceObject(featuredProductType, featuredProductPropertyList,
+                10, "Coffee", "Bulk size can of instant coffee", new DateTime(1982, 12, 31), null, (Int16)1, 6.99, null, new List<DSPResource>(), null));
 
             //
             // Advertisements
@@ -253,12 +331,28 @@ namespace ODataWebV3.OData
                 new Guid("DB2D2186-1C29-4D1E-88EF-A127F521B9C6"), "Early morning start, need coffee", new DateTime(2000, 02, 29)));
 
             //
-            // Relationships
+            // ProductDetails
             //
+            string[] productDetailsPropertyList = { "ProductID", "Details", "Product" };
+            productDetails.Add(CreateResourceObject(productDetailsSet.ResourceType, productDetailsPropertyList, 1, "Details of product 1", null));
+            productDetails.Add(CreateResourceObject(productDetailsSet.ResourceType, productDetailsPropertyList, 3, "Details of product 3", null));
+            productDetails.Add(CreateResourceObject(productDetailsSet.ResourceType, productDetailsPropertyList, 4, "Details of product 4", null));
+            productDetails.Add(CreateResourceObject(productDetailsSet.ResourceType, productDetailsPropertyList, 8, "Details of product 8", null));
 
-            // Categories, Suppliers <-> Products
+            // Product - ProductDetails Relationship
+            foreach (var productDetail in productDetails)
+            {
+                int productID = (int)(productDetail.GetValue("ProductID"));
+                productDetail.SetValue("Product", products[productID]);
+                products[productID].SetValue("ProductDetail", productDetail);
+            }
+
+            //
+            // Category-Product & Supplier-Product Relationships
+            //
             var relationships = new[] {
                 new { End1 = "C0", End2 = "P0" },
+                new { End1 = "C0", End2 = "P1" },
                 new { End1 = "C1", End2 = "P1" },
                 new { End1 = "C1", End2 = "P2" },
                 new { End1 = "C1", End2 = "P3" },
@@ -266,7 +360,7 @@ namespace ODataWebV3.OData
                 new { End1 = "C1", End2 = "P5" },
                 new { End1 = "C1", End2 = "P6" },
                 new { End1 = "C2", End2 = "P7" },
-                new { End1 = "C2", End2 = "P8" },                
+                new { End1 = "C2", End2 = "P8" },
                 new { End1 = "S1", End2 = "P0" },
                 new { End1 = "S0", End2 = "P1" },
                 new { End1 = "S0", End2 = "P2" },
@@ -292,29 +386,91 @@ namespace ODataWebV3.OData
                 IList<DSPResource> productList = left.GetValue("Products") as IList<DSPResource>;
                 productList.Add(product);
 
-                product.SetValue(r.End1.StartsWith("C") ? "Category" : "Supplier", left);
+                if (r.End1.StartsWith("C"))
+                {
+                    (product.GetValue("Categories") as IList<DSPResource>).Add(left);
+                }
+                else
+                {
+                    product.SetValue("Supplier", left);
+                }
+
+            }
+
+
+            // PersonDetail
+            string[] personDetailPropertyList = { "PersonID", "Age", "Gender", "Address", "Phone", "Person" };
+            personDetails.Add(CreateResourceObject(personDetailsSet.ResourceType, personDetailPropertyList, 0, (Byte)21, false,
+                CreateResourceObject(addressType, addressPropertyList, "2817 Milton Dr.", "Albuquerque", "NM", "87110", "USA"), "(505) 555-5939", null));
+            personDetails.Add(CreateResourceObject(personDetailsSet.ResourceType, personDetailPropertyList, 1, (Byte)24, true,
+                CreateResourceObject(addressType, addressPropertyList, "187 Suffolk Ln.", "Boise", "ID", "83720", "USA"), "(208) 555-8097", null));
+            personDetails.Add(CreateResourceObject(personDetailsSet.ResourceType, personDetailPropertyList, 2, (Byte)23, true,
+                CreateResourceObject(addressType, addressPropertyList, "P.O. Box 555", "Lander", "WY", "82520", "USA"), "(307) 555-4680", null));
+            personDetails.Add(CreateResourceObject(personDetailsSet.ResourceType, personDetailPropertyList, 3, (Byte)30, true,
+                CreateResourceObject(addressType, addressPropertyList, "89 Jefferson Way Suite 2", "Portland", "OR", "97201", "USA"), "(503) 555-3612", null));
+            personDetails.Add(CreateResourceObject(personDetailsSet.ResourceType, personDetailPropertyList, 4, (Byte)40, true,
+                CreateResourceObject(addressType, addressPropertyList, "55 Grizzly Peak Rd.", "Butte", "MT", "59801", "USA"), "(406) 555-5834", null));
+            personDetails.Add(CreateResourceObject(personDetailsSet.ResourceType, personDetailPropertyList, 5, (Byte)30, true,
+                CreateResourceObject(addressType, addressPropertyList, "87 Polk St. Suite 5", "San Francisco", "CA", "94117", "USA"), "(415) 555-5938", null));
+            personDetails.Add(CreateResourceObject(personDetailsSet.ResourceType, personDetailPropertyList, 6, (Byte)28, false,
+                CreateResourceObject(addressType, addressPropertyList, "89 Chiaroscuro Rd.", "Portland", "OR", "97219", "USA"), "(503) 555-9573", null));
+
+            // Person
+            string[] personPropertyList = { "ID", "Name", "PersonDetail" };
+            persons.Add(CreateResourceObject(personsSet.ResourceType, personPropertyList, 0, "Paula Wilson", null));
+            persons.Add(CreateResourceObject(personsSet.ResourceType, personPropertyList, 1, "Jose Pavarotti", null));
+            persons.Add(CreateResourceObject(personsSet.ResourceType, personPropertyList, 2, "Art Braunschweiger", null));
+
+            // Customers
+            string[] customerPropertyList = personPropertyList.Concat(new[] { "TotalExpense" }).ToArray();
+            persons.Add(CreateResourceObject(customerType, customerPropertyList, 3, "Liz Nixon", null, 99.99m));
+            persons.Add(CreateResourceObject(customerType, customerPropertyList, 4, "Liu Wong", null, 199.99m));
+
+            // Employees
+            string[] employeePropertyList =
+                personPropertyList.Concat(new[] { "EmployeeID", "HireDate", "Salary" }).ToArray();
+            persons.Add(CreateResourceObject(employeeType, employeePropertyList, 5, "Jaime Yorres", null, 10001L, new DateTime(2000, 5, 30), 15000.0f));
+            persons.Add(CreateResourceObject(employeeType, employeePropertyList, 6, "Fran Wilson", null, 10002L, new DateTime(2001, 1, 2), 12000.0f));
+
+            // Person - PersonDetail Relationship
+            for (int i = 0; i != persons.Count; ++i)
+            {
+                persons[i].SetValue("PersonDetail", personDetails[i]);
+                personDetails[i].SetValue("Person", persons[i]);
             }
 
             // FeaturedProducts <-> Advertisements
             var featuredProducts = products.Where(p => p.ResourceType == featuredProductType);
             int counter = 0;
-            foreach(var fp in featuredProducts)
+            foreach (var fp in featuredProducts)
             {
                 var advertisement = advertisements.ElementAt(counter++);
-                fp.SetValue("Advertisement", advertisement); 
+                fp.SetValue("Advertisement", advertisement);
                 advertisement.SetValue("FeaturedProduct", fp);
             }
 
-            //
             // Service Ops
-            //
-            context.ServiceOperations.Add("GetProductsByRating", (args) => GetProductsByRating(context, (int)args.First()));
+            context.ServiceOperations.Add("GetProductsByRating", (args) => GetProductsByRating(context, (Int16)args.First()));
+
+            // Initialise stream data
+            int q = 0;
+            foreach (var advertisement in advertisements)
+            {
+                _streamProvider.InitializeEntityMediaStream(advertisement, null, false, "text/plain", Encoding.UTF8.GetBytes("Test stream data " + q++));
+            }
+
+            foreach (var personDetail in personDetails)
+            {
+                _streamProvider.InitializeEntityNamedStream(personDetail, "Photo", null, false, "application/octet-stream", Encoding.UTF8.GetBytes("Test named stream data " + q++));
+            }
+
+            _streamProvider.SaveStreams();
 
             return context;
         }
 
         #endregion
-                
+
         /// <summary>
         /// Initialize the service
         /// </summary>
@@ -371,10 +527,10 @@ namespace ODataWebV3.OData
         /// </summary>
         /// <param name="rating">The rating parameter</param>
         /// <returns>A set of products with the supplied rating</returns>
-        public static IQueryable<DSPResource> GetProductsByRating(DSPContext context, int rating)
+        public static IQueryable<DSPResource> GetProductsByRating(DSPContext context, Int16 rating)
         {
             return from p in context.GetResourceSetEntities("Products").AsQueryable()
-                   where ((int)p.GetValue("Rating")) == rating
+                   where ((Int16)p.GetValue("Rating")) == rating
                    select p;
         }
 
@@ -400,13 +556,13 @@ namespace ODataWebV3.OData
                     Uri requestUri = null;
 
                     UriTemplateMatch match = WebOperationContext.Current.IncomingRequest.UriTemplateMatch;
-
+                    string applicationPath = HttpContext.Current.Request.ApplicationPath;
                     if (serviceUri == null)
                     {
                         // create a service Uri that represent the current session
                         UriBuilder serviceUriBuilder = new UriBuilder(match.BaseUri);
                         Debug.Assert(serviceUriBuilder.Path.StartsWith("/V3"), "Expected the service URI to start with '/V3'.");
-                        serviceUriBuilder.Path = "/V3/(S(" + HttpContext.Current.Session.SessionID + "))" + serviceUriBuilder.Path.Substring(3);
+                        serviceUriBuilder.Path = applicationPath + "/(S(" + HttpContext.Current.Session.SessionID + "))" + serviceUriBuilder.Path.Substring(applicationPath.Length);
 
                         serviceUri = serviceUriBuilder.Uri;
                         HttpContext.Current.Session["ServiceUri"] = serviceUri;
@@ -418,7 +574,7 @@ namespace ODataWebV3.OData
 
                         UriBuilder requestUriBuilder = new UriBuilder(match.RequestUri);
                         Debug.Assert(requestUriBuilder.Path.StartsWith("/V3"), "Expected all request URIs to start with '/V3'.");
-                        requestUriBuilder.Path = "/V3/(S(" + HttpContext.Current.Session.SessionID + "))" + requestUriBuilder.Path.Substring(3);
+                        requestUriBuilder.Path = applicationPath + "/(S(" + HttpContext.Current.Session.SessionID + "))" + requestUriBuilder.Path.Substring(applicationPath.Length);
                         // because we have overwritten the Root URI, we need to make sure the request URI shares the same host
                         // (sometimes we have request URI resolving to a different host, if there are firewall re-directs
                         requestUriBuilder.Host = serviceUri.Host;
@@ -431,9 +587,12 @@ namespace ODataWebV3.OData
         }
 
         [ChangeInterceptor("Products")]
+        [ChangeInterceptor("ProductDetails")]
         [ChangeInterceptor("Categories")]
         [ChangeInterceptor("Suppliers")]
         [ChangeInterceptor("Advertisements")]
+        [ChangeInterceptor("Persons")]
+        [ChangeInterceptor("PersonDetails")]
         public void OnUpdateOperation(object source, UpdateOperations action)
         {
             if (this.IsReadOnlyService())
@@ -457,10 +616,14 @@ namespace ODataWebV3.OData
             {
                 return _actionProvider;
             }
+            else if (serviceType == typeof(IDataServiceStreamProvider) || serviceType == typeof(IDataServiceStreamProvider2))
+            {
+                return _streamProvider;
+            }
 
             return base.GetService(serviceType);
         }
-        
+
         /// <summary>
         /// CreateDataSource - generating new data context if one does not already exist for the current session
         /// </summary>
@@ -509,10 +672,22 @@ namespace ODataWebV3.OData
             object product = parameterTokens.First();
             int discountPercentage = (int)parameterTokens.Skip(1).First();
 
-            decimal price = (decimal)updateProvider.GetValue(product, "Price");
+            double price = (double)updateProvider.GetValue(product, "Price");
             price = price * (100 - discountPercentage) / 100;
             updateProvider.SetValue(product, "Price", price);
 
+            return price;
+        }
+
+        private static object IncreaseSalariesAction(DSPUpdateProvider updateProvider, IEnumerable<object> parameterTokens)
+        {
+            DSPContext context;
+            _dsCache.TryGetValue(HttpContext.Current.Session.SessionID, out context);
+            var employees = context.GetResourceSetEntities("Persons").Where(p => p.ResourceType.Name == "Employee");
+            foreach (var employee in employees)
+            {
+                updateProvider.SetValue(employee, "Salary", (Single)((Single)(employee.GetValue("Salary")) * (1 + (Int32)parameterTokens.First() / 100.0)));
+            }
             return null;
         }
 
@@ -537,11 +712,12 @@ namespace ODataWebV3.OData
         #region Update provider with constrain and concurrency support
 
         /// <summary>
-        /// Update Provider that checks for/guards against data constrains
+        /// Update Provider that checks for/guards against data constraints
         /// </summary>
         internal class DSPRestrictedUpdateProvider : DSPUpdateProvider
         {
-            public DSPRestrictedUpdateProvider(DSPContext dataContext, DSPMetadata metadata) : base(dataContext, metadata)
+            public DSPRestrictedUpdateProvider(DSPContext dataContext, DSPMetadata metadata)
+                : base(dataContext, metadata)
             {
             }
 

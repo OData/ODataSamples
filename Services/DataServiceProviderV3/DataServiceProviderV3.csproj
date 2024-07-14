@@ -75,10 +75,15 @@
     <Compile Include="DSPUpdateProvider.cs" />
     <Compile Include="ExpressionUtils.cs" />
     <Compile Include="ExpressionVisitor.cs" />
+    <Compile Include="InMemoryStreamProviderOfT.cs" />
+    <Compile Include="OpenTypesMethodReplacement.cs" />
+    <Compile Include="ReferenceEqualityComparer.cs" />
     <Compile Include="ResourcePropertyAnnotation.cs" />
     <Compile Include="ResourceTypeAnnotation.cs" />
+    <Compile Include="ReusableStream.cs" />
     <Compile Include="ServiceActionAnnotation.cs" />
     <Compile Include="SpatialOperationsImplementation.cs" />
+    <Compile Include="StreamWrapper.cs" />
     <Compile Include="TypeSystem.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -48,6 +48,9 @@ namespace DataServiceProviderV3
         internal static readonly MethodInfo OfTypeEnumerableMethodInfo = 
             ExpressionUtils.GetMethodInfoFromLambdaBody(() => DataServiceProviderMethods.OfType<object, object>((IEnumerable<object>)null, (ResourceType)null)).GetGenericMethodDefinition();
 
+        /// <summary>MethodInfo for object OpenTypeMethods.GetValue(this object value, string propertyName).</summary>
+        internal static readonly MethodInfo OpenTypesGetValueMethodInfo = typeof(OpenTypeMethods).GetMethod("GetValue", BindingFlags.Static | BindingFlags.Public, null, new Type[] {typeof(object), typeof(string)}, null);
+
         /// <summary>Method which translates an expression using the <see cref="DataServiceProviderMethods"/> methods
         /// into a new expression which can be evaluated by LINQ to Objects.</summary>
         /// <param name="expression">The expression to translate.</param>
@@ -75,6 +78,14 @@ namespace DataServiceProviderV3
                     this.Visit(m.Arguments[0]),
                     typeof(DSPResource).GetMethod("GetValue"),
                     Expression.Property(m.Arguments[1], "Name"));
+            }
+            else if (m.Method == OpenTypesGetValueMethodInfo)
+            {
+                // Arguments[0] - the resource to get property value of - we assume it's a DSPEntity
+                // Arguments[1] - the property name to get value of
+
+                // Just call the targetResource.GetValue(propertyName)
+                return Expression.Call(this.Visit(m.Arguments[0]), typeof(DSPResource).GetMethod("GetValue"), m.Arguments[1]);
             }
             else if (m.Method.IsGenericMethod && m.Method.GetGenericMethodDefinition() == GetSequenceValueMethodInfo)
             {
@@ -150,6 +161,28 @@ namespace DataServiceProviderV3
             }
 
             return base.VisitMethodCall(m);
+        }
+
+        internal override Expression VisitBinary(BinaryExpression b)
+        {
+            if (b.Method != null && b.Method.DeclaringType == typeof(OpenTypeMethods))
+            {
+                var replacement = typeof(OpenTypesMethodReplacement).GetMethod(b.Method.Name, BindingFlags.Public | BindingFlags.Static);
+                return Expression.MakeBinary(b.NodeType, this.Visit(b.Left), this.Visit(b.Right), b.IsLiftedToNull, replacement, (LambdaExpression)this.VisitLambda(b.Conversion));
+            }
+
+            return base.VisitBinary(b);
+        }
+
+        internal override Expression VisitUnary(UnaryExpression u)
+        {
+            if (u.Method != null && u.Method.DeclaringType == typeof(OpenTypeMethods))
+            {
+                var replacement = typeof(OpenTypesMethodReplacement).GetMethod(u.Method.Name, BindingFlags.Public | BindingFlags.Static);
+                return Expression.MakeUnary(u.NodeType, this.Visit(u.Operand), u.Type, replacement);
+            }
+
+            return base.VisitUnary(u);
         }
     }
 }

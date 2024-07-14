@@ -95,8 +95,6 @@ namespace ODataWebV3.Northwind
             config.SetEntitySetPageSize("Orders", 200);
             config.SetEntitySetPageSize("Order_Details", 500);
             config.UseVerboseErrors = true;
-
-            
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ namespace DataServiceProviderV3
     using System;
     using System.Collections.Generic;
     using System.Data.Services.Providers;
+    using System.Linq;
 
     /// <summary>Class which represents a single resource instance.</summary>
     /// <remarks>Uses a property bag to store properties of the resource.</remarks>
@@ -42,6 +43,18 @@ namespace DataServiceProviderV3
             {
                 return value;
             }
+        }
+
+        public IDictionary<string, object> GetOpenValues()
+        {
+            if (!this.resourceType.IsOpenType)
+            {
+                return new Dictionary<string, object>();
+            }
+
+            var definedPropertyNames = this.resourceType.Properties.Select(p => p.Name).ToList();
+            return this.properties.Where(p => !definedPropertyNames.Contains(p.Key))
+                       .ToDictionary(p => p.Key, p => p.Value);
         }
 
         /// <summary>Sets a value of the specified property.</summary>

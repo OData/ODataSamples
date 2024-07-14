@@ -7,7 +7,6 @@ namespace DataServiceProviderV3
     using System.Collections.Generic;
     using System.Data.Services.Providers;
     using System.Linq;
-    using System.Reflection;
 
     /// <summary>Implementation of the <see cref="IDataServiceQueryProvider"/>.</summary>
     internal class DSPResourceQueryProvider : IDataServiceQueryProvider
@@ -48,7 +47,8 @@ namespace DataServiceProviderV3
         /// Properties can have null values. The type of the property is determined from the returned object, only primitive types are supported for now.</remarks>
         public object GetOpenPropertyValue(object target, string propertyName)
         {
-            throw new NotSupportedException("Open types are not yet supported.");
+            var resource = target as DSPResource;
+            return resource.GetOpenValues()[propertyName];
         }
 
         /// <summary>Gets a list of all open properties for the specified resource.</summary>
@@ -59,7 +59,8 @@ namespace DataServiceProviderV3
         /// Properties can have null values. The type of the property is determined from the returned object, only primitive types are supported for now.</remarks>
         public IEnumerable<KeyValuePair<string, object>> GetOpenPropertyValues(object target)
         {
-            throw new NotSupportedException("Open types are not yet supported.");
+            var resource = target as DSPResource;
+            return resource.GetOpenValues().ToList();
         }
 
         /// <summary>Gets a value of a declared property for a resource.</summary>

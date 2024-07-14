@@ -5,6 +5,7 @@ namespace DataServiceProviderV3
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Data.Services.Providers;
     using System.Diagnostics;
     using System.Linq;
@@ -53,12 +54,16 @@ namespace DataServiceProviderV3
         /// <summary>Adds a new entity type (without any properties).</summary>
         /// <param name="name">The name of the type.</param>
         /// <param name="baseType">Optional base type for the new entity type.</param>
+        /// <param name="isOpenType">Optional flag specifying whether the type is open.</param>
+        /// <param name="isMediaLinkEntry">Optional flag specifying whether the type is MLE.</param>
         /// <returns>The newly created resource type.</returns>
-        public ResourceType AddEntityType(string name, ResourceType baseType)
+        public ResourceType AddEntityType(string name, ResourceType baseType, bool isOpenType = false, bool isMediaLinkEntry = false)
         {
             ResourceType resourceType = new ResourceType(typeof(DSPResource), ResourceTypeKind.EntityType, baseType, this.namespaceName, name, false);
             resourceType.CanReflectOnInstanceType = false;
             resourceType.CustomState = new ResourceTypeAnnotation();
+            resourceType.IsOpenType = isOpenType;
+            resourceType.IsMediaLinkEntry = isMediaLinkEntry;
 
             if (baseType != null)
             {
@@ -244,6 +249,14 @@ namespace DataServiceProviderV3
         public void AddServiceOperation(ServiceOperation serviceOperation)
         {
             this.serviceOperations[serviceOperation.Name] = serviceOperation;
+        }
+
+        /// <summary>Adds a stream property to the specified <paramref name="resourceType"/>.</summary>
+        /// <param name="resourceType">The resource type to add the property to.</param>
+        /// <param name="name">The name of the property to add.</param>
+        public void AddStreamProperty(ResourceType resourceType, string name)
+        {
+            resourceType.AddProperty(new ResourceProperty(name, ResourcePropertyKind.Stream, ResourceType.GetPrimitiveResourceType(typeof(Stream))));
         }
 
         /// <summary>Adds a resource set to the metadata definition.</summary>
