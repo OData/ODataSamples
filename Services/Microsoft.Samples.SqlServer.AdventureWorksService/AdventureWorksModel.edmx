@@ -1,0 +1,377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AdventureWorksModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="vManufacturingInstructions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ProductModelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Instructions" Type="nvarchar(max)" />
+          <Property Name="LocationID" Type="int" />
+          <Property Name="SetupHours" Type="decimal" Precision="9" Scale="4" />
+          <Property Name="MachineHours" Type="decimal" Precision="9" Scale="4" />
+          <Property Name="LaborHours" Type="decimal" Precision="9" Scale="4" />
+          <Property Name="LotSize" Type="int" />
+          <Property Name="Step" Type="nvarchar" MaxLength="1024" />
+          <Property Name="ID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vWorkOrderRouting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="WorkOrderID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="ProductNumber" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="OperationSequence" Type="smallint" Nullable="false" />
+          <Property Name="LocationID" Type="smallint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ScheduledStartDate" Type="datetime" Nullable="false" />
+          <Property Name="ActualStartDate" Type="datetime" />
+          <Property Name="ScheduledEndDate" Type="datetime" Nullable="false" />
+          <Property Name="ActualEndDate" Type="datetime" />
+          <Property Name="ActualResourceHrs" Type="decimal" Precision="9" Scale="4" />
+          <Property Name="PlannedCost" Type="money" Nullable="false" />
+          <Property Name="ActualCost" Type="money" />
+          <Property Name="OrderQty" Type="int" Nullable="false" />
+          <Property Name="ScrappedQty" Type="smallint" Nullable="false" />
+          <Property Name="DueDate" Type="datetime" Nullable="false" />
+          <Property Name="ScrapReasonID" Type="smallint" />
+          <Property Name="ScrapReason" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vProductCatalog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="ProductNumber" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProductModel" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProductCategory" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProductSubcategory" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="CultureID" Type="nchar" MaxLength="6" Nullable="false" />
+          <Property Name="Color" Type="nvarchar" MaxLength="15" />
+          <Property Name="Size" Type="nvarchar" MaxLength="5" />
+          <Property Name="Weight" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="ListPrice" Type="money" Nullable="false" />
+          <Property Name="ID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vCompanySales">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ProductCategory" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProductSubCategory" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="OrderYear" Type="int" />
+          <Property Name="OrderQtr" Type="nvarchar" MaxLength="31" />
+          <Property Name="Sales" Type="money" />
+          <Property Name="ID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vTerritorySalesDrilldown">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="TerritoryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SalesPersonID" Type="int" Nullable="false" />
+          <Property Name="EmployeeFirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmployeeLastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SalesOrderNumber" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Total" Type="money" Nullable="false" />
+          <Property Name="ID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="AdventureWorksModelStoreContainer">
+          <EntitySet Name="vManufacturingInstructions" EntityType="Self.vManufacturingInstructions" store:Type="Views" store:Schema="Production">
+            <DefiningQuery>SELECT 
+    [vManufacturingInstructions].[ProductModelID] AS [ProductModelID], 
+    [vManufacturingInstructions].[ProductName] AS [ProductName], 
+    [vManufacturingInstructions].[Instructions] AS [Instructions], 
+    [vManufacturingInstructions].[LocationID] AS [LocationID], 
+    [vManufacturingInstructions].[SetupHours] AS [SetupHours], 
+    [vManufacturingInstructions].[MachineHours] AS [MachineHours], 
+    [vManufacturingInstructions].[LaborHours] AS [LaborHours], 
+    [vManufacturingInstructions].[LotSize] AS [LotSize], 
+    [vManufacturingInstructions].[Step] AS [Step], 
+    [vManufacturingInstructions].[ID] AS [ID] 
+    FROM [Production].[vManufacturingInstructions] AS [vManufacturingInstructions]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vWorkOrderRouting" EntityType="Self.vWorkOrderRouting" store:Type="Views" store:Schema="Production">
+            <DefiningQuery>SELECT 
+    [vWorkOrderRouting].[WorkOrderID] AS [WorkOrderID], 
+    [vWorkOrderRouting].[ProductID] AS [ProductID], 
+    [vWorkOrderRouting].[ProductNumber] AS [ProductNumber], 
+    [vWorkOrderRouting].[ProductName] AS [ProductName], 
+    [vWorkOrderRouting].[OperationSequence] AS [OperationSequence], 
+    [vWorkOrderRouting].[LocationID] AS [LocationID], 
+    [vWorkOrderRouting].[Name] AS [Name], 
+    [vWorkOrderRouting].[ScheduledStartDate] AS [ScheduledStartDate], 
+    [vWorkOrderRouting].[ActualStartDate] AS [ActualStartDate], 
+    [vWorkOrderRouting].[ScheduledEndDate] AS [ScheduledEndDate], 
+    [vWorkOrderRouting].[ActualEndDate] AS [ActualEndDate], 
+    [vWorkOrderRouting].[ActualResourceHrs] AS [ActualResourceHrs], 
+    [vWorkOrderRouting].[PlannedCost] AS [PlannedCost], 
+    [vWorkOrderRouting].[ActualCost] AS [ActualCost], 
+    [vWorkOrderRouting].[OrderQty] AS [OrderQty], 
+    [vWorkOrderRouting].[ScrappedQty] AS [ScrappedQty], 
+    [vWorkOrderRouting].[DueDate] AS [DueDate], 
+    [vWorkOrderRouting].[ScrapReasonID] AS [ScrapReasonID], 
+    [vWorkOrderRouting].[ScrapReason] AS [ScrapReason], 
+    [vWorkOrderRouting].[ID] AS [ID] 
+    FROM [Production].[vWorkOrderRouting] AS [vWorkOrderRouting]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vProductCatalog" EntityType="Self.vProductCatalog" store:Type="Views" store:Schema="Production">
+            <DefiningQuery>
+    SELECT
+    [vProductCatalog].[ProductID] AS [ProductID],
+    [vProductCatalog].[ProductNumber] AS [ProductNumber],
+    [vProductCatalog].[ProductName] AS [ProductName],
+    [vProductCatalog].[ProductModel] AS [ProductModel],
+    [vProductCatalog].[ProductCategory] AS [ProductCategory],
+    [vProductCatalog].[ProductSubcategory] AS [ProductSubcategory],
+    [vProductCatalog].[Description] AS [Description],
+    [vProductCatalog].[CultureID] AS [CultureID],
+    [vProductCatalog].[Color] AS [Color],
+    [vProductCatalog].[Size] AS [Size],
+    [vProductCatalog].[Weight] AS [Weight],
+    [vProductCatalog].[ListPrice] AS [ListPrice],
+    [vProductCatalog].[ID] AS [ID]
+    FROM [Production].[vProductCatalog] AS [vProductCatalog]
+            </DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vCompanySales" EntityType="Self.vCompanySales" store:Type="Views" store:Schema="Sales">
+            <DefiningQuery>SELECT 
+    [vCompanySales].[ProductCategory] AS [ProductCategory], 
+    [vCompanySales].[ProductSubCategory] AS [ProductSubCategory], 
+    [vCompanySales].[OrderYear] AS [OrderYear], 
+    [vCompanySales].[OrderQtr] AS [OrderQtr], 
+    [vCompanySales].[Sales] AS [Sales], 
+    [vCompanySales].[ID] AS [ID] 
+    FROM [Sales].[vCompanySales] AS [vCompanySales]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vTerritorySalesDrilldown" EntityType="Self.vTerritorySalesDrilldown" store:Type="Views" store:Schema="Sales">
+            <DefiningQuery>SELECT 
+    [vTerritorySalesDrilldown].[TerritoryName] AS [TerritoryName], 
+    [vTerritorySalesDrilldown].[SalesPersonID] AS [SalesPersonID], 
+    [vTerritorySalesDrilldown].[EmployeeFirstName] AS [EmployeeFirstName], 
+    [vTerritorySalesDrilldown].[EmployeeLastName] AS [EmployeeLastName], 
+    [vTerritorySalesDrilldown].[SalesOrderNumber] AS [SalesOrderNumber], 
+    [vTerritorySalesDrilldown].[Total] AS [Total], 
+    [vTerritorySalesDrilldown].[ID] AS [ID] 
+    FROM [Sales].[vTerritorySalesDrilldown] AS [vTerritorySalesDrilldown]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AdventureWorksModel" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="vManufacturingInstructions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ProductModelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Instructions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LocationID" Type="Int32" />
+          <Property Name="SetupHours" Type="Decimal" Precision="9" Scale="4" />
+          <Property Name="MachineHours" Type="Decimal" Precision="9" Scale="4" />
+          <Property Name="LaborHours" Type="Decimal" Precision="9" Scale="4" />
+          <Property Name="LotSize" Type="Int32" />
+          <Property Name="Step" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vWorkOrderRouting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="WorkOrderID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ProductNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OperationSequence" Type="Int16" Nullable="false" />
+          <Property Name="LocationID" Type="Int16" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ScheduledStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ActualStartDate" Type="DateTime" Precision="3" />
+          <Property Name="ScheduledEndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ActualEndDate" Type="DateTime" Precision="3" />
+          <Property Name="ActualResourceHrs" Type="Decimal" Precision="9" Scale="4" />
+          <Property Name="PlannedCost" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="ActualCost" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="OrderQty" Type="Int32" Nullable="false" />
+          <Property Name="ScrappedQty" Type="Int16" Nullable="false" />
+          <Property Name="DueDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ScrapReasonID" Type="Int16" />
+          <Property Name="ScrapReason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vProductCatalog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ProductNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductModel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductSubcategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CultureID" Type="String" MaxLength="6" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Color" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Weight" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="ListPrice" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vCompanySales">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ProductCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductSubCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OrderYear" Type="Int32" />
+          <Property Name="OrderQtr" Type="String" MaxLength="31" FixedLength="false" Unicode="true" />
+          <Property Name="Sales" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vTerritorySalesDrilldown">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="TerritoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SalesPersonID" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmployeeLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SalesOrderNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="AdventureWorksEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ManufacturingInstructions" EntityType="AdventureWorksModel.vManufacturingInstructions" />
+          <EntitySet Name="WorkOrderRouting" EntityType="AdventureWorksModel.vWorkOrderRouting" />
+          <EntitySet Name="ProductCatalog" EntityType="AdventureWorksModel.vProductCatalog" />
+          <EntitySet Name="CompanySales" EntityType="AdventureWorksModel.vCompanySales" />
+          <EntitySet Name="TerritorySalesDrilldown" EntityType="AdventureWorksModel.vTerritorySalesDrilldown" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AdventureWorksModelStoreContainer" CdmEntityContainer="AdventureWorksEntities">
+          <EntitySetMapping Name="ManufacturingInstructions">
+            <EntityTypeMapping TypeName="AdventureWorksModel.vManufacturingInstructions">
+              <MappingFragment StoreEntitySet="vManufacturingInstructions">
+                <ScalarProperty Name="ProductModelID" ColumnName="ProductModelID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="Instructions" ColumnName="Instructions" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="SetupHours" ColumnName="SetupHours" />
+                <ScalarProperty Name="MachineHours" ColumnName="MachineHours" />
+                <ScalarProperty Name="LaborHours" ColumnName="LaborHours" />
+                <ScalarProperty Name="LotSize" ColumnName="LotSize" />
+                <ScalarProperty Name="Step" ColumnName="Step" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductCatalog">
+            <EntityTypeMapping TypeName="AdventureWorksModel.vProductCatalog">
+              <MappingFragment StoreEntitySet="vProductCatalog">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductModel" ColumnName="ProductModel" />
+                <ScalarProperty Name="ProductCategory" ColumnName="ProductCategory" />
+                <ScalarProperty Name="ProductSubcategory" ColumnName="ProductSubcategory" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CultureID" ColumnName="CultureID" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="ListPrice" ColumnName="ListPrice" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkOrderRouting">
+            <EntityTypeMapping TypeName="AdventureWorksModel.vWorkOrderRouting">
+              <MappingFragment StoreEntitySet="vWorkOrderRouting">
+                <ScalarProperty Name="WorkOrderID" ColumnName="WorkOrderID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ProductNumber" ColumnName="ProductNumber" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="OperationSequence" ColumnName="OperationSequence" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ScheduledStartDate" ColumnName="ScheduledStartDate" />
+                <ScalarProperty Name="ActualStartDate" ColumnName="ActualStartDate" />
+                <ScalarProperty Name="ScheduledEndDate" ColumnName="ScheduledEndDate" />
+                <ScalarProperty Name="ActualEndDate" ColumnName="ActualEndDate" />
+                <ScalarProperty Name="ActualResourceHrs" ColumnName="ActualResourceHrs" />
+                <ScalarProperty Name="PlannedCost" ColumnName="PlannedCost" />
+                <ScalarProperty Name="ActualCost" ColumnName="ActualCost" />
+                <ScalarProperty Name="OrderQty" ColumnName="OrderQty" />
+                <ScalarProperty Name="ScrappedQty" ColumnName="ScrappedQty" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="ScrapReasonID" ColumnName="ScrapReasonID" />
+                <ScalarProperty Name="ScrapReason" ColumnName="ScrapReason" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanySales">
+            <EntityTypeMapping TypeName="AdventureWorksModel.vCompanySales">
+              <MappingFragment StoreEntitySet="vCompanySales">
+                <ScalarProperty Name="ProductCategory" ColumnName="ProductCategory" />
+                <ScalarProperty Name="ProductSubCategory" ColumnName="ProductSubCategory" />
+                <ScalarProperty Name="OrderYear" ColumnName="OrderYear" />
+                <ScalarProperty Name="OrderQtr" ColumnName="OrderQtr" />
+                <ScalarProperty Name="Sales" ColumnName="Sales" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TerritorySalesDrilldown">
+            <EntityTypeMapping TypeName="AdventureWorksModel.vTerritorySalesDrilldown">
+              <MappingFragment StoreEntitySet="vTerritorySalesDrilldown">
+                <ScalarProperty Name="TerritoryName" ColumnName="TerritoryName" />
+                <ScalarProperty Name="SalesPersonID" ColumnName="SalesPersonID" />
+                <ScalarProperty Name="EmployeeFirstName" ColumnName="EmployeeFirstName" />
+                <ScalarProperty Name="EmployeeLastName" ColumnName="EmployeeLastName" />
+                <ScalarProperty Name="SalesOrderNumber" ColumnName="SalesOrderNumber" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

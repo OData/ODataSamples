@@ -1,0 +1,133 @@
+name: $(TeamProject)_$(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+# No trigger for publishing
+trigger: none
+
+# No pull request triggers for publishing
+pr: none
+
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/master
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+
+variables:
+- name: __NugetSecurityAnalysisWarningLevel__
+  value: none
+- name: runCodesignValidationInjection
+  value: false
+
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: MSSecurity-1ES-Build-Agents-Pool
+      image: MSSecurity-1ES-Windows-2019
+      os: windows
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: build
+      jobs:
+      - job:  Release
+        timeoutInMinutes: 60
+        variables:
+            buildPlatform: 'Any CPU'
+            buildConfiguration: 'Release'
+            skipComponentGovernanceDetection: true
+            odataSamplesDir: '$(Build.SourcesDirectory)'
+            odataSamplesServicesDir: '$(odataSamplesDir)\Services'
+            odataSamplesToolsDir: '$(odataSamplesDir)\tools'
+            odataSamplesServicesSln: '$(odataSamplesServicesDir)\Services.OData.Org.sln'
+        steps:
+        - task: NuGetToolInstaller@1
+          displayName: 'Install NuGet tool'
+
+        - script: 'MSBuild -p:RestorePackagesConfig=true -t:restore $(odataSamplesServicesSln)'
+          displayName: 'Restore packages'
+
+        - task: VSBuild@1
+          displayName: 'Build Services.OData.Org solution'
+          inputs:
+            solution: '$(odataSamplesServicesSln)'
+            msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:SkipInvalidConfigurations=true /p:PackageLocation=$(Build.ArtifactStagingDirectory)'
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
+
+        - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
+          displayName: 'Run CredScan - Services'
+          inputs:    
+            scanFolder: '$(odataSamplesServicesDir)'
+            debugMode: false
+
+        - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
+          displayName: 'Run CredScan - Tools'
+          inputs:
+            scanFolder: '$(odataSamplesToolsDir)'
+            debugMode: false
+
+        - task: BinSkim@3
+          displayName: 'Run BinSkim - OData Samples V2'
+          inputs:
+            InputType: Basic
+            AnalyzeTarget: |
+              $(Build.ArtifactStagingDirectory)\**\DataServiceProvider.dll;$(Build.ArtifactStagingDirectory)\**\ODataWeb.dll
+            AnalyzeVerbose: true
+            AnalyzeHashes: true
+            AnalyzeEnvironment: true
+
+        - task: BinSkim@3
+          displayName: 'Run BinSkim - OData Samples V3'
+          inputs:
+            InputType: Basic
+            AnalyzeTarget: |
+              $(Build.ArtifactStagingDirectory)\**\DataServiceProviderV3.dll;$(Build.ArtifactStagingDirectory)\**\ODataWebV3.dll
+            AnalyzeVerbose: true
+            AnalyzeHashes: true
+            AnalyzeEnvironment: true
+
+        - task: BinSkim@3
+          displayName: 'Run BinSkim - OData Samples V3 AdventureWorks'
+          inputs:
+            InputType: Basic
+            AnalyzeTarget: |
+              $(Build.ArtifactStagingDirectory)\**\Microsoft.Samples.SqlServer.AdventureWorksService.dll
+            AnalyzeVerbose: true
+            AnalyzeHashes: true
+            AnalyzeEnvironment: true
+
+        - task: BinSkim@3
+          displayName: 'Run BinSkim - OData Samples V4'
+          inputs:
+            InputType: Basic
+            AnalyzeTarget: |
+              $(Build.ArtifactStagingDirectory)\**\DataServiceProviderV4.dll;$(Build.ArtifactStagingDirectory)\**\Microsoft.OData.Service.dll;$(Build.ArtifactStagingDirectory)\**\Microsoft.OData.Service.Ef6.dll;$(Build.ArtifactStagingDirectory)\**\ODataWebV4.dll
+            AnalyzeVerbose: true
+            AnalyzeHashes: true
+            AnalyzeEnvironment: true
+
+        - task: PublishSecurityAnalysisLogs@2
+          displayName: 'Publish Security Analysis Logs'
+          inputs:
+            ArtifactName: SecurityLogs
+
+        - task: PostAnalysis@1
+          displayName: 'Post Analysis'
+          inputs:
+            BinSkim: true
+            CredScan: true
+            PoliCheck: true
+            PoliCheckBreakOn: Severity2Above
+          enabled: true
+          continueOnError: true
+
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish artifacts'
+          inputs:
+            PathToPublish: $(Build.ArtifactStagingDirectory)
+            ArtifactName: 'PublishBuildArtifacts'
