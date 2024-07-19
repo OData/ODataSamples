@@ -44,12 +44,27 @@ extends:
             odataSamplesServicesDir: '$(odataSamplesDir)\Services'
             odataSamplesToolsDir: '$(odataSamplesDir)\tools'
             odataSamplesServicesSln: '$(odataSamplesServicesDir)\Services.OData.Org.sln'
+            odataWebV2BinPath: '$(odataSamplesServicesDir)\ODataWeb\bin'
+            odataWebV3BinPath: '$(odataSamplesServicesDir)\ODataWebV3\bin'
+            odataWebV4BinPath: '$(odataSamplesServicesDir)\ODataWebV4\bin'
+            adventureWorksV3BinPath: '$(odataSamplesServicesDir)\Microsoft.Samples.SqlServer.AdventureWorksService\bin'
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            targetPath: $(Build.ArtifactStagingDirectory)
+            artifactName: 'drop'
         steps:
         - task: NuGetToolInstaller@1
-          displayName: 'Install NuGet tool'
+          displayName: 'Install NuGet >=5.2.0 tool'
+          inputs:
+            versionSpec: '>=5.2.0'
+            checkLatest: true
 
-        - script: 'MSBuild -p:RestorePackagesConfig=true -t:restore $(odataSamplesServicesSln)'
-          displayName: 'Restore packages'
+        - task: NuGetCommand@2
+          displayName: 'Restore NuGet packages'
+          inputs:
+            command: 'restore'
+            restoreSolution: '$(odataSamplesServicesSln)'
 
         - task: VSBuild@1
           displayName: 'Build Services.OData.Org solution'
@@ -59,13 +74,13 @@ extends:
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
 
-        - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
+        - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
           displayName: 'Run CredScan - Services'
           inputs:    
             scanFolder: '$(odataSamplesServicesDir)'
             debugMode: false
 
-        - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
+        - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
           displayName: 'Run CredScan - Tools'
           inputs:
             scanFolder: '$(odataSamplesToolsDir)'
@@ -76,7 +91,7 @@ extends:
           inputs:
             InputType: Basic
             AnalyzeTarget: |
-              $(Build.ArtifactStagingDirectory)\**\DataServiceProvider.dll;$(Build.ArtifactStagingDirectory)\**\ODataWeb.dll
+              $(odataWebV2BinPath)\**\ODataWeb.dll;$(odataWebV2BinPath)\**\DataServiceProvider.dll
             AnalyzeVerbose: true
             AnalyzeHashes: true
             AnalyzeEnvironment: true
@@ -86,7 +101,7 @@ extends:
           inputs:
             InputType: Basic
             AnalyzeTarget: |
-              $(Build.ArtifactStagingDirectory)\**\DataServiceProviderV3.dll;$(Build.ArtifactStagingDirectory)\**\ODataWebV3.dll
+              $(odataWebV3BinPath)\**\ODataWebV3.dll;$(odataWebV2BinPath)\**\DataServiceProviderV3.dll
             AnalyzeVerbose: true
             AnalyzeHashes: true
             AnalyzeEnvironment: true
@@ -96,7 +111,7 @@ extends:
           inputs:
             InputType: Basic
             AnalyzeTarget: |
-              $(Build.ArtifactStagingDirectory)\**\Microsoft.Samples.SqlServer.AdventureWorksService.dll
+              $(adventureWorksV3BinPath)\**\Microsoft.Samples.SqlServer.AdventureWorksService.dll
             AnalyzeVerbose: true
             AnalyzeHashes: true
             AnalyzeEnvironment: true
@@ -106,7 +121,7 @@ extends:
           inputs:
             InputType: Basic
             AnalyzeTarget: |
-              $(Build.ArtifactStagingDirectory)\**\DataServiceProviderV4.dll;$(Build.ArtifactStagingDirectory)\**\Microsoft.OData.Service.dll;$(Build.ArtifactStagingDirectory)\**\Microsoft.OData.Service.Ef6.dll;$(Build.ArtifactStagingDirectory)\**\ODataWebV4.dll
+              $(odataWebV4BinPath)\**\ODataWebV4.dll;$(odataWebV4BinPath)\**\ODataServiceProviderV4.dll;$(odataWebV4BinPath)\**\Microsoft.OData.Service.Ef6.dll;$(odataWebV4BinPath)\**\Microsoft.OData.Service.dll
             AnalyzeVerbose: true
             AnalyzeHashes: true
             AnalyzeEnvironment: true
@@ -116,7 +131,7 @@ extends:
           inputs:
             ArtifactName: SecurityLogs
 
-        - task: PostAnalysis@1
+        - task: PostAnalysis@2
           displayName: 'Post Analysis'
           inputs:
             BinSkim: true
@@ -125,9 +140,3 @@ extends:
             PoliCheckBreakOn: Severity2Above
           enabled: true
           continueOnError: true
-
-        - task: PublishBuildArtifacts@1
-          displayName: 'Publish artifacts'
-          inputs:
-            PathToPublish: $(Build.ArtifactStagingDirectory)
-            ArtifactName: 'PublishBuildArtifacts'
