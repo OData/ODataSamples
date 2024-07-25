@@ -6,8 +6,10 @@
 *.user
 *.[Cc]ache
 *[Rr]esharper*
-packages
+**/packages/*
 NuGet.exe
+Nuget.config
+Nuget.targets
 _[Ss]cripts
 *.exe
 *.dll
@@ -79,6 +81,7 @@ ClientBin
 stylecop.*
 ~$*
 *.dbmdl
+*.pfx
 Generated_Code #added for RIA/Silverlight projects
 # Backup & report files from converting an old project file to a newer
 # Visual Studio version. Backup files are not needed, because we have git ;-)
