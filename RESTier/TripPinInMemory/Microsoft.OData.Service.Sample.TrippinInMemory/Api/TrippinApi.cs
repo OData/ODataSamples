@@ -125,7 +125,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
         /// <returns>
         ///     <see cref="Person">
         /// </returns>
-        [Operation(EntitySet = "People")]
+        [UnboundOperation(EntitySet ="People")]
         public Person GetPersonWithMostFriends()
         {
             Person result = null;
@@ -158,7 +158,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
         /// <returns>
         ///     <see cref="Airport">
         /// </returns>
-        [Operation(EntitySet = "Airports")]
+        [UnboundOperation(EntitySet = "Airports")]
         public Airport GetNearestAirport(double lat, double lon)
         {
             var startPoint = GeographyPoint.Create(lat, lon);
@@ -178,7 +178,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             return nearestAirport;
         }
 
-        [Operation(IsBound = true)]
+        [BoundOperation()]
         public Airline GetFavoriteAirline(Person person)
         {
             var countDict = new Dictionary<string, int>();
@@ -216,7 +216,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
         /// <summary>
         ///     Bound Function, get the trips of one friend with userName
         /// </summary>
-        [Operation(IsBound = true)]
+        [BoundOperation()]
         public ICollection<Trip> GetFriendsTrips(Person person, string userName)
         {
             var friends = person.Friends.Where(p => p.UserName.Equals(userName)).ToArray();
@@ -231,7 +231,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             }
         }
 
-        [Operation(IsBound = true)]
+        [BoundOperation()]
         public ICollection<Person> GetInvolvedPeople(Trip trip)
         {
             var shareID = trip.ShareId;
@@ -258,7 +258,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
         /// <summary>
         ///     Unbound action, reset datasource.
         /// </summary>
-        [Operation(OperationType = OperationType.Action)]
+        [UnboundOperation(OperationType = OperationType.Action)]
         public void ResetDataSource()
         {
             DataStoreManager.ResetDataStoreInstance(Key);
@@ -270,7 +270,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
         /// <param name="person">The person to be updated.</param>
         /// <param name="lastName">The value of last name to be updated.</param>
         /// <returns>True if update successfully.</returns>
-        [Operation(IsBound = true, OperationType = OperationType.Action)]
+        [BoundOperation(OperationType = OperationType.Action)]
         public bool UpdateLastName(Person person, string lastName)
         {
             if (person != null)
@@ -284,7 +284,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
             }
         }
 
-        [Operation(IsBound = true, OperationType = OperationType.Action)]
+        [BoundOperation(OperationType = OperationType.Action)]
         public void ShareTrip(Person personInstance, string userName, int tripId)
         {
             if (personInstance == null)
@@ -343,7 +343,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
 
         internal class ModelBuilder : IModelBuilder
         {
-            public Task<IEdmModel> GetModelAsync(ModelContext context, CancellationToken cancellationToken)
+            public IEdmModel GetModel(ModelContext context)
             {
                 var modelBuilder = new ODataConventionModelBuilder();
                 modelBuilder.Namespace = "Trippin";
@@ -351,7 +351,7 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory.Api
                 modelBuilder.EntitySet<Airline>("Airlines");
                 modelBuilder.EntitySet<Airport>("Airports");
                 modelBuilder.Singleton<Person>("Me");
-                return Task.FromResult(modelBuilder.GetEdmModel());
+                return modelBuilder.GetEdmModel();
             }
         }
     }
