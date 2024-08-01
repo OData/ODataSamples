@@ -33,50 +33,48 @@ namespace Microsoft.OData.Service.Sample.TrippinInMemory
             config.MessageHandlers.Add(new ETagMessageHandler());
             config.SetUrlKeyDelimiter(ODataUrlKeyDelimiter.Slash);
             config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
-            config.Routes.MapHttpRoute("Options", "{*OPTIONS}", new { controller = "CORS", action = "Options" }, new { Options = new myHttpRouteConstraint()});
-            config.UseRestier<TrippinApi>((services) =>
+            config.Routes.MapHttpRoute("Options", "{*OPTIONS}", new { controller = "CORS", action = "Options" }, new { Options = new myHttpRouteConstraint() });
+            config.Filter().Expand().Select().OrderBy().MaxTop(100).Count().SetTimeZoneInfo(TimeZoneInfo.Utc);
+            config.UseRestier((builder) =>
             {
-                Func<IServiceProvider, IDataStoreManager<string, TripPinDataSource>> defaultDataStoreManager =
-                sp => new DefaultDataStoreManager<string, TripPinDataSource>()
+                builder.AddRestierApi<TrippinApi>(services =>
                 {
-                    MaxDataStoreInstanceCapacity = 1000,
-                    MaxDataStoreInstanceLifeTime = new TimeSpan(0, 30, 0)
-                };
+                    Func<IServiceProvider, IDataStoreManager<string, TripPinDataSource>> defaultDataStoreManager =
+                    sp => new DefaultDataStoreManager<string, TripPinDataSource>()
+                    {
+                        MaxDataStoreInstanceCapacity = 1000,
+                        MaxDataStoreInstanceLifeTime = new TimeSpan(0, 30, 0)
+                    };
 
-                Func<IServiceProvider, ODataValidationSettings> validationSettingFactory = sp => new ODataValidationSettings
-                {
-                    MaxAnyAllExpressionDepth = 4,
-                    MaxExpansionDepth = 4
-                };
+                    Func<IServiceProvider, ODataValidationSettings> validationSettingFactory = sp => new ODataValidationSettings
+                    {
+                        MaxAnyAllExpressionDepth = 4,
+                        MaxExpansionDepth = 4
+                    };
 
-                services.AddSingleton<ODataValidationSettings>(validationSettingFactory);
-                services.AddChainedService<IModelBuilder>((sp, next) => new TrippinApi.ModelBuilder());
-                services.AddChainedService<IChangeSetInitializer>((sp, next) => new ChangeSetInitializer<TripPinDataSource>());
-                services.AddChainedService<ISubmitExecutor>((sp, next) => new SubmitExecutor());
-                services.AddSingleton(defaultDataStoreManager);
+                    services.AddSingleton<ODataValidationSettings>(validationSettingFactory);
+                    services.AddChainedService<IModelBuilder>((sp, next) => new TrippinApi.ModelBuilder());
+                    services.AddChainedService<IChangeSetInitializer>((sp, next) => new ChangeSetInitializer<TripPinDataSource>());
+                    services.AddChainedService<ISubmitExecutor>((sp, next) => new SubmitExecutor());
+                    services.AddSingleton(defaultDataStoreManager);
 
-                // Add custom TrippinBatchHandler
-                ODataBatchHandler trippinBatchHandler = new TrippinBatchHandler(GlobalConfiguration.DefaultServer);
-                trippinBatchHandler.ODataRouteName = routeName;
-                services.AddSingleton(trippinBatchHandler);
+                    // Add custom TrippinBatchHandler
+                    ODataBatchHandler trippinBatchHandler = new TrippinBatchHandler(GlobalConfiguration.DefaultServer);
+                    trippinBatchHandler.ODataRouteName = routeName;
+                    services.AddSingleton(trippinBatchHandler);
+                });
             });
 
-            RegisterTrippin(config, GlobalConfiguration.DefaultServer);
-            
-        }
-
-        public static void RegisterTrippin(
-            HttpConfiguration config, HttpServer server)
-        {
-            // enable query options for all properties
-            config.Filter().Expand().Select().OrderBy().MaxTop(null).Count();
-            config.SetTimeZoneInfo(TimeZoneInfo.Utc);
-            config.MapRestier<TrippinApi>(
-                routeName,
-                "",
-                false); // Custom TrippinBatchHandler registered in UseRestier 
+            config.MapRestier((builder) =>
+            {
+                builder.MapApiRoute<TrippinApi>(
+                    routeName,
+                    "",
+                    false); // Custom TrippinBatchHandler registered in UseRestier 
+            });
         }
     }
+
     public class myHttpRouteConstraint : IHttpRouteConstraint
     {
         bool IHttpRouteConstraint.Match(HttpRequestMessage request, IHttpRoute route, string parameterName, IDictionary<string, object> values, HttpRouteDirection routeDirection)

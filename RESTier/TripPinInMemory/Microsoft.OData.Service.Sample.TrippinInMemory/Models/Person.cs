@@ -53,5 +53,14 @@ namespace Trippin
         public Feature FavoriteFeature { get; set; }
 
         public virtual ICollection<Feature> Features { get; set; }
+
+        public Person()
+        {
+            Emails = new List<string>();
+            AddressInfo = new List<Location>();
+            Friends = new List<Person>();
+            Trips = new List<Trip>();
+            Features = new List<Feature>();
+        }
     }
 }
